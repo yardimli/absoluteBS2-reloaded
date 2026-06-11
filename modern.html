@@ -14,14 +14,6 @@
 	<div class="worldAtmosphere" aria-hidden="true"></div>
 
 	<header class="glass topShell">
-		<div class="brandBlock">
-			<img src="images/icon.png" alt="" class="brandIcon">
-			<div>
-				<span class="eyebrow">Absolute Button Simulator 2</span>
-				<strong>Liquid Glass</strong>
-			</div>
-		</div>
-
 		<div class="worldSwitcher">
 			<button id="previousWorldButton" class="circleButton" data-action="previous-world" aria-label="Previous world">‹</button>
 			<div id="topBarWorld">
@@ -40,10 +32,10 @@
 		</div>
 
 		<nav class="primaryNav" aria-label="Game features">
-			<button data-action="show-items" data-item-type="crates">Crates <span id="crateNotification">+1</span></button>
-			<button data-action="show-items" data-item-type="relics">Relics</button>
-			<button data-action="show-items" data-item-type="potions">Potions</button>
-			<button id="miningNavButton" data-action="show-mining">Mining</button>
+			<button class="navImageButton navCrates" data-action="show-items" data-item-type="crates" data-tooltip="Crates" aria-label="Crates"><span id="crateNotification">0</span></button>
+			<button class="navImageButton navRelics" data-action="show-items" data-item-type="relics" data-tooltip="Relics" aria-label="Relics"></button>
+			<button class="navImageButton navPotions" data-action="show-items" data-item-type="potions" data-tooltip="Potions" aria-label="Potions"></button>
+			<button id="miningNavButton" class="navImageButton navMining" data-action="show-mining" data-tooltip="Mining" aria-label="Mining"></button>
 		</nav>
 	</header>
 
@@ -53,6 +45,13 @@
 		</section>
 
 		<aside id="resourcesScreen" class="glass resourceRail">
+			<div class="brandBlock">
+				<img src="images/icon.png" alt="" class="brandIcon">
+				<div>
+					<span class="eyebrow">Absolute Button Simulator 2</span>
+					<strong>Liquid Glass</strong>
+				</div>
+			</div>
 			<div class="railHeading">
 				<div>
 					<span class="eyebrow">Live economy</span>

@@ -4,6 +4,7 @@ import {levelToColour, levelToXp} from "./progression.js";
 
 let currentPotionTooltip = 0;
 let dialogResolver = null;
+let lastCrateTotal = null;
 
 function dialogElement(id) {
 	return document.getElementById(id);
@@ -14,6 +15,10 @@ function closeDialog(result) {
 	const resolver = dialogResolver;
 	dialogResolver = null;
 	if (resolver) resolver(result);
+}
+
+function totalUnopenedCrates() {
+	return game.crates.reduce((total, crate) => total + crate[1], 0);
 }
 
 export function showDialog({
@@ -83,6 +88,11 @@ export function initializeDialog() {
 	});
 }
 
+export function clearCrateNotificationBlink() {
+	const notification = document.getElementById("crateNotification");
+	if (notification) notification.classList.remove("blinking");
+}
+
 export function initializeStaticViews(config) {
 	const modernHelpTemplate = document.getElementById("modern-help-content-template");
 	if (modernHelpTemplate) {
@@ -125,8 +135,21 @@ export function updateVisuals(config) {
 	document.getElementById("miningNavButton").style.display =
 		game.worldsUnlocked >= config.mining.unlockWorld ? "inline-block" : "none";
 	const notification = document.getElementById("crateNotification");
-	notification.style.display = game.cratesNotChecked > 0 ? "block" : "none";
-	notification.textContent = `+${format(game.cratesNotChecked)}`;
+	const crateTotal = totalUnopenedCrates();
+	if (lastCrateTotal === null) {
+		notification.style.display = crateTotal > 0 ? "block" : "none";
+		notification.textContent = format(crateTotal);
+		lastCrateTotal = crateTotal;
+	} else if (crateTotal !== lastCrateTotal) {
+		notification.style.display = crateTotal > 0 ? "block" : "none";
+		notification.textContent = format(crateTotal);
+		if (crateTotal > lastCrateTotal) {
+			notification.classList.remove("blinking");
+			void notification.offsetWidth;
+			notification.classList.add("blinking");
+		}
+		lastCrateTotal = crateTotal;
+	}
 	config.potions.items.forEach(potion => {
 		const icon = document.querySelector(`[data-potion-id="${potion.id}"]`);
 		icon.style.display = game.potionCooldowns[potion.id] > 0 ? "block" : "none";

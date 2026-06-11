@@ -112,7 +112,7 @@ button,
 	padding: 10px 12px;
 	border-radius: 28px;
 	display: grid;
-	grid-template-columns: minmax(190px, 0.8fr) auto minmax(150px, 0.55fr) minmax(390px, 1.4fr);
+	grid-template-columns: minmax(220px, 0.6fr) minmax(150px, 0.4fr) minmax(390px, 1fr);
 	align-items: center;
 	gap: 18px;
 }
@@ -128,6 +128,9 @@ button,
 
 .brandBlock {
 	gap: 12px;
+	margin-bottom: 18px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .brandIcon {
@@ -208,10 +211,30 @@ button,
 	line-height: 1;
 }
 
+.topShell .circleButton[data-action="previous-world"],
+.topShell .circleButton[data-action="next-world"] {
+	width: 64px;
+	height: 64px;
+	border: 0;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	font-size: 0;
+	filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.28));
+}
+
+.topShell .circleButton[data-action="previous-world"] {
+	background-image: url("../images/modern/nav-prev.png");
+}
+
+.topShell .circleButton[data-action="next-world"] {
+	background-image: url("../images/modern/nav-next.png");
+}
+
 .circleButton:hover,
 .primaryNav button:hover,
 .railActions button:hover {
-	background: rgba(255, 255, 255, 0.2);
 	transform: translateY(-1px);
 }
 
@@ -227,7 +250,6 @@ button,
 	gap: 7px;
 }
 
-.primaryNav button,
 .railActions button,
 .debugPanel button {
 	padding: 9px 13px;
@@ -237,14 +259,78 @@ button,
 	transition: 180ms ease;
 }
 
+.navImageButton {
+	position: relative;
+	width: 64px;
+	height: 64px;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.26));
+	font-size: 0;
+	transition: 180ms ease;
+}
+
+.navImageButton::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	left: 50%;
+	bottom: -4px;
+	z-index: 4;
+	padding: 5px 9px;
+	border-radius: 999px;
+	background: rgba(6, 14, 30, 0.86);
+	color: var(--text);
+	font-size: 0.75rem;
+	font-weight: 800;
+	white-space: nowrap;
+	opacity: 0;
+	transform: translate(-50%, 8px);
+	pointer-events: none;
+	transition: 160ms ease;
+}
+
+.navImageButton:hover::after,
+.navImageButton:focus-visible::after {
+	opacity: 1;
+	transform: translate(-50%, 0);
+}
+
+.navCrates { background-image: url("../images/modern/nav-crates.png"); }
+.navRelics { background-image: url("../images/modern/nav-relics.png"); }
+.navPotions { background-image: url("../images/modern/nav-potions.png"); }
+
+.navMining {
+	order: -1;
+	background-image: url("../images/modern/nav-mining.png");
+}
+
 #crateNotification {
 	display: none;
-	margin-left: 4px;
-	padding: 2px 6px;
+	position: absolute;
+	right: -5px;
+	top: -5px;
+	min-width: 24px;
+	padding: 4px 7px;
 	border-radius: 999px;
+	opacity: 0.6;
 	background: #6ee7ff;
 	color: #071629;
-	font-size: 0.7rem;
+	font-size: 0.78rem;
+	font-weight: 900;
+	box-shadow: 0 0 16px rgba(110, 231, 255, 0.8);
+}
+
+#crateNotification.blinking {
+	animation: crateBadgeBlink 1s ease-in-out 3;
+}
+
+@keyframes crateBadgeBlink {
+	0%, 100% { transform: scale(1); filter: brightness(1); }
+	50% { transform: scale(1.28); filter: brightness(1.8); }
 }
 
 .gameLayout {
@@ -884,7 +970,7 @@ button,
 		grid-template-columns: 1fr;
 	}
 
-	.brandBlock {
+	.topShell .brandBlock {
 		display: none;
 	}
 

@@ -113,6 +113,66 @@ export function updateWorldButtons(config) {
 	});
 }
 
+function affectedTiers(config, purchasedTier) {
+	const affected = new Set([purchasedTier.id]);
+	for (const tier of config.progression.tiers) {
+		if (tier.parentResource === purchasedTier.gainResource) affected.add(tier.id);
+		if (tier.costResource === purchasedTier.costResource) affected.add(tier.id);
+		if (tier.costResource === purchasedTier.gainResource) affected.add(tier.id);
+		if (purchasedTier.resets.includes(tier.costResource)) affected.add(tier.id);
+	}
+	return affected;
+}
+
+export function updateAffectedButtons(config, purchasedTierId) {
+	const purchasedTier = config.tierById[purchasedTierId];
+	if (!purchasedTier) {
+		updateWorldButtons(config);
+		return;
+	}
+	const affected = affectedTiers(config, purchasedTier);
+	document.querySelectorAll("[data-resource-header]").forEach(element => {
+		const resourceId = element.dataset.resourceHeader;
+		if (
+			resourceId === purchasedTier.costResource ||
+			resourceId === purchasedTier.gainResource ||
+			purchasedTier.resets.includes(resourceId)
+		) {
+			element.textContent = `${resourceLabel(config, resourceId)}: ${format(game[resourceId])}`;
+		}
+	});
+	document.querySelectorAll('[data-action="buy-button"]').forEach(element => {
+		if (!affected.has(element.dataset.tier)) return;
+		const world = config.worldById[currentWorld];
+		const section = world.sections.find(item => item.tier === element.dataset.tier);
+		const tier = config.tierById[element.dataset.tier];
+		const button = section.buttons[Number(element.dataset.buttonIndex)];
+		element.style.filter = canBuyButton(tier, button) ? "none" : "brightness(70%)";
+		setField(element, "gain-value", format(calculateButtonGain(config, tier, button)));
+	});
+	document.querySelectorAll('[data-action="free-resource"]').forEach(element => {
+		if (!affected.has(element.dataset.tier)) return;
+		const section = config.worldById[currentWorld].sections.find(item => item.tier === element.dataset.tier);
+		const free = section?.freeButton;
+		if (!free) return;
+		const available = game[free.requiredResource].gte(free.requiredAmount) && game[free.targetResource].lt(free.amount);
+		element.style.filter = available ? "none" : "brightness(70%)";
+	});
+}
+
+export function updatePassiveIncomeButtons(config) {
+	document.querySelectorAll('[data-resource-header="money"]').forEach(element => {
+		element.textContent = `${resourceLabel(config, "money")}: ${format(game.money)}`;
+	});
+	document.querySelectorAll('[data-action="buy-button"][data-tier="multi"]').forEach(element => {
+		const world = config.worldById[currentWorld];
+		const section = world.sections.find(item => item.tier === "multi");
+		const tier = config.tierById.multi;
+		const button = section.buttons[Number(element.dataset.buttonIndex)];
+		element.style.filter = canBuyButton(tier, button) ? "none" : "brightness(70%)";
+	});
+}
+
 export function findWorldButton(config, tierId, buttonIndex) {
 	const section = config.worldById[currentWorld].sections.find(item => item.tier === tierId);
 	return section?.buttons[buttonIndex];

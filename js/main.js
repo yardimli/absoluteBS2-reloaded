@@ -16,6 +16,8 @@ import {
 	previousWorld,
 	purchaseWorld,
 	renderWorld,
+	updateAffectedButtons,
+	updatePassiveIncomeButtons,
 	updateWorldButtons
 } from "./worlds.js";
 import {
@@ -40,6 +42,7 @@ import {
 } from "./mining.js";
 import {
 	closeWorldPurchase,
+	clearCrateNotificationBlink,
 	hideHelp,
 	hidePotionTooltip,
 	initializeDialog,
@@ -104,10 +107,11 @@ function activateButton(element) {
 	const action = element.dataset.action;
 	if (action === "buy-button") {
 		const button = findWorldButton(config, element.dataset.tier, Number(element.dataset.buttonIndex));
-		if (button && buyButton(config, element.dataset.tier, button)) renderWorld(config);
+		if (button && buyButton(config, element.dataset.tier, button)) updateAffectedButtons(config, element.dataset.tier);
 	} else if (action === "free-resource") {
-		if (claimWorldFreeButton(config, element.dataset.tier)) renderWorld(config);
+		if (claimWorldFreeButton(config, element.dataset.tier)) updateAffectedButtons(config, element.dataset.tier);
 	} else if (action === "show-items") {
+		if (element.dataset.itemType === "crates") clearCrateNotificationBlink();
 		showItems(config, element.dataset.itemType);
 	} else if (action === "close-items") closeItems();
 	else if (action === "show-mining") showMining(config);
@@ -129,7 +133,7 @@ function activateButton(element) {
 	}
 	else if (action === "debug-multiplier") {
 		setDebugMultiplier(Number(element.dataset.value));
-		renderWorld(config);
+		updateWorldButtons(config);
 	}
 }
 
@@ -194,7 +198,7 @@ function updateSimulation() {
 	});
 	if (potionExpired) {
 		calculateItemMultipliers(config);
-		renderWorld(config);
+		updateWorldButtons(config);
 	}
 	if (game.miners.gte(1)) {
 		game.miningCooldown -= elapsedSeconds;
@@ -210,7 +214,7 @@ function updateSimulation() {
 
 function visualLoop() {
 	updateVisuals(config);
-	updateWorldButtons(config);
+	updatePassiveIncomeButtons(config);
 	updateMiningView(config);
 	requestAnimationFrame(visualLoop);
 }
