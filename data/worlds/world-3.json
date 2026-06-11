@@ -1,0 +1,60 @@
+{
+  "id": 3,
+  "name": "Sky world",
+  "background": "#9ce",
+  "unlockCost": "1e50",
+  "rewardCrate": "advanced",
+  "features": [],
+  "sections": [
+    {
+      "tier": "multi",
+      "image": "images/button1.png",
+      "freeButton": {"targetResource": "multi", "amount": "1e20", "requiredResource": "infernal", "requiredAmount": "1"},
+      "buttons": [
+        {"cost": "7.5e52", "gain": "4e18"}, {"cost": "8e56", "gain": "3e19"}, {"cost": "1e61", "gain": "2.5e20"},
+        {"cost": "2e65", "gain": "2e21"}, {"cost": "5e69", "gain": "1.5e22"}
+      ]
+    },
+    {
+      "tier": "prestige",
+      "image": "images/button2.png",
+      "buttons": [
+        {"cost": "2e48", "gain": "3e12"}, {"cost": "3.5e51", "gain": "1.5e13"}, {"cost": "5e54", "gain": "7e13"},
+        {"cost": "9e57", "gain": "2.5e14"}, {"cost": "2e60", "gain": "1e15"}, {"cost": "5e63", "gain": "4.5e15"}
+      ]
+    },
+    {
+      "tier": "power",
+      "image": "images/button3.png",
+      "buttons": [
+        {"cost": "1e28", "gain": "1.4e9"}, {"cost": "7.5e30", "gain": "6e9"}, {"cost": "5e33", "gain": "2.4e10"},
+        {"cost": "5e36", "gain": "1e11"}, {"cost": "6e39", "gain": "4e11"}, {"cost": "8e42", "gain": "1.5e12"}
+      ]
+    },
+    {
+      "tier": "superPrestige",
+      "image": "images/button4.png",
+      "freeButton": {"targetResource": "superPrestige", "amount": "10", "requiredResource": "infernal", "requiredAmount": "1"},
+      "buttons": [
+        {"cost": "2e15", "gain": "450000"}, {"cost": "1e17", "gain": "1.6e6"}, {"cost": "8e18", "gain": "7.5e6"},
+        {"cost": "8e20", "gain": "2.5e7"}, {"cost": "1e23", "gain": "1.2e8"}, {"cost": "1.4e25", "gain": "5e8"}
+      ]
+    },
+    {
+      "tier": "ascension",
+      "image": "images/button5.png",
+      "buttons": [
+        {"cost": "5e7", "gain": "400"}, {"cost": "1.2e9", "gain": "1200"}, {"cost": "3.5e10", "gain": "5500"},
+        {"cost": "1.2e12", "gain": "22000"}, {"cost": "5e13", "gain": "90000"}, {"cost": "2e15", "gain": "400000"}
+      ]
+    },
+    {
+      "tier": "infernal",
+      "image": "images/button6.png",
+      "buttons": [
+        {"cost": "2500", "gain": "2"}, {"cost": "12000", "gain": "5"}, {"cost": "60000", "gain": "14"},
+        {"cost": "400000", "gain": "40"}, {"cost": "2.5e6", "gain": "150"}, {"cost": "5e7", "gain": "400"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "resources": [
+    {"id": "money", "name": "Money", "color": "#070", "initial": "0"},
+    {"id": "multi", "name": "Multi", "color": "#b00", "initial": "1"},
+    {"id": "prestige", "name": "Prestige", "color": "#60b", "initial": "0"},
+    {"id": "power", "name": "Power", "color": "#dd0", "initial": "0"},
+    {"id": "superPrestige", "name": "Super prestige", "shortName": "S-prestige", "color": "#0bf", "initial": "0", "unlockWorld": 2},
+    {"id": "ascension", "name": "Ascension", "color": "#fff", "initial": "0", "unlockWorld": 2},
+    {"id": "infernal", "name": "Infernal", "color": "#f50", "initial": "0", "unlockWorld": 3}
+  ],
+  "tiers": [
+    {"id": "multi", "className": "button1", "image": "images/button1.png", "costResource": "money", "gainResource": "multi", "parentResource": "prestige", "relicIndex": 1, "xp": 0, "resets": []},
+    {"id": "prestige", "className": "button2", "image": "images/button2.png", "costResource": "multi", "gainResource": "prestige", "parentResource": "power", "relicIndex": 2, "xp": 1, "resets": ["money", "multi"]},
+    {"id": "power", "className": "button3", "image": "images/button3.png", "costResource": "prestige", "gainResource": "power", "parentResource": "superPrestige", "relicIndex": 3, "xp": 4, "resets": ["money", "multi", "prestige"]},
+    {"id": "superPrestige", "className": "button4", "image": "images/button4.png", "costResource": "power", "gainResource": "superPrestige", "parentResource": "ascension", "relicIndex": 4, "xp": 16, "resets": ["money", "multi", "prestige", "power"]},
+    {"id": "ascension", "className": "button5", "image": "images/button5.png", "costResource": "superPrestige", "gainResource": "ascension", "parentResource": "infernal", "relicIndex": 5, "xp": 64, "resets": ["money", "multi", "prestige", "power", "superPrestige"]},
+    {"id": "infernal", "className": "button6", "image": "images/button6.png", "costResource": "ascension", "gainResource": "infernal", "parentResource": null, "relicIndex": 6, "xp": 256, "resets": ["money", "multi", "prestige", "power", "superPrestige", "ascension"]}
+  ],
+  "leveling": {
+    "xpDivisor": 5,
+    "levelExponent": 0.6,
+    "firstCrateLevel": 2,
+    "lastCrateLevel": 99,
+    "maxCratesPerCheck": 11
+  }
+}

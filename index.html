@@ -21,53 +21,40 @@
 	<p id="logoText">Absolute Button<br>Simulator 2</p>
 	<hr style="margin-top: 66px; height: 3px; background-color: rgba(0,0,0,0.5); border: none">
 	<h1 style="float: right; color: #444">Resources</h1><br><br><br>
-	<p style="float: right; text-align: right">
-		<span class="resourceText" style="color: #070">Money: <span id="money">0</span></span><br>
-		<span class="resourceText" style="color: #b00">Multi: <span id="multi">0</span></span><br>
-		<span class="resourceText" style="color: #60b">Prestige: <span id="prestige">0</span></span><br>
-		<span class="resourceText" style="color: #dd0">Power: <span id="power">0</span></span><br>
-		<span class="resourceText" style="color: #0bf; display: none">Super prestige: <span id="superPrestige">0</span></span><br>
-		<span class="resourceText" style="color: white; display: none">Ascension: <span id="ascension">0</span></span><br>
-		<span class="resourceText" style="color: #f50; display: none">Infernal: <span id="infernal">0</span></span><br>
-	</p>
-	<img src="images/potion1.png" class="potionIcon" style="top: 86px" onmouseover="setPotionTooltip(1)" onmouseout="setPotionTooltip(0)" alt="Potion 1">
-	<img src="images/potion2.png" class="potionIcon" style="top: 140px" onmouseover="setPotionTooltip(2)" onmouseout="setPotionTooltip(0)" alt="Potion 2">
-	<img src="images/potion3.png" class="potionIcon" style="top: 194px" onmouseover="setPotionTooltip(3)" onmouseout="setPotionTooltip(0)" alt="Potion 3">
-	<img src="images/potion4.png" class="potionIcon" style="top: 248px" onmouseover="setPotionTooltip(4)" onmouseout="setPotionTooltip(0)" alt="Potion 4">
-	<img src="images/potion5.png" class="potionIcon" style="top: 302px" onmouseover="setPotionTooltip(5)" onmouseout="setPotionTooltip(0)" alt="Potion 5">
+	<p id="resourceList" style="float: right; text-align: right"></p>
+	<div id="activePotionIcons"></div>
 	<div id="potionTooltip">Money potion: 00:00.00</div>
 	
 	<!-- Debug Multiplier Buttons -->
 	<div style="position: absolute; bottom: 72px; left: 4px;">
 		<span class="resourceText" style="color: #ddd; font-size: 16px;">Debug Multiplier:</span><br>
-		<button id="debug-btn-1" class="debug-btn" style="font-weight: bold; padding: 0 4px; font-size: 16px; height: 26px;" onclick="setDebugMultiplier(1)">1x</button>
-		<button id="debug-btn-10" class="debug-btn" style="padding: 0 4px; font-size: 16px; height: 26px;" onclick="setDebugMultiplier(10)">10x</button>
-		<button id="debug-btn-100" class="debug-btn" style="padding: 0 4px; font-size: 16px; height: 26px;" onclick="setDebugMultiplier(100)">100x</button>
-		<button id="debug-btn-1000" class="debug-btn" style="padding: 0 4px; font-size: 16px; height: 26px;" onclick="setDebugMultiplier(1000)">1000x</button>
+		<button class="debug-btn" data-action="debug-multiplier" data-value="1" style="font-weight: bold; padding: 0 4px; font-size: 16px; height: 26px;">1x</button>
+		<button class="debug-btn" data-action="debug-multiplier" data-value="10" style="padding: 0 4px; font-size: 16px; height: 26px;">10x</button>
+		<button class="debug-btn" data-action="debug-multiplier" data-value="100" style="padding: 0 4px; font-size: 16px; height: 26px;">100x</button>
+		<button class="debug-btn" data-action="debug-multiplier" data-value="1000" style="padding: 0 4px; font-size: 16px; height: 26px;">1000x</button>
 	</div>
-	
-	<!-- Added Help Button -->
-	<button style="position: absolute; bottom: 72px; right: 4px; background-color: #9cd;" onclick="showHelpScreen()">Help</button>
-	
-	<button style="position: absolute; bottom: 38px; left: 4px" onclick="save()">Save</button>
-	<button style="position: absolute; bottom: 38px; left: 76px; background-color: #d99" onclick="hardReset()">Hard reset</button>
-	<button style="position: absolute; bottom: 4px; left: 4px" onclick="exportGame()">Export</button>
-	<button style="position: absolute; bottom: 4px; left: 86px" onclick="importGame()">Import</button>
+
+	<button style="position: absolute; bottom: 72px; right: 4px; background-color: #9cd;" data-action="show-help">Help</button>
+
+	<button style="position: absolute; bottom: 38px; left: 4px" data-action="save">Save</button>
+	<button style="position: absolute; bottom: 38px; left: 76px; background-color: #d99" data-action="hard-reset">Hard reset</button>
+	<button style="position: absolute; bottom: 4px; left: 4px" data-action="export">Export</button>
+	<button style="position: absolute; bottom: 4px; left: 86px" data-action="import">Import</button>
 	<p style="position: absolute; bottom: 4px; right: 4px; text-align: right">v0.2.2<br><a href="changelog.txt">Changelog</a></p>
 </div>
 
 <!--Top bar-->
 <div id="topBar">
-	<div class="topBarArrow" style="background-image: url('images/buttonLeft.png'); display: none" onclick="previousWorld()"></div>
-	<div id="topBarWorld">World 1<br>Overworld</div>
-	<div class="topBarArrow" style="background-image: url('images/buttonRight.png')" onclick="nextWorld()"></div>
+	<div id="previousWorldButton" class="topBarArrow" style="background-image: url('images/buttonLeft.png'); display: none" data-action="previous-world"></div>
+	<div id="topBarWorld"><span id="topBarWorldNumber">World 1</span><br><span id="topBarWorldName">Overworld</span></div>
+	<div class="topBarArrow" style="background-image: url('images/buttonRight.png')" data-action="next-world"></div>
 </div>
 <div style="position: fixed; top: 0; right: 0; width: 70vw; min-height: 108px; overflow-x: auto; overflow-y: hidden">
-	<div class="topButton" onclick="showItems(4)">Potions</div>
-	<div class="topButton" onclick="showItems(3)">Relics</div>
-	<div class="topButton" onclick="showItems(2)">Patterns</div>
-	<div class="topButton" onclick="showItems(1)">Crates<span id="crateNotification">+1</span></div>
-	<div class="topButton2" onclick="displayMiningScreen()">Mining</div>
+	<div class="topButton" data-action="show-items" data-item-type="potions">Potions</div>
+	<div class="topButton" data-action="show-items" data-item-type="relics">Relics</div>
+	<div class="topButton" data-action="show-items" data-item-type="patterns">Patterns</div>
+	<div class="topButton" data-action="show-items" data-item-type="crates">Crates<span id="crateNotification">+1</span></div>
+	<div id="miningNavButton" class="topButton2" data-action="show-mining">Mining</div>
 </div>
 
 <!--Bottom bar-->
@@ -87,43 +74,45 @@
 		<h1 id="itemScreenName"></h1>
 		<p id="itemScreenInfoText"></p>
 	</div>
-	<p class="closeButton" onclick="showItems(0)">X</p>
+	<p class="closeButton" data-action="close-items">X</p>
 </div>
 
 <!--World purchase screen-->
 <div id="worldPurchaseScreen">
 	<p id="worldPurchaseText" style="font-size: 6vh; font-weight: bold; margin-bottom: 3vh">Unlock world 2</p>
 	<p style="font-size: 3vh; margin-bottom: 3vh">And get new buttons!</p>
-	<div style="text-align: center;"><button id="worldPurchaseButton" onclick="purchaseWorld()" style="height: 60px; border: 3px solid black">Purchase world 2<br>Costs $1.00e22</button></div>
-	<p class="closeButton" onclick="$('#worldPurchaseScreen').css('display', 'none')">X</p>
+	<div style="text-align: center;">
+		<button id="worldPurchaseButton" data-action="purchase-world" style="height: 60px; border: 3px solid black">
+			<span id="worldPurchaseButtonLabel">Purchase world 2</span><br>
+			<span id="worldPurchaseButtonCost">Costs $1.00e20</span>
+		</button>
+	</div>
+	<p class="closeButton" data-action="close-world-purchase">X</p>
 </div>
 
 <!--Mining-->
 <div id="miningScreen">
 	<h1 style="color: #dcb">Mining</h1><br>
 	<p style="color: #ddd; margin-bottom: 10px">Miners will automatically mine ores for you. Each ore multiplies the gain of the previous ore, and (stone ^ 0.5) multiplies money gain! (Currently *<span id="miningBoost">1.00</span>)</p>
-	<button id="minerPurchaseButton" onclick="purchaseMiner()" style="height: 60px; border: 3px solid black; margin-bottom: 10px">Buy a miner<br>Costs $1.00e35</button>
+	<button id="minerPurchaseButton" data-action="purchase-miner" style="height: 60px; border: 3px solid black; margin-bottom: 10px">
+		Buy a miner<br>
+		<span id="minerPurchaseCost">Costs $1.00e30</span>
+	</button>
 	<p style="color: #ddd">
 		You have <span id="miners">0</span> miners<br><br>
 		Next ore in <span id="miningCooldown">00:00.00</span><br><br>
-		You have <span class="miningResource">0</span> <span style="color: #aaa">stone</span><br>
-		You have <span class="miningResource">0</span> <span style="color: #db9">iron</span><br>
-		You have <span class="miningResource">0</span> <span style="color: #fb0">gold</span><br>
-		You have <span class="miningResource">0</span> <span style="color: #00f">sapphire</span><br>
-		You have <span class="miningResource">0</span> <span style="color: #0f0">emerald</span><br>
-		You have <span class="miningResource">0</span> <span style="color: #f00">ruby</span><br>
-		You have <span class="miningResource">0</span> <span style="color: #8ff">diamond</span>
+		<span id="miningResourceList"></span>
 	</p>
-	<p class="closeButton" onclick="$('#miningScreen').css('display', 'none')">X</p>
+	<p class="closeButton" data-action="close-mining">X</p>
 </div>
 
 <!-- Help Screen Overlay -->
-<div id="helpScreenOverlay" onclick="hideHelpScreen()"></div>
+<div id="helpScreenOverlay" data-action="hide-help"></div>
 
 <!-- Help Screen -->
 <div id="helpScreen">
 	<h1 style="color: #fff; text-align: center; margin-top: 0;">How to Play</h1>
-	<p class="closeButton" onclick="hideHelpScreen()">X</p>
+	<p class="closeButton" data-action="hide-help">X</p>
 	<hr style="border-color: #444;">
 	
 	<h3>Buttons & Multipliers <img src="images/button1.png" style="height:24px; vertical-align:middle;" alt="Button"></h3>
@@ -245,11 +234,58 @@
 	<p>Higher ores increase how much of the ore immediately below them you receive. For example, each Stone roll gives your current Iron amount plus 1 Stone, while each Ruby roll gives your current Diamond amount plus 1 Ruby. Stone boosts passive Money gain by <code>sqrt(Stone) + 1</code>; 9 Stone gives a 4x Money multiplier and 100 Stone gives an 11x multiplier.</p>
 </div>
 
-<script src="js/jquery-3.6.0.min.js"></script>
+<template id="resource-row-template">
+	<span class="resourceText"><span data-field="resource-name"></span>: <span data-field="resource-value">0</span></span><br>
+</template>
+
+<template id="potion-icon-template">
+	<img class="potionIcon" alt="">
+</template>
+
+<template id="world-section-template">
+	<section class="worldSection">
+		<h1>
+			<span data-field="section-name"></span> buttons
+			(<span data-field="section-resource">0</span>)
+		</h1>
+		<div data-field="section-buttons"></div>
+	</section>
+</template>
+
+<template id="game-button-template">
+	<div class="button" role="button" tabindex="0" data-action="buy-button">
+		<p class="buttonText">
+			<span data-field="gain-name"></span>:<br>
+			+<span data-field="gain-value"></span><br>
+			<span data-field="cost-name"></span> cost:<br>
+			<span data-field="cost-value"></span>
+		</p>
+	</div>
+</template>
+
+<template id="free-button-template">
+	<div class="button" role="button" tabindex="0" data-action="free-resource">
+		<p class="buttonText">
+			Get <span data-field="free-amount"></span><br>
+			<span data-field="free-resource"></span><br>
+			Requires <span data-field="required-amount"></span> <span data-field="required-resource"></span>
+		</p>
+	</div>
+</template>
+
+<template id="item-card-template">
+	<div class="itemBox" role="button" tabindex="0">
+		<img class="item" alt="">
+		<p class="itemText">0</p>
+	</div>
+</template>
+
+<template id="mining-resource-template">
+	<span>You have <span data-field="ore-amount">0</span> <span data-field="ore-name"></span></span><br>
+</template>
+
 <script src="js/break_eternity.js"></script>
-<script src="js/Mousetrap.js"></script>
-<script src="js/constantsv022.js"></script>
-<script src="js/scriptv0221.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 
 </html>

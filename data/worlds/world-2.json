@@ -1,0 +1,60 @@
+{
+  "id": 2,
+  "name": "Cave world",
+  "background": "#888",
+  "unlockCost": "1e20",
+  "rewardCrate": "advanced",
+  "features": ["mining"],
+  "sections": [
+    {
+      "tier": "multi",
+      "image": "images/button1.png",
+      "buttons": [
+        {"cost": "3e19", "gain": "1.2e9"}, {"cost": "1.2e22", "gain": "8e9"}, {"cost": "1e25", "gain": "5e10"},
+        {"cost": "1.5e28", "gain": "6e11"}, {"cost": "2e31", "gain": "8e12"}, {"cost": "5e34", "gain": "8e13"},
+        {"cost": "1e38", "gain": "7.5e14"}, {"cost": "3e41", "gain": "7e15"}, {"cost": "1.2e45", "gain": "6e16"},
+        {"cost": "8e48", "gain": "5e17"}
+      ]
+    },
+    {
+      "tier": "prestige",
+      "image": "images/button2.png",
+      "freeButton": {"targetResource": "prestige", "amount": "10", "requiredResource": "superPrestige", "requiredAmount": "1"},
+      "buttons": [
+        {"cost": "1e19", "gain": "750000"}, {"cost": "3e21", "gain": "4e6"}, {"cost": "1e24", "gain": "2.5e7"},
+        {"cost": "6e26", "gain": "1.2e8"}, {"cost": "5e29", "gain": "6e8"}, {"cost": "6e32", "gain": "2e9"},
+        {"cost": "7.5e35", "gain": "9e9"}, {"cost": "1e39", "gain": "4e10"}, {"cost": "1e42", "gain": "1.8e11"},
+        {"cost": "1.3e45", "gain": "8e11"}
+      ]
+    },
+    {
+      "tier": "power",
+      "image": "images/button3.png",
+      "freeButton": {"targetResource": "power", "amount": "10", "requiredResource": "ascension", "requiredAmount": "1"},
+      "buttons": [
+        {"cost": "2e8", "gain": "1300"}, {"cost": "2.5e9", "gain": "7500"}, {"cost": "3e10", "gain": "30000"},
+        {"cost": "6e11", "gain": "120000"}, {"cost": "3e13", "gain": "500000"}, {"cost": "5e15", "gain": "1.6e6"},
+        {"cost": "1e18", "gain": "6e6"}, {"cost": "2.5e20", "gain": "2.5e7"}, {"cost": "7e22", "gain": "1e8"},
+        {"cost": "2e25", "gain": "4.5e8"}
+      ]
+    },
+    {
+      "tier": "superPrestige",
+      "image": "images/button4.png",
+      "buttons": [
+        {"cost": "2500", "gain": "2"}, {"cost": "12000", "gain": "5"}, {"cost": "55000", "gain": "14"},
+        {"cost": "350000", "gain": "40"}, {"cost": "2.5e6", "gain": "140"}, {"cost": "5e7", "gain": "400"},
+        {"cost": "1e9", "gain": "1200"}, {"cost": "3e10", "gain": "6000"}, {"cost": "1e12", "gain": "24000"},
+        {"cost": "4.5e13", "gain": "110000"}
+      ]
+    },
+    {
+      "tier": "ascension",
+      "image": "images/button5.png",
+      "buttons": [
+        {"cost": "2500", "gain": "2"}, {"cost": "12000", "gain": "5"}, {"cost": "60000", "gain": "14"},
+        {"cost": "400000", "gain": "40"}, {"cost": "2.5e6", "gain": "150"}
+      ]
+    }
+  ]
+}

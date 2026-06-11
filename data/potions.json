@@ -1,0 +1,11 @@
+{
+  "durationSeconds": 300,
+  "multiplier": 2,
+  "items": [
+    {"id": 0, "name": "Money potion", "image": "images/potion1.png", "resource": "money"},
+    {"id": 1, "name": "Multi potion", "image": "images/potion2.png", "resource": "multi"},
+    {"id": 2, "name": "Prestige potion", "image": "images/potion3.png", "resource": "prestige"},
+    {"id": 3, "name": "Power potion", "image": "images/potion4.png", "resource": "power"},
+    {"id": 4, "name": "Super prestige potion", "image": "images/potion5.png", "resource": "superPrestige"}
+  ]
+}

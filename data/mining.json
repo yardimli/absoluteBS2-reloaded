@@ -1,0 +1,18 @@
+{
+  "unlockWorld": 2,
+  "initialMinerCost": "1e30",
+  "minerCostBase": "1e5",
+  "baseIntervalSeconds": 60,
+  "maxEffectiveMiners": 120,
+  "moneyBoostOre": "stone",
+  "moneyBoostExponent": 0.5,
+  "ores": [
+    {"id": "stone", "name": "Stone", "color": "#aaa", "rollChance": 0.5, "amountFrom": "iron"},
+    {"id": "iron", "name": "Iron", "color": "#db9", "rollChance": 0.25, "amountFrom": "gold"},
+    {"id": "gold", "name": "Gold", "color": "#fb0", "rollChance": 0.125, "amountFrom": "sapphire"},
+    {"id": "sapphire", "name": "Sapphire", "color": "#00f", "rollChance": 0.0625, "amountFrom": "emerald"},
+    {"id": "emerald", "name": "Emerald", "color": "#0f0", "rollChance": 0.03125, "amountFrom": "ruby"},
+    {"id": "ruby", "name": "Ruby", "color": "#f00", "rollChance": 0.015625, "amountFrom": "diamond"},
+    {"id": "diamond", "name": "Diamond", "color": "#8ff", "rollChance": 0.015625, "amountFrom": null}
+  ]
+}

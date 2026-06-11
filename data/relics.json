@@ -1,0 +1,12 @@
+{
+  "items": [
+    {"id": 0, "name": "Magic dice", "image": "images/relic1.png", "resource": "money", "bonus": 0.2},
+    {"id": 1, "name": "Ruby crown", "image": "images/relic2.png", "resource": "multi", "bonus": 0.3},
+    {"id": 2, "name": "Tome of finances", "image": "images/relic3.png", "resource": "money", "bonus": 0.75},
+    {"id": 3, "name": "Tome of multi", "image": "images/relic4.png", "resource": "multi", "bonus": 0.75},
+    {"id": 4, "name": "Shiny screw", "image": "images/relic5.png", "resource": "multi", "bonus": 0.6},
+    {"id": 5, "name": "Golden key", "image": "images/relic6.png", "resource": "money", "bonus": 1},
+    {"id": 6, "name": "Tome of prestige", "image": "images/relic7.png", "resource": "prestige", "bonus": 0.75},
+    {"id": 7, "name": "Tome of power", "image": "images/relic8.png", "resource": "power", "bonus": 0.75}
+  ]
+}

@@ -82,32 +82,26 @@ button:hover {
 }
 
 .button1 {
-	background-image: url('../images/button1.png');
 	color: #400;
 }
 
 .button2 {
-	background-image: url('../images/button2.png');
 	color: #206;
 }
 
 .button3 {
-	background-image: url('../images/button3.png');
 	color: #440;
 }
 
 .button4 {
-	background-image: url('../images/button4.png');
 	color: #046;
 }
 
 .button5 {
-	background-image: url('../images/button5.png');
 	color: #333;
 }
 
 .button6 {
-	background-image: url('../images/button6.png');
 	color: #620;
 }
 
@@ -366,6 +360,7 @@ button:hover {
 #itemScreenName {
 	text-align: center;
 	color: white;
+	white-space: pre-line;
 }
 
 #itemScreenInfoText {
@@ -386,6 +381,22 @@ button:hover {
 	color: white;
 	font-size: 33px;
 	margin-top: 8px;
+}
+
+.itemBox {
+	display: inline-block;
+	position: relative;
+	width: 128px;
+	height: 160px;
+	margin: 6px 0 0 8px;
+	border: 6px solid #222;
+	cursor: pointer;
+	background-color: #888;
+	background-image: url('../images/halftoneDots.png');
+}
+
+.worldSection + .worldSection {
+	margin-top: 54px;
 }
 
 #worldPurchaseScreen {
