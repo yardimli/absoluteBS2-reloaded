@@ -89,9 +89,12 @@
 	<div id="itemScreen" class="modalShell">
 		<div class="glass modalPanel itemModal">
 			<div class="modalHeading">
-				<div>
-					<span class="eyebrow">Collection</span>
-					<h1 id="itemScreenTitle">Crates</h1>
+				<div class="modalTitleGroup">
+					<img id="itemScreenHeadingIcon" class="modalHeadingIcon" src="images/modern/nav-crates.png" alt="">
+					<div>
+						<span class="eyebrow">Collection</span>
+						<h1 id="itemScreenTitle">Crates</h1>
+					</div>
 				</div>
 				<button class="circleButton" data-action="close-items" aria-label="Close">×</button>
 			</div>
@@ -122,23 +125,28 @@
 	<div id="miningScreen" class="modalShell">
 		<div class="glass modalPanel miningModal">
 			<div class="modalHeading">
-				<div>
-					<span class="eyebrow">Automated extraction</span>
-					<h1>Mining</h1>
+				<div class="modalTitleGroup">
+					<img class="modalHeadingIcon" src="images/modern/nav-mining.png" alt="">
+					<div>
+						<span class="eyebrow">Automated extraction</span>
+						<h1>Mining</h1>
+					</div>
 				</div>
 				<button class="circleButton" data-action="close-mining" aria-label="Close">×</button>
 			</div>
-			<p>Miners automatically discover ores. Higher ores increase the amount of the ore beneath them, while Stone multiplies Money gain.</p>
-			<div class="miningMetrics">
-				<div><span>Money boost</span><strong>×<span id="miningBoost">1.00</span></strong></div>
-				<div><span>Miners</span><strong id="miners">0</strong></div>
-				<div><span>Next ore</span><strong id="miningCooldown">00:00.00</strong></div>
+			<div class="modalContent miningModalContent">
+				<p>Miners automatically discover ores. Higher ores increase the amount of the ore beneath them, while Stone multiplies Money gain.</p>
+				<div class="miningMetrics">
+					<div><span>Money boost</span><strong>×<span id="miningBoost">1.00</span></strong></div>
+					<div><span>Miners</span><strong id="miners">0</strong></div>
+					<div><span>Next ore</span><strong id="miningCooldown">00:00.00</strong></div>
+				</div>
+				<button id="minerPurchaseButton" class="primaryAction" data-action="purchase-miner">
+					Buy a miner
+					<small id="minerPurchaseCost">Costs $1.00e30</small>
+				</button>
+				<div id="miningResourceList" class="oreGrid"></div>
 			</div>
-			<button id="minerPurchaseButton" class="primaryAction" data-action="purchase-miner">
-				Buy a miner
-				<small id="minerPurchaseCost">Costs $1.00e30</small>
-			</button>
-			<div id="miningResourceList" class="oreGrid"></div>
 		</div>
 	</div>
 
@@ -160,9 +168,12 @@
 	<div id="resourceBreakdownScreen" class="modalShell">
 		<div class="glass modalPanel resourceBreakdownPanel">
 			<div class="modalHeading">
-				<div>
-					<span class="eyebrow">Resource breakdown</span>
-					<h1 id="resourceBreakdownTitle">Money</h1>
+				<div class="modalTitleGroup">
+					<img class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
+					<div>
+						<span class="eyebrow">Resource breakdown</span>
+						<h1 id="resourceBreakdownTitle">Money</h1>
+					</div>
 				</div>
 				<button class="circleButton" data-action="close-resource-breakdown" aria-label="Close">X</button>
 			</div>
@@ -172,40 +183,50 @@
 
 	<div id="helpScreenOverlay" class="modalBackdrop" data-action="hide-help"></div>
 	<div id="helpScreen" class="glass helpPanel">
-		<button class="circleButton modalClose" data-action="hide-help" aria-label="Close">×</button>
-		<span class="eyebrow">Game guide</span>
-		<h1>How the resource chain works</h1>
-		<p><strong>Multi</strong> is your base Money per second. Prestige multiplies Multi button rewards, Power multiplies Prestige rewards, Super Prestige multiplies Power rewards, Ascension multiplies Super Prestige rewards, and Infernal multiplies Ascension rewards.</p>
-		<div class="helpChain">
-			<span>Money</span><b>→</b><span>Multi</span><b>→</b><span>Prestige</span><b>→</b><span>Power</span><b>→</b><span>Super Prestige</span><b>→</b><span>Ascension</span><b>→</b><span>Infernal</span>
+		<div class="helpHeader">
+			<div>
+				<span class="eyebrow">Game guide</span>
+				<h1>How the resource chain works</h1>
+			</div>
+			<button class="circleButton" data-action="hide-help" aria-label="Close">×</button>
 		</div>
-		<h2>Money income</h2>
-		<p><code>Multi × Money bonuses × (sqrt(Stone) + 1)</code>. Relics are permanent, potions last five minutes, and Stone comes from Mining.</p>
-		<h2>Resets</h2>
-		<p>Buying Prestige or any higher tier resets every resource below the purchased tier. XP, levels, worlds, miners, ores, crates, relics, and potions remain.</p>
-		<h2>Collections</h2>
-		<p>Leveling awards Basic crates through level 99. Unlocking Worlds 2 and 3 awards Advanced crates. Modern crates contain permanent relics or temporary potions.</p>
-		<h2>Mining</h2>
-		<p>Mining unlocks in World 2. The timer runs at <code>60 ÷ miners</code> seconds, capped at 120 effective miners. Ores progress from Stone through Diamond.</p>
+		<div class="helpBody">
+			<p><strong>Multi</strong> is your base Money per second. Prestige multiplies Multi button rewards, Power multiplies Prestige rewards, Super Prestige multiplies Power rewards, Ascension multiplies Super Prestige rewards, and Infernal multiplies Ascension rewards.</p>
+			<div class="helpChain">
+				<span>Money</span><b>→</b><span>Multi</span><b>→</b><span>Prestige</span><b>→</b><span>Power</span><b>→</b><span>Super Prestige</span><b>→</b><span>Ascension</span><b>→</b><span>Infernal</span>
+			</div>
+			<h2>Money income</h2>
+			<p><code>Multi × Money bonuses × (sqrt(Stone) + 1)</code>. Relics are permanent, potions last five minutes, and Stone comes from Mining.</p>
+			<h2>Resets</h2>
+			<p>Buying Prestige or any higher tier resets every resource below the purchased tier. XP, levels, worlds, miners, ores, crates, relics, and potions remain.</p>
+			<h2>Collections</h2>
+			<p>Leveling awards Basic crates through level 99. Unlocking Worlds 2 and 3 awards Advanced crates. Modern crates contain permanent relics or temporary potions.</p>
+			<h2>Mining</h2>
+			<p>Mining unlocks in World 2. The timer runs at <code>60 ÷ miners</code> seconds, capped at 120 effective miners. Ores progress from Stone through Diamond.</p>
+		</div>
 	</div>
 
 	<template id="modern-help-content-template">
-		<button class="circleButton modalClose" data-action="hide-help" aria-label="Close">X</button>
-		<span class="eyebrow">Game guide</span>
-		<h1>How to Play</h1>
-
-		<h2>Buttons &amp; Multipliers <img src="images/modern/button-1.png" class="helpIcon" alt="Button"></h2>
-		<p>Your resources form a chain. A resource is spent on buttons that award the next resource, and owning a higher resource increases how much of the resource immediately below it those buttons award.</p>
-		<table class="helpTable">
+		<div class="helpHeader">
+			<div>
+				<span class="eyebrow">Game guide</span>
+				<h1>How to Play</h1>
+			</div>
+			<button class="circleButton" data-action="hide-help" aria-label="Close">X</button>
+		</div>
+		<div class="helpBody">
+			<h2>Buttons &amp; Multipliers <img src="images/modern/button-1.png" class="helpIcon" alt="Button"></h2>
+			<p>Your resources form a chain. A resource is spent on buttons that award the next resource, and owning a higher resource increases how much of the resource immediately below it those buttons award.</p>
+			<table class="helpTable">
 			<thead><tr><th>Resource</th><th>What it does</th><th>What increases it</th></tr></thead>
 			<tbody>
 				<tr><td><span style="color:#5dff73">Money</span></td><td>Money is generated automatically. Your base income is your current Multi every second, before relic, potion, and Stone bonuses. Spend Money on Multi buttons.</td><td>Multi, Money relics, Money potions, and Stone.</td></tr>
-				<tr><td><span style="color:#ff4567">Multi</span></td><td>Every point of Multi adds directly to your base Money per second. Spend Multi on Prestige buttons.</td><td>Each Multi button's listed gain is multiplied by <code>Prestige + 1</code>, then by Multi relic and potion bonuses.</td></tr>
-				<tr><td><span style="color:#b36aff">Prestige</span></td><td>Prestige makes Multi buttons award more Multi. Spend Prestige on Power buttons.</td><td>Each Prestige button's listed gain is multiplied by <code>Power + 1</code>, then by Prestige relic and potion bonuses.</td></tr>
-				<tr><td><span style="color:#ffe24d">Power</span></td><td>Power makes Prestige buttons award more Prestige. Spend Power on Super Prestige buttons in World 2.</td><td>Each Power button's listed gain is multiplied by <code>Super Prestige + 1</code>, then by Power relic and potion bonuses.</td></tr>
-				<tr><td><span style="color:#59dcff">Super Prestige</span></td><td>Super Prestige makes Power buttons award more Power. Spend it on Ascension buttons in World 2.</td><td>Each Super Prestige button's listed gain is multiplied by <code>Ascension + 1</code>, then by Super Prestige potion bonuses.</td></tr>
-				<tr><td>Ascension</td><td>Ascension makes Super Prestige buttons award more Super Prestige. Spend it on Infernal buttons in World 3.</td><td>Each Ascension button's listed gain is multiplied by <code>Infernal + 1</code>.</td></tr>
-				<tr><td><span style="color:#ff764d">Infernal</span></td><td>Infernal makes Ascension buttons award more Ascension. It is currently the highest resource tier.</td><td>Infernal buttons award their listed amount; there is currently no higher resource multiplying their gain.</td></tr>
+				<tr><td><span style="color:#ff4567">Multi</span><img src="images/modern/button-1.png" class="helpSampleButton" alt="Multi button"></td><td>Every point of Multi adds directly to your base Money per second. Spend Multi on Prestige buttons.</td><td>Each Multi button's listed gain is multiplied by <code>Prestige + 1</code>, then by Multi relic and potion bonuses.</td></tr>
+				<tr><td><span style="color:#b36aff">Prestige</span><img src="images/modern/button-2.png" class="helpSampleButton" alt="Prestige button"></td><td>Prestige makes Multi buttons award more Multi. Spend Prestige on Power buttons.</td><td>Each Prestige button's listed gain is multiplied by <code>Power + 1</code>, then by Prestige relic and potion bonuses.</td></tr>
+				<tr><td><span style="color:#ffe24d">Power</span><img src="images/modern/button-3.png" class="helpSampleButton" alt="Power button"></td><td>Power makes Prestige buttons award more Prestige. Spend Power on Super Prestige buttons in World 2.</td><td>Each Power button's listed gain is multiplied by <code>Super Prestige + 1</code>, then by Power relic and potion bonuses.</td></tr>
+				<tr><td><span style="color:#59dcff">Super Prestige</span><img src="images/modern/button-4.png" class="helpSampleButton" alt="Super Prestige button"></td><td>Super Prestige makes Power buttons award more Power. Spend it on Ascension buttons in World 2.</td><td>Each Super Prestige button's listed gain is multiplied by <code>Ascension + 1</code>, then by Super Prestige potion bonuses.</td></tr>
+				<tr><td>Ascension<img src="images/modern/button-5.png" class="helpSampleButton" alt="Ascension button"></td><td>Ascension makes Super Prestige buttons award more Super Prestige. Spend it on Infernal buttons in World 3.</td><td>Each Ascension button's listed gain is multiplied by <code>Infernal + 1</code>.</td></tr>
+				<tr><td><span style="color:#ff764d">Infernal</span><img src="images/modern/button-6.png" class="helpSampleButton" alt="Infernal button"></td><td>Infernal makes Ascension buttons award more Ascension. It is currently the highest resource tier.</td><td>Infernal buttons award their listed amount; there is currently no higher resource multiplying their gain.</td></tr>
 			</tbody>
 		</table>
 		<p><strong>Money income:</strong> each second you gain approximately <code>Multi x Money bonuses x (sqrt(Stone) + 1)</code>. For example, 100 Multi with no other bonuses produces about $100 per second. A 2x Money potion raises that to $200 per second. If you also have 9 Stone, the Stone multiplier is 4x, raising it to $800 per second.</p>
@@ -254,8 +275,8 @@
 		<table class="helpTable">
 			<thead><tr><th>Crate</th><th>Possible contents</th></tr></thead>
 			<tbody>
-				<tr><td>Basic</td><td><strong>Relics:</strong> Magic dice, Ruby crown, Tome of finances, Tome of multi<br><strong>Potions:</strong> Money, Multi, Prestige, Power</td></tr>
-				<tr><td>Advanced</td><td><strong>Relics:</strong> Shiny screw, Golden key, Tome of prestige, Tome of power<br><strong>Potions:</strong> Prestige, Power, Super Prestige</td></tr>
+				<tr><td>Basic<img src="images/modern/crate-1.png" class="helpSampleButton" alt="Basic crate"></td><td><strong>Relics:</strong> Magic dice, Ruby crown, Tome of finances, Tome of multi<br><strong>Potions:</strong> Money, Multi, Prestige, Power</td></tr>
+				<tr><td>Advanced<img src="images/modern/crate-2.png" class="helpSampleButton" alt="Advanced crate"></td><td><strong>Relics:</strong> Shiny screw, Golden key, Tome of prestige, Tome of power<br><strong>Potions:</strong> Prestige, Power, Super Prestige</td></tr>
 			</tbody>
 		</table>
 
@@ -264,14 +285,14 @@
 		<table class="helpTable">
 			<thead><tr><th>Relic</th><th>Permanent effect per copy</th><th>Found in</th></tr></thead>
 			<tbody>
-				<tr><td>Magic dice</td><td>+20% Money gain</td><td>Basic</td></tr>
-				<tr><td>Ruby crown</td><td>+30% Multi gain</td><td>Basic</td></tr>
-				<tr><td>Tome of finances</td><td>+75% Money gain</td><td>Basic</td></tr>
-				<tr><td>Tome of multi</td><td>+75% Multi gain</td><td>Basic</td></tr>
-				<tr><td>Shiny screw</td><td>+60% Multi gain</td><td>Advanced</td></tr>
-				<tr><td>Golden key</td><td>+100% Money gain</td><td>Advanced</td></tr>
-				<tr><td>Tome of prestige</td><td>+75% Prestige gain</td><td>Advanced</td></tr>
-				<tr><td>Tome of power</td><td>+75% Power gain</td><td>Advanced</td></tr>
+				<tr><td>Magic dice<img src="images/modern/relic-1.png" class="helpSampleButton" alt="Magic dice relic"></td><td>+20% Money gain</td><td>Basic</td></tr>
+				<tr><td>Ruby crown<img src="images/modern/relic-2.png" class="helpSampleButton" alt="Ruby crown relic"></td><td>+30% Multi gain</td><td>Basic</td></tr>
+				<tr><td>Tome of finances<img src="images/modern/relic-3.png" class="helpSampleButton" alt="Tome of finances relic"></td><td>+75% Money gain</td><td>Basic</td></tr>
+				<tr><td>Tome of multi<img src="images/modern/relic-4.png" class="helpSampleButton" alt="Tome of multi relic"></td><td>+75% Multi gain</td><td>Basic</td></tr>
+				<tr><td>Shiny screw<img src="images/modern/relic-5.png" class="helpSampleButton" alt="Shiny screw relic"></td><td>+60% Multi gain</td><td>Advanced</td></tr>
+				<tr><td>Golden key<img src="images/modern/relic-6.png" class="helpSampleButton" alt="Golden key relic"></td><td>+100% Money gain</td><td>Advanced</td></tr>
+				<tr><td>Tome of prestige<img src="images/modern/relic-7.png" class="helpSampleButton" alt="Tome of prestige relic"></td><td>+75% Prestige gain</td><td>Advanced</td></tr>
+				<tr><td>Tome of power<img src="images/modern/relic-8.png" class="helpSampleButton" alt="Tome of power relic"></td><td>+75% Power gain</td><td>Advanced</td></tr>
 			</tbody>
 		</table>
 
@@ -280,11 +301,11 @@
 		<table class="helpTable">
 			<thead><tr><th>Potion</th><th>Effect for 5 minutes</th><th>Found in</th></tr></thead>
 			<tbody>
-				<tr><td>Money potion</td><td>2x Money gain</td><td>Basic</td></tr>
-				<tr><td>Multi potion</td><td>2x Multi gain</td><td>Basic</td></tr>
-				<tr><td>Prestige potion</td><td>2x Prestige gain</td><td>Basic and Advanced</td></tr>
-				<tr><td>Power potion</td><td>2x Power gain</td><td>Basic and Advanced</td></tr>
-				<tr><td>Super Prestige potion</td><td>2x Super Prestige gain</td><td>Advanced</td></tr>
+				<tr><td>Money potion<img src="images/modern/potion-1.png" class="helpSampleButton" alt="Money potion"></td><td>2x Money gain</td><td>Basic</td></tr>
+				<tr><td>Multi potion<img src="images/modern/potion-2.png" class="helpSampleButton" alt="Multi potion"></td><td>2x Multi gain</td><td>Basic</td></tr>
+				<tr><td>Prestige potion<img src="images/modern/potion-3.png" class="helpSampleButton" alt="Prestige potion"></td><td>2x Prestige gain</td><td>Basic and Advanced</td></tr>
+				<tr><td>Power potion<img src="images/modern/potion-4.png" class="helpSampleButton" alt="Power potion"></td><td>2x Power gain</td><td>Basic and Advanced</td></tr>
+				<tr><td>Super Prestige potion<img src="images/modern/potion-5.png" class="helpSampleButton" alt="Super Prestige potion"></td><td>2x Super Prestige gain</td><td>Advanced</td></tr>
 			</tbody>
 		</table>
 
@@ -294,16 +315,17 @@
 		<table class="helpTable">
 			<thead><tr><th>Ore rolled</th><th>Chance per roll</th><th>Amount gained</th></tr></thead>
 			<tbody>
-				<tr><td>Stone</td><td>50%</td><td>Iron + 1</td></tr>
-				<tr><td>Iron</td><td>25%</td><td>Gold + 1</td></tr>
-				<tr><td>Gold</td><td>12.5%</td><td>Sapphire + 1</td></tr>
-				<tr><td>Sapphire</td><td>6.25%</td><td>Emerald + 1</td></tr>
-				<tr><td>Emerald</td><td>3.125%</td><td>Ruby + 1</td></tr>
-				<tr><td>Ruby</td><td>1.5625%</td><td>Diamond + 1</td></tr>
-				<tr><td>Diamond</td><td>1.5625%</td><td>1</td></tr>
+				<tr><td>Stone<img src="images/modern/ore-stone.png" class="helpSampleButton" alt="Stone ore"></td><td>50%</td><td>Iron + 1</td></tr>
+				<tr><td>Iron<img src="images/modern/ore-iron.png" class="helpSampleButton" alt="Iron ore"></td><td>25%</td><td>Gold + 1</td></tr>
+				<tr><td>Gold<img src="images/modern/ore-gold.png" class="helpSampleButton" alt="Gold ore"></td><td>12.5%</td><td>Sapphire + 1</td></tr>
+				<tr><td>Sapphire<img src="images/modern/ore-sapphire.png" class="helpSampleButton" alt="Sapphire ore"></td><td>6.25%</td><td>Emerald + 1</td></tr>
+				<tr><td>Emerald<img src="images/modern/ore-emerald.png" class="helpSampleButton" alt="Emerald ore"></td><td>3.125%</td><td>Ruby + 1</td></tr>
+				<tr><td>Ruby<img src="images/modern/ore-ruby.png" class="helpSampleButton" alt="Ruby ore"></td><td>1.5625%</td><td>Diamond + 1</td></tr>
+				<tr><td>Diamond<img src="images/modern/ore-diamond.png" class="helpSampleButton" alt="Diamond ore"></td><td>1.5625%</td><td>1</td></tr>
 			</tbody>
 		</table>
-		<p>Higher ores increase how much of the ore immediately below them you receive. For example, each Stone roll gives your current Iron amount plus 1 Stone, while each Ruby roll gives your current Diamond amount plus 1 Ruby. Stone boosts passive Money gain by <code>sqrt(Stone) + 1</code>; 9 Stone gives a 4x Money multiplier and 100 Stone gives an 11x multiplier.</p>
+			<p>Higher ores increase how much of the ore immediately below them you receive. For example, each Stone roll gives your current Iron amount plus 1 Stone, while each Ruby roll gives your current Diamond amount plus 1 Ruby. Stone boosts passive Money gain by <code>sqrt(Stone) + 1</code>; 9 Stone gives a 4x Money multiplier and 100 Stone gives an 11x multiplier.</p>
+		</div>
 	</template>
 
 	<template id="resource-row-template">
@@ -352,6 +374,7 @@
 
 	<template id="mining-resource-template">
 		<div class="oreCard">
+			<img data-field="ore-image" class="oreIcon" alt="">
 			<span data-field="ore-name"></span>
 			<strong data-field="ore-amount">0</strong>
 		</div>

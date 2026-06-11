@@ -9,6 +9,13 @@ const ITEM_TITLES = {
 	potions: "Potions"
 };
 
+const MODERN_HEADING_ICONS = {
+	crates: "images/modern/nav-crates.png",
+	patterns: "images/modern/pattern-1.png",
+	relics: "images/modern/nav-relics.png",
+	potions: "images/modern/nav-potions.png"
+};
+
 function weightedChoice(entries) {
 	let remaining = entries.reduce((total, entry) => total + entry.weight, 0);
 	for (const entry of entries) {
@@ -176,6 +183,11 @@ export function showItems(config, type) {
 	}
 	game.currentItemScreen = type;
 	document.getElementById("itemScreenTitle").textContent = ITEM_TITLES[type];
+	const headingIcon = document.getElementById("itemScreenHeadingIcon");
+	if (headingIcon) {
+		headingIcon.src = MODERN_HEADING_ICONS[type];
+		headingIcon.alt = ITEM_TITLES[type];
+	}
 	document.getElementById("itemScreen").style.display = "block";
 	renderItems(config, type);
 }

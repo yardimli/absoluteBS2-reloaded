@@ -7,12 +7,12 @@
   "moneyBoostOre": "stone",
   "moneyBoostExponent": 0.5,
   "ores": [
-    {"id": "stone", "name": "Stone", "color": "#aaa", "rollChance": 0.5, "amountFrom": "iron"},
-    {"id": "iron", "name": "Iron", "color": "#db9", "rollChance": 0.25, "amountFrom": "gold"},
-    {"id": "gold", "name": "Gold", "color": "#fb0", "rollChance": 0.125, "amountFrom": "sapphire"},
-    {"id": "sapphire", "name": "Sapphire", "color": "#00f", "rollChance": 0.0625, "amountFrom": "emerald"},
-    {"id": "emerald", "name": "Emerald", "color": "#0f0", "rollChance": 0.03125, "amountFrom": "ruby"},
-    {"id": "ruby", "name": "Ruby", "color": "#f00", "rollChance": 0.015625, "amountFrom": "diamond"},
-    {"id": "diamond", "name": "Diamond", "color": "#8ff", "rollChance": 0.015625, "amountFrom": null}
+    {"id": "stone", "name": "Stone", "color": "#aaa", "image": "images/modern/ore-stone.png", "rollChance": 0.5, "amountFrom": "iron"},
+    {"id": "iron", "name": "Iron", "color": "#db9", "image": "images/modern/ore-iron.png", "rollChance": 0.25, "amountFrom": "gold"},
+    {"id": "gold", "name": "Gold", "color": "#fb0", "image": "images/modern/ore-gold.png", "rollChance": 0.125, "amountFrom": "sapphire"},
+    {"id": "sapphire", "name": "Sapphire", "color": "#00f", "image": "images/modern/ore-sapphire.png", "rollChance": 0.0625, "amountFrom": "emerald"},
+    {"id": "emerald", "name": "Emerald", "color": "#0f0", "image": "images/modern/ore-emerald.png", "rollChance": 0.03125, "amountFrom": "ruby"},
+    {"id": "ruby", "name": "Ruby", "color": "#f00", "image": "images/modern/ore-ruby.png", "rollChance": 0.015625, "amountFrom": "diamond"},
+    {"id": "diamond", "name": "Diamond", "color": "#8ff", "image": "images/modern/ore-diamond.png", "rollChance": 0.015625, "amountFrom": null}
   ]
 }

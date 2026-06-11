@@ -6,6 +6,11 @@ export function initializeMiningView(config) {
 	list.replaceChildren();
 	for (const ore of config.mining.ores) {
 		const fragment = document.getElementById("mining-resource-template").content.cloneNode(true);
+		const image = fragment.querySelector('[data-field="ore-image"]');
+		if (image && ore.image) {
+			image.src = ore.image;
+			image.alt = ore.name;
+		}
 		const amount = fragment.querySelector('[data-field="ore-amount"]');
 		amount.dataset.oreId = ore.id;
 		const name = fragment.querySelector('[data-field="ore-name"]');

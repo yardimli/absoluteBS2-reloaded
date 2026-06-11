@@ -147,6 +147,10 @@ export function showTextPrompt(title, message, inputValue = "") {
 	});
 }
 
+export function closeMessageDialog() {
+	closeDialog(null);
+}
+
 export function initializeDialog() {
 	dialogElement("messageDialogConfirm").addEventListener("click", () => {
 		const field = dialogElement("messageDialogInput");

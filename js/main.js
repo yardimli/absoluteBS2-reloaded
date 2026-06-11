@@ -41,6 +41,7 @@ import {
 	updateMiningView
 } from "./mining.js";
 import {
+	closeMessageDialog,
 	closeWorldPurchase,
 	clearCrateNotificationBlink,
 	closeResourceBreakdown,
@@ -151,7 +152,20 @@ function activateButton(element) {
 	}
 }
 
+function closeBackdropModal(element) {
+	if (element.id === "itemScreen") closeItems();
+	else if (element.id === "miningScreen") closeMining();
+	else if (element.id === "resourceBreakdownScreen") closeResourceBreakdown();
+	else if (element.id === "worldPurchaseScreen") closeWorldPurchase();
+	else if (element.id === "messageDialog") closeMessageDialog();
+	else return false;
+	return true;
+}
+
 document.addEventListener("click", event => {
+	if (event.target.classList.contains("modalShell") || event.target.classList.contains("messageDialogShell")) {
+		if (closeBackdropModal(event.target)) return;
+	}
 	const card = event.target.closest(".itemBox");
 	if (card) {
 		activateItem(config, card);

@@ -15,6 +15,12 @@ function setOptionalField(root, field, value) {
 	if (element) element.textContent = value;
 }
 
+function setButtonAvailability(element, available) {
+	element.disabled = !available;
+	element.setAttribute("aria-disabled", available ? "false" : "true");
+	element.style.filter = available ? "none" : "brightness(70%)";
+}
+
 function resourceLabel(config, resourceId) {
 	const resource = config.resourceById[resourceId];
 	return resource.shortName || resource.name;
@@ -90,6 +96,7 @@ export function renderWorld(config) {
 		buttonsRoot().append(fragment);
 	}
 	document.getElementById("previousWorldButton").style.display = currentWorld === 1 ? "none" : "inline-block";
+	updateWorldButtons(config);
 }
 
 export function updateWorldButtons(config) {
@@ -102,14 +109,14 @@ export function updateWorldButtons(config) {
 		const section = world.sections.find(item => item.tier === element.dataset.tier);
 		const tier = config.tierById[element.dataset.tier];
 		const button = section.buttons[Number(element.dataset.buttonIndex)];
-		element.style.filter = canBuyButton(tier, button) ? "none" : "brightness(70%)";
+		setButtonAvailability(element, canBuyButton(tier, button));
 		setField(element, "gain-value", format(calculateButtonGain(config, tier, button)));
 	});
 	document.querySelectorAll('[data-action="free-resource"]').forEach(element => {
 		const section = config.worldById[currentWorld].sections.find(item => item.tier === element.dataset.tier);
 		const free = section.freeButton;
 		const available = game[free.requiredResource].gte(free.requiredAmount) && game[free.targetResource].lt(free.amount);
-		element.style.filter = available ? "none" : "brightness(70%)";
+		setButtonAvailability(element, available);
 	});
 }
 
@@ -147,7 +154,7 @@ export function updateAffectedButtons(config, purchasedTierId) {
 		const section = world.sections.find(item => item.tier === element.dataset.tier);
 		const tier = config.tierById[element.dataset.tier];
 		const button = section.buttons[Number(element.dataset.buttonIndex)];
-		element.style.filter = canBuyButton(tier, button) ? "none" : "brightness(70%)";
+		setButtonAvailability(element, canBuyButton(tier, button));
 		setField(element, "gain-value", format(calculateButtonGain(config, tier, button)));
 	});
 	document.querySelectorAll('[data-action="free-resource"]').forEach(element => {
@@ -156,7 +163,7 @@ export function updateAffectedButtons(config, purchasedTierId) {
 		const free = section?.freeButton;
 		if (!free) return;
 		const available = game[free.requiredResource].gte(free.requiredAmount) && game[free.targetResource].lt(free.amount);
-		element.style.filter = available ? "none" : "brightness(70%)";
+		setButtonAvailability(element, available);
 	});
 }
 
@@ -169,7 +176,7 @@ export function updatePassiveIncomeButtons(config) {
 		const section = world.sections.find(item => item.tier === "multi");
 		const tier = config.tierById.multi;
 		const button = section.buttons[Number(element.dataset.buttonIndex)];
-		element.style.filter = canBuyButton(tier, button) ? "none" : "brightness(70%)";
+		setButtonAvailability(element, canBuyButton(tier, button));
 	});
 }
 
