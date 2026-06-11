@@ -65,6 +65,7 @@ function reset() {
 		notifications: [true],
 		
 		worldsUnlocked: 1,
+		hasSeenHelp: false // Added flag to track if the user has seen the help screen
 	};
 	
 	currentWorld = 1;
@@ -116,6 +117,14 @@ function load() {
 	if (loadgame != null) {
 		loadGame(loadgame);
 	}
+	
+	// Show the help screen automatically on the first load
+	if (!game.hasSeenHelp) {
+		showHelpScreen();
+		game.hasSeenHelp = true;
+		save();
+	}
+	
 	let mainLoop = function() {
 		updateVisuals();
 		requestAnimationFrame(mainLoop);
@@ -1027,4 +1036,16 @@ function gainRandomMiningResource() {
 	else if (Math.random() > 0.5) {game.miningResources[4] = game.miningResources[4].add(game.miningResources[5].add(1));}
 	else if (Math.random() > 0.5) {game.miningResources[5] = game.miningResources[5].add(game.miningResources[6].add(1));}
 	else {game.miningResources[6] = game.miningResources[6].add(1);}
+}
+
+// Shows the help screen and overlay
+function showHelpScreen() {
+	$('#helpScreenOverlay').css('display', 'block');
+	$('#helpScreen').css('display', 'block');
+}
+
+// Hides the help screen and overlay
+function hideHelpScreen() {
+	$('#helpScreenOverlay').css('display', 'none');
+	$('#helpScreen').css('display', 'none');
 }

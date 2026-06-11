@@ -46,6 +46,9 @@
 		<button id="debug-btn-1000" class="debug-btn" style="padding: 0 4px; font-size: 16px; height: 26px;" onclick="setDebugMultiplier(1000)">1000x</button>
 	</div>
 	
+	<!-- Added Help Button -->
+	<button style="position: absolute; bottom: 72px; right: 4px; background-color: #9cd;" onclick="showHelpScreen()">Help</button>
+	
 	<button style="position: absolute; bottom: 38px; left: 4px" onclick="save()">Save</button>
 	<button style="position: absolute; bottom: 38px; left: 76px; background-color: #d99" onclick="hardReset()">Hard reset</button>
 	<button style="position: absolute; bottom: 4px; left: 4px" onclick="exportGame()">Export</button>
@@ -112,6 +115,134 @@
 		You have <span class="miningResource">0</span> <span style="color: #8ff">diamond</span>
 	</p>
 	<p class="closeButton" onclick="$('#miningScreen').css('display', 'none')">X</p>
+</div>
+
+<!-- Help Screen Overlay -->
+<div id="helpScreenOverlay" onclick="hideHelpScreen()"></div>
+
+<!-- Help Screen -->
+<div id="helpScreen">
+	<h1 style="color: #fff; text-align: center; margin-top: 0;">How to Play</h1>
+	<p class="closeButton" onclick="hideHelpScreen()">X</p>
+	<hr style="border-color: #444;">
+	
+	<h3>Buttons & Multipliers <img src="images/button1.png" style="height:24px; vertical-align:middle;" alt="Button"></h3>
+	<p>Click buttons to gain resources. Each tier of resource is used to buy the next tier's multiplier, which boosts the previous tier's gain.</p>
+	<ul>
+		<li><span style="color:#070">Money</span> buys <span style="color:#b00">Multi</span></li>
+		<li><span style="color:#b00">Multi</span> buys <span style="color:#60b">Prestige</span></li>
+		<li><span style="color:#60b">Prestige</span> buys <span style="color:#dd0">Power</span></li>
+		<li><span style="color:#dd0">Power</span> buys <span style="color:#0bf">Super Prestige</span> (Unlocked in World 2)</li>
+		<li><span style="color:#0bf">Super Prestige</span> buys <span style="color:white">Ascension</span> (Unlocked in World 2)</li>
+		<li><span style="color:white">Ascension</span> buys <span style="color:#f50">Infernal</span> (Unlocked in World 3)</li>
+	</ul>
+	
+	<h3>Worlds</h3>
+	<p>Unlock new worlds to access higher tier buttons and new features.</p>
+	<ul>
+		<li><b>World 1:</b> The starting world.</li>
+		<li><b>World 2:</b> Costs $1.00e20. Unlocks Super Prestige, Ascension, and Mining.</li>
+		<li><b>World 3:</b> Costs $1.00e50. Unlocks Infernal.</li>
+	</ul>
+
+	<h3>Levels and XP</h3>
+	<p>The bar at the bottom shows your progress toward the next level. Levels do not directly multiply your resource gains; they track your XP and award Basic crates. Higher-tier reset purchases give four times as much XP as the tier before them.</p>
+	<table class="helpTable">
+		<thead>
+			<tr><th>Reset purchase</th><th>XP gained</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Prestige</td><td>1 XP</td></tr>
+			<tr><td>Power</td><td>4 XP</td></tr>
+			<tr><td>Super Prestige</td><td>16 XP</td></tr>
+			<tr><td>Ascension</td><td>64 XP</td></tr>
+			<tr><td>Infernal</td><td>256 XP</td></tr>
+		</tbody>
+	</table>
+	<p>Each eligible purchase grants XP once, regardless of which button in that tier you buy. The debug multiplier also multiplies XP when it is enabled. The total XP needed for level <i>L</i> is <code>ceil(5 x (L - 1)<sup>5/3</sup>)</code>. For example, levels 2, 3, 4, 5, and 10 require 5, 16, 32, 51, and 195 total XP.</p>
+
+	<h3>Crates <img src="images/crate1.png" style="height:24px; vertical-align:middle;" alt="Crate"></h3>
+	<p>You receive one Basic crate for each level gained from level 2 through level 99. Advanced crates are awarded when you unlock World 2 and World 3. Open a crate from the Crates screen to receive one item.</p>
+	<p>Both crate types first roll the item category with the same odds: <b>11.11% Pattern</b>, <b>55.56% Relic</b>, or <b>33.33% Potion</b>. Items within a category use weighted chances, so items near the start of each list are more common.</p>
+	<table class="helpTable">
+		<thead>
+			<tr><th>Crate</th><th>Possible contents</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Basic</td>
+				<td>
+					<b>Patterns:</b> Stripes, Checkerboard, Zig-zag, Dots, Skulls, Binary<br>
+					<b>Relics:</b> Magic dice, Ruby crown, Tome of finances, Tome of multi<br>
+					<b>Potions:</b> Money, Multi, Prestige, Power
+				</td>
+			</tr>
+			<tr>
+				<td>Advanced</td>
+				<td>
+					<b>Patterns:</b> Stripes, Checkerboard, Zig-zag, Dots, Skulls, Binary, Stripes 2<br>
+					<b>Relics:</b> Shiny screw, Golden key, Tome of prestige, Tome of power<br>
+					<b>Potions:</b> Prestige, Power, Super Prestige
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>When a crate rolls a Pattern, it can also be a special color variant. Blue has a 10% chance; if blue is not rolled, red has a 10% chance, giving an overall 9% red chance and 81% normal chance.</p>
+
+	<h3>Relics <img src="images/relic1.png" style="height:24px; vertical-align:middle;" alt="Relic"></h3>
+	<p>Relics are permanent and work automatically. Duplicate copies increase that relic's bonus. Relics affecting the same resource combine multiplicatively.</p>
+	<table class="helpTable">
+		<thead>
+			<tr><th>Relic</th><th>Permanent effect per copy</th><th>Found in</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Magic dice</td><td>+20% Money gain</td><td>Basic</td></tr>
+			<tr><td>Ruby crown</td><td>+30% Multi gain</td><td>Basic</td></tr>
+			<tr><td>Tome of finances</td><td>+75% Money gain</td><td>Basic</td></tr>
+			<tr><td>Tome of multi</td><td>+75% Multi gain</td><td>Basic</td></tr>
+			<tr><td>Shiny screw</td><td>+60% Multi gain</td><td>Advanced</td></tr>
+			<tr><td>Golden key</td><td>+100% Money gain</td><td>Advanced</td></tr>
+			<tr><td>Tome of prestige</td><td>+75% Prestige gain</td><td>Advanced</td></tr>
+			<tr><td>Tome of power</td><td>+75% Power gain</td><td>Advanced</td></tr>
+		</tbody>
+	</table>
+
+	<h3>Potions <img src="images/potion1.png" style="height:24px; vertical-align:middle;" alt="Potion"></h3>
+	<p>Potions are consumed when activated and double one type of gain for 5 minutes. The active potion icons and their countdown timers appear beside the resource list. Using another potion of the same type while it is active resets its timer to 5 minutes; it does not stack above 2x.</p>
+	<table class="helpTable">
+		<thead>
+			<tr><th>Potion</th><th>Effect for 5 minutes</th><th>Found in</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Money potion</td><td>2x Money gain</td><td>Basic</td></tr>
+			<tr><td>Multi potion</td><td>2x Multi gain</td><td>Basic</td></tr>
+			<tr><td>Prestige potion</td><td>2x Prestige gain</td><td>Basic and Advanced</td></tr>
+			<tr><td>Power potion</td><td>2x Power gain</td><td>Basic and Advanced</td></tr>
+			<tr><td>Super Prestige potion</td><td>2x Super Prestige gain</td><td>Advanced</td></tr>
+		</tbody>
+	</table>
+
+	<h3>Patterns <img src="images/pattern1.png" style="height:24px; vertical-align:middle;" alt="Pattern"></h3>
+	<p>Cosmetic backgrounds to customize your game. Some have special color variations!</p>
+
+	<h3>Mining</h3>
+	<p>Mining unlocks in World 2. The first miner costs $1.00e30. Each purchased miner makes the next one 100,000 times more expensive. As soon as you own a miner, it automatically completes mining rolls.</p>
+	<p>The <b>Next ore in</b> timer counts down to the next roll. The time between rolls is <code>60 / miners</code> seconds, capped at 120 miners. This means 1 miner rolls every 60 seconds, 10 miners every 6 seconds, 60 miners every second, and 120 or more miners every 0.5 seconds. The first roll after buying your first miner happens immediately because the initial timer is zero.</p>
+	<table class="helpTable">
+		<thead>
+			<tr><th>Ore rolled</th><th>Chance per roll</th><th>Amount gained</th></tr>
+		</thead>
+		<tbody>
+			<tr><td><span style="color:#ccc">Stone</span></td><td>50%</td><td>Iron + 1</td></tr>
+			<tr><td><span style="color:#db9">Iron</span></td><td>25%</td><td>Gold + 1</td></tr>
+			<tr><td><span style="color:#fb0">Gold</span></td><td>12.5%</td><td>Sapphire + 1</td></tr>
+			<tr><td><span style="color:#66f">Sapphire</span></td><td>6.25%</td><td>Emerald + 1</td></tr>
+			<tr><td><span style="color:#0f0">Emerald</span></td><td>3.125%</td><td>Ruby + 1</td></tr>
+			<tr><td><span style="color:#f66">Ruby</span></td><td>1.5625%</td><td>Diamond + 1</td></tr>
+			<tr><td><span style="color:#cff">Diamond</span></td><td>1.5625%</td><td>1</td></tr>
+		</tbody>
+	</table>
+	<p>Higher ores increase how much of the ore immediately below them you receive. For example, each Stone roll gives your current Iron amount plus 1 Stone, while each Ruby roll gives your current Diamond amount plus 1 Ruby. Stone boosts passive Money gain by <code>sqrt(Stone) + 1</code>; 9 Stone gives a 4x Money multiplier and 100 Stone gives an 11x multiplier.</p>
 </div>
 
 <script src="js/jquery-3.6.0.min.js"></script>

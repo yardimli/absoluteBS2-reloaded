@@ -423,3 +423,97 @@ button:hover {
 	overflow-y: auto;
 	z-index: 3;
 }
+
+/* Help screen overlay to detect outside clicks */
+#helpScreenOverlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,0.5);
+	z-index: 4;
+}
+
+/* Help screen modal */
+#helpScreen {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 80vh;
+	height: 80vh;
+	max-width: 90vw;
+	background-color: #666;
+	padding: 4vh;
+	box-sizing: border-box;
+	display: none;
+	border: 6px solid #333;
+	border-radius: 16px;
+	overflow-y: auto;
+	z-index: 5;
+	color: #ddd;
+	font-size: 20px;
+}
+
+#helpScreen h3 {
+	color: #fff;
+	margin-top: 24px;
+	margin-bottom: 8px;
+	font-size: 28px;
+}
+
+#helpScreen ul {
+	margin-top: 0;
+	padding-left: 24px;
+}
+
+#helpScreen code {
+	color: #fff;
+	background-color: #444;
+	padding: 1px 5px;
+	border-radius: 4px;
+}
+
+.helpTable {
+	width: 100%;
+	margin: 10px 0 16px;
+	border-collapse: collapse;
+	font-size: 17px;
+}
+
+.helpTable th,
+.helpTable td {
+	padding: 8px;
+	border: 1px solid #888;
+	text-align: left;
+	vertical-align: top;
+}
+
+.helpTable th {
+	color: #fff;
+	background-color: #4d4d4d;
+}
+
+.helpTable tr:nth-child(even) {
+	background-color: rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 700px) {
+	#helpScreen {
+		width: 92vw;
+		height: 88vh;
+		padding: 24px;
+		font-size: 17px;
+	}
+
+	.helpTable {
+		font-size: 14px;
+	}
+
+	.helpTable th,
+	.helpTable td {
+		padding: 6px;
+	}
+}
