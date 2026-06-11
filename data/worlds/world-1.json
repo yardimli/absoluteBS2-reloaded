@@ -2,6 +2,7 @@
   "id": 1,
   "name": "Overworld",
   "background": "#ca9",
+  "modernBackground": "images/modern/world-1.png",
   "unlockCost": "0",
   "rewardCrate": null,
   "features": [],

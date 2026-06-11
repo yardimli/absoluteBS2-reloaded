@@ -17,6 +17,10 @@ function weightedChoice(entries) {
 	return entries[entries.length - 1].id;
 }
 
+function themedImage(item) {
+	return document.body.dataset.theme === "modern" && item.modernImage ? item.modernImage : item.image;
+}
+
 function weightedCategory(weights) {
 	return weightedChoice(Object.entries(weights).map(([id, weight]) => ({id, weight})));
 }
@@ -83,8 +87,12 @@ function patternPresentation(config, patternId, specialId) {
 	const pattern = config.patternById[patternId];
 	const special = config.patternSpecialById[specialId];
 	return {
-		image: special.imageSuffix ? pattern.colorImage : pattern.image,
-		filter: special.filter,
+		image: document.body.dataset.theme === "modern"
+			? pattern.modernImage
+			: (special.imageSuffix ? pattern.colorImage : pattern.image),
+		filter: document.body.dataset.theme === "modern" && specialId
+			? `hue-rotate(${specialId === 1 ? 300 : 170}deg)`
+			: special.filter,
 		name: `${special.namePrefix}${pattern.name}`,
 		rarity: pattern.id + 1 + special.rarityBonus
 	};
@@ -108,13 +116,13 @@ function itemCard(config, type, entry, index) {
 	card.dataset.itemIndex = index;
 	if (type === "crates") {
 		const item = config.crateById[entry[0]];
-		image.src = item.image;
+		image.src = themedImage(item);
 		image.alt = item.name;
 		amount.textContent = entry[1];
 		card.dataset.itemId = entry[0];
 	} else if (type === "patterns") {
 		const item = patternPresentation(config, entry[0], entry[1]);
-		image.src = item.image;
+		image.src = themedImage(item);
 		image.alt = item.name;
 		image.style.filter = item.filter;
 		amount.textContent = entry[2];
@@ -122,12 +130,12 @@ function itemCard(config, type, entry, index) {
 		card.dataset.specialId = entry[1];
 	} else if (type === "relics") {
 		const item = config.relicById[entry[0]];
-		image.src = item.image;
+		image.src = themedImage(item);
 		image.alt = item.name;
 		amount.textContent = entry[1];
 	} else {
 		const item = config.potionById[entry[0]];
-		image.src = item.image;
+		image.src = themedImage(item);
 		image.alt = item.name;
 		amount.textContent = entry[1];
 		card.dataset.itemId = entry[0];
@@ -182,23 +190,23 @@ export function showItemInfo(config, card) {
 	icon.style.filter = "none";
 	if (type === "crates") {
 		const item = config.crateById[entry[0]];
-		icon.style.backgroundImage = `url("${item.image}")`;
+		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		name.textContent = item.name;
 		info.textContent = "May contain a pattern, relic or potion.";
 	} else if (type === "patterns") {
 		const item = patternPresentation(config, entry[0], entry[1]);
-		icon.style.backgroundImage = `url("${item.image}")`;
+		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		icon.style.filter = item.filter;
 		name.textContent = `${item.name}\nPattern rarity: ${item.rarity}`;
 		info.textContent = "";
 	} else if (type === "relics") {
 		const item = config.relicById[entry[0]];
-		icon.style.backgroundImage = `url("${item.image}")`;
+		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		name.textContent = item.name;
 		info.textContent = `+${item.bonus * 100}% ${item.resource} gain (total: ${item.bonus * 100 * entry[1]}%)`;
 	} else {
 		const item = config.potionById[entry[0]];
-		icon.style.backgroundImage = `url("${item.image}")`;
+		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		name.textContent = item.name;
 		info.textContent = `Multiplies ${item.resource} gain by ${config.potions.multiplier} for ${config.potions.durationSeconds / 60} minutes.`;
 	}

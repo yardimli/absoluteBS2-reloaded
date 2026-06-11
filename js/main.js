@@ -113,6 +113,10 @@ function activateButton(element) {
 	else if (action === "hard-reset") hardReset();
 	else if (action === "export") exportGame();
 	else if (action === "import") importGame();
+	else if (action === "switch-theme") {
+		saveState();
+		location.href = element.dataset.target;
+	}
 	else if (action === "debug-multiplier") {
 		setDebugMultiplier(Number(element.dataset.value));
 		renderWorld(config);

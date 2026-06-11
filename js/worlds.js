@@ -13,11 +13,15 @@ function resourceLabel(config, resourceId) {
 	return resource.shortName || resource.name;
 }
 
+function isModernTheme() {
+	return document.body.dataset.theme === "modern";
+}
+
 function buildPurchaseButton(config, tier, section, button, buttonIndex) {
 	const fragment = document.getElementById("game-button-template").content.cloneNode(true);
 	const element = fragment.querySelector(".button");
 	element.classList.add(tier.className);
-	element.style.backgroundImage = `url("${section.image}")`;
+	if (!isModernTheme()) element.style.backgroundImage = `url("${section.image}")`;
 	element.dataset.tier = tier.id;
 	element.dataset.buttonIndex = buttonIndex;
 	setField(fragment, "gain-name", resourceLabel(config, tier.gainResource));
@@ -31,7 +35,7 @@ function buildFreeButton(config, tier, section, freeButton) {
 	const fragment = document.getElementById("free-button-template").content.cloneNode(true);
 	const element = fragment.querySelector(".button");
 	element.classList.add(tier.className);
-	element.style.backgroundImage = `url("${section.image}")`;
+	if (!isModernTheme()) element.style.backgroundImage = `url("${section.image}")`;
 	element.dataset.tier = tier.id;
 	element.dataset.targetResource = freeButton.targetResource;
 	setField(fragment, "free-amount", format(freeButton.amount));
@@ -44,6 +48,8 @@ function buildFreeButton(config, tier, section, freeButton) {
 export function renderWorld(config) {
 	const world = config.worldById[currentWorld];
 	document.body.style.backgroundColor = world.background;
+	document.body.dataset.world = world.id;
+	document.body.style.setProperty("--world-background", `url("${world.modernBackground || ""}")`);
 	document.getElementById("topBarWorldNumber").textContent = `World ${world.id}`;
 	document.getElementById("topBarWorldName").textContent = world.name;
 	buttonsRoot().replaceChildren();

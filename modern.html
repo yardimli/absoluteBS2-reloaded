@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#132239">
+	<title>Absolute BS 2 - Liquid Glass</title>
+	<link rel="icon" type="image/x-icon" href="images/icon2.png">
+	<link rel="stylesheet" href="css/modern.css">
+</head>
+<body data-theme="modern" data-world="1">
+	<div id="backgroundPattern" aria-hidden="true"></div>
+	<div class="worldAtmosphere" aria-hidden="true"></div>
+
+	<header class="glass topShell">
+		<div class="brandBlock">
+			<img src="images/icon.png" alt="" class="brandIcon">
+			<div>
+				<span class="eyebrow">Absolute Button Simulator 2</span>
+				<strong>Liquid Glass</strong>
+			</div>
+		</div>
+
+		<div class="worldSwitcher">
+			<button id="previousWorldButton" class="circleButton" data-action="previous-world" aria-label="Previous world">‹</button>
+			<div id="topBarWorld">
+				<span id="topBarWorldNumber">World 1</span>
+				<strong id="topBarWorldName">Overworld</strong>
+			</div>
+			<button class="circleButton" data-action="next-world" aria-label="Next world">›</button>
+		</div>
+
+		<nav class="primaryNav" aria-label="Game features">
+			<button data-action="show-items" data-item-type="crates">Crates <span id="crateNotification">+1</span></button>
+			<button data-action="show-items" data-item-type="patterns">Patterns</button>
+			<button data-action="show-items" data-item-type="relics">Relics</button>
+			<button data-action="show-items" data-item-type="potions">Potions</button>
+			<button id="miningNavButton" data-action="show-mining">Mining</button>
+		</nav>
+	</header>
+
+	<main class="gameLayout">
+		<section class="contentColumn">
+			<div class="heroGlass">
+				<div>
+					<span class="eyebrow">Current progression</span>
+					<h1>Shape the flow of every resource.</h1>
+					<p>Each tier amplifies the one below it. Build momentum, reset strategically, and climb into the next world.</p>
+				</div>
+				<div class="levelOrb">
+					<span>Level</span>
+					<strong id="level">1</strong>
+				</div>
+				<div id="XPBarBack"><div id="XPBar"></div></div>
+			</div>
+
+			<div id="buttons" class="worldSections" aria-live="polite"></div>
+		</section>
+
+		<aside id="resourcesScreen" class="glass resourceRail">
+			<div class="railHeading">
+				<div>
+					<span class="eyebrow">Live economy</span>
+					<h2>Resources</h2>
+				</div>
+				<button class="circleButton small" data-action="show-help" aria-label="Help">?</button>
+			</div>
+
+			<div id="resourceList" class="resourceList"></div>
+			<div id="activePotionIcons" class="activePotionIcons"></div>
+			<div id="potionTooltip" class="potionTooltip">Money potion: 00:00.00</div>
+
+			<div class="railActions">
+				<button data-action="save">Save</button>
+				<button data-action="export">Export</button>
+				<button data-action="import">Import</button>
+				<button data-action="switch-theme" data-target="index.html">Classic UI</button>
+				<button class="dangerAction" data-action="hard-reset">Hard reset</button>
+			</div>
+
+			<details class="debugPanel">
+				<summary>Debug multiplier</summary>
+				<div>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="1">1x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="10">10x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="100">100x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="1000">1000x</button>
+				</div>
+			</details>
+		</aside>
+	</main>
+
+	<div id="bottomBar" class="mobileLevelBar" aria-hidden="true"></div>
+
+	<div id="itemScreen" class="modalShell">
+		<div class="glass modalPanel itemModal">
+			<div class="modalHeading">
+				<div>
+					<span class="eyebrow">Collection</span>
+					<h1 id="itemScreenTitle">Patterns</h1>
+				</div>
+				<button class="circleButton" data-action="close-items" aria-label="Close">×</button>
+			</div>
+			<div class="itemModalLayout">
+				<div id="itemScreenInner" class="itemGrid"></div>
+				<aside id="itemScreenInfo" class="itemDetail">
+					<div id="itemScreenIcon"></div>
+					<h2 id="itemScreenName"></h2>
+					<p id="itemScreenInfoText"></p>
+				</aside>
+			</div>
+		</div>
+	</div>
+
+	<div id="worldPurchaseScreen" class="modalShell">
+		<div class="glass modalPanel centeredModal">
+			<button class="circleButton modalClose" data-action="close-world-purchase" aria-label="Close">×</button>
+			<span class="eyebrow">New destination</span>
+			<h1 id="worldPurchaseText">Unlock world 2</h1>
+			<p>Open a new environment, new resource tiers, and new systems.</p>
+			<button id="worldPurchaseButton" class="primaryAction" data-action="purchase-world">
+				<span id="worldPurchaseButtonLabel">Purchase world 2</span>
+				<small id="worldPurchaseButtonCost">Costs $1.00e20</small>
+			</button>
+		</div>
+	</div>
+
+	<div id="miningScreen" class="modalShell">
+		<div class="glass modalPanel miningModal">
+			<div class="modalHeading">
+				<div>
+					<span class="eyebrow">Automated extraction</span>
+					<h1>Mining</h1>
+				</div>
+				<button class="circleButton" data-action="close-mining" aria-label="Close">×</button>
+			</div>
+			<p>Miners automatically discover ores. Higher ores increase the amount of the ore beneath them, while Stone multiplies Money gain.</p>
+			<div class="miningMetrics">
+				<div><span>Money boost</span><strong>×<span id="miningBoost">1.00</span></strong></div>
+				<div><span>Miners</span><strong id="miners">0</strong></div>
+				<div><span>Next ore</span><strong id="miningCooldown">00:00.00</strong></div>
+			</div>
+			<button id="minerPurchaseButton" class="primaryAction" data-action="purchase-miner">
+				Buy a miner
+				<small id="minerPurchaseCost">Costs $1.00e30</small>
+			</button>
+			<div id="miningResourceList" class="oreGrid"></div>
+		</div>
+	</div>
+
+	<div id="helpScreenOverlay" class="modalBackdrop" data-action="hide-help"></div>
+	<div id="helpScreen" class="glass helpPanel">
+		<button class="circleButton modalClose" data-action="hide-help" aria-label="Close">×</button>
+		<span class="eyebrow">Game guide</span>
+		<h1>How the resource chain works</h1>
+		<p><strong>Multi</strong> is your base Money per second. Prestige multiplies Multi button rewards, Power multiplies Prestige rewards, Super Prestige multiplies Power rewards, Ascension multiplies Super Prestige rewards, and Infernal multiplies Ascension rewards.</p>
+		<div class="helpChain">
+			<span>Money</span><b>→</b><span>Multi</span><b>→</b><span>Prestige</span><b>→</b><span>Power</span><b>→</b><span>Super Prestige</span><b>→</b><span>Ascension</span><b>→</b><span>Infernal</span>
+		</div>
+		<h2>Money income</h2>
+		<p><code>Multi × Money bonuses × (sqrt(Stone) + 1)</code>. Relics are permanent, potions last five minutes, and Stone comes from Mining.</p>
+		<h2>Resets</h2>
+		<p>Buying Prestige or any higher tier resets every resource below the purchased tier. XP, levels, worlds, miners, ores, crates, patterns, relics, and potions remain.</p>
+		<h2>Collections</h2>
+		<p>Leveling awards Basic crates through level 99. Unlocking Worlds 2 and 3 awards Advanced crates. Crates contain patterns, permanent relics, or temporary potions.</p>
+		<h2>Mining</h2>
+		<p>Mining unlocks in World 2. The timer runs at <code>60 ÷ miners</code> seconds, capped at 120 effective miners. Ores progress from Stone through Diamond.</p>
+	</div>
+
+	<template id="resource-row-template">
+		<div class="resourceText">
+			<span class="resourceDot"></span>
+			<span data-field="resource-name"></span>
+			<strong data-field="resource-value">0</strong>
+		</div>
+	</template>
+
+	<template id="potion-icon-template">
+		<img class="potionIcon" alt="">
+	</template>
+
+	<template id="world-section-template">
+		<section class="worldSection">
+			<div class="sectionHeading">
+				<div>
+					<span class="eyebrow">Resource tier</span>
+					<h2><span data-field="section-name"></span></h2>
+				</div>
+				<strong data-field="section-resource">0</strong>
+			</div>
+			<div class="buttonGrid" data-field="section-buttons"></div>
+		</section>
+	</template>
+
+	<template id="game-button-template">
+		<button class="button" data-action="buy-button">
+			<span class="buttonGlow"></span>
+			<span class="gainLabel" data-field="gain-name"></span>
+			<strong>+<span data-field="gain-value"></span></strong>
+			<small><span data-field="cost-name"></span> cost</small>
+			<span class="costValue" data-field="cost-value"></span>
+		</button>
+	</template>
+
+	<template id="free-button-template">
+		<button class="button freeButton" data-action="free-resource">
+			<span class="buttonGlow"></span>
+			<span class="gainLabel">Recovery</span>
+			<strong>Get <span data-field="free-amount"></span></strong>
+			<span data-field="free-resource"></span>
+			<small>Requires <span data-field="required-amount"></span> <span data-field="required-resource"></span></small>
+		</button>
+	</template>
+
+	<template id="item-card-template">
+		<button class="itemBox">
+			<img class="item" alt="">
+			<span class="itemText">0</span>
+		</button>
+	</template>
+
+	<template id="mining-resource-template">
+		<div class="oreCard">
+			<span data-field="ore-name"></span>
+			<strong data-field="ore-amount">0</strong>
+		</div>
+	</template>
+
+	<script src="js/break_eternity.js"></script>
+	<script type="module" src="js/main.js"></script>
+</body>
+</html>

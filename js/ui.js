@@ -21,7 +21,7 @@ export function initializeStaticViews(config) {
 	for (const potion of config.potions.items) {
 		const fragment = document.getElementById("potion-icon-template").content.cloneNode(true);
 		const icon = fragment.querySelector(".potionIcon");
-		icon.src = potion.image;
+		icon.src = document.body.dataset.theme === "modern" && potion.modernImage ? potion.modernImage : potion.image;
 		icon.alt = potion.name;
 		icon.dataset.potionId = potion.id;
 		icon.style.top = `${86 + potion.id * 54}px`;
@@ -34,7 +34,10 @@ export function updateVisuals(config) {
 		const value = document.getElementById(resource.id);
 		if (value) value.textContent = format(game[resource.id]);
 		const row = document.querySelector(`[data-resource-id="${resource.id}"]`);
-		if (row) row.style.display = !resource.unlockWorld || game.worldsUnlocked >= resource.unlockWorld ? "inline" : "none";
+		if (row) {
+			const visibleDisplay = document.body.dataset.theme === "modern" ? "grid" : "inline";
+			row.style.display = !resource.unlockWorld || game.worldsUnlocked >= resource.unlockWorld ? visibleDisplay : "none";
+		}
 	}
 	document.getElementById("miningNavButton").style.display =
 		game.worldsUnlocked >= config.mining.unlockWorld ? "inline-block" : "none";

@@ -2,6 +2,7 @@
   "id": 3,
   "name": "Sky world",
   "background": "#9ce",
+  "modernBackground": "images/modern/world-3.png",
   "unlockCost": "1e50",
   "rewardCrate": "advanced",
   "features": [],

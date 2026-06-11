@@ -2,6 +2,7 @@
   "id": 2,
   "name": "Cave world",
   "background": "#888",
+  "modernBackground": "images/modern/world-2.png",
   "unlockCost": "1e20",
   "rewardCrate": "advanced",
   "features": ["mining"],
