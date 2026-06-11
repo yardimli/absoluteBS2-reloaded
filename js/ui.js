@@ -21,6 +21,80 @@ function totalUnopenedCrates() {
 	return game.crates.reduce((total, crate) => total + crate[1], 0);
 }
 
+function resourceLabel(config, resourceId) {
+	const resource = config.resourceById[resourceId];
+	return resource?.name || resourceId;
+}
+
+function relicRows(config, resourceId) {
+	return game.relics
+		.map(([id, amount]) => ({relic: config.relicById[id], amount}))
+		.filter(({relic}) => relic?.resource === resourceId)
+		.map(({relic, amount}) => {
+			const total = relic.bonus * amount;
+			return `<tr><td>${relic.name} x${amount}</td><td>+${format(new Decimal(total * 100), 2)}%</td><td>${format(new Decimal(1 + total), 2)}x</td></tr>`;
+		});
+}
+
+function potionRow(config, resourceId) {
+	const potion = config.potions.items.find(item => item.resource === resourceId);
+	if (!potion) return "";
+	const active = game.potionCooldowns[potion.id] > 0;
+	return `<tr><td>${potion.name}</td><td>${active ? "Active" : "Inactive"}</td><td>${active ? `${config.potions.multiplier}x for ${formatTime(game.potionCooldowns[potion.id])}` : "No current bonus"}</td></tr>`;
+}
+
+function buttonTierRows(config, resourceId) {
+	return config.progression.tiers
+		.filter(tier => tier.gainResource === resourceId || tier.costResource === resourceId || tier.parentResource === resourceId)
+		.map(tier => {
+			const effects = [];
+			if (tier.gainResource === resourceId) effects.push(`Gained from ${resourceLabel(config, tier.costResource)} buttons`);
+			if (tier.costResource === resourceId) effects.push(`Spent to buy ${resourceLabel(config, tier.gainResource)} buttons`);
+			if (tier.parentResource === resourceId) effects.push(`Multiplies ${resourceLabel(config, tier.gainResource)} button gains by ${format(game[resourceId].add(1))}x`);
+			return `<tr><td>${resourceLabel(config, tier.gainResource)}</td><td>${effects.join("<br>")}</td></tr>`;
+		});
+}
+
+function resourceBreakdownHtml(config, resourceId) {
+	const resource = config.resourceById[resourceId];
+	const resourceIndex = config.progression.resources.findIndex(item => item.id === resourceId);
+	const tier = config.progression.tiers.find(item => item.gainResource === resourceId);
+	const parent = tier?.parentResource;
+	const parentMultiplier = parent ? game[parent].add(1) : new Decimal(1);
+	const relicPotionMultiplier = game.relicPotionMultipliers[resourceIndex] || new Decimal(1);
+	const miningMultiplier = resourceId === "money"
+		? game.miningResources[config.oreIndexById[config.mining.moneyBoostOre]].pow(config.mining.moneyBoostExponent).add(1)
+		: new Decimal(1);
+	const moneyPerSecond = game.multi.mul(game.relicPotionMultipliers[0]).mul(
+		game.miningResources[config.oreIndexById[config.mining.moneyBoostOre]].pow(config.mining.moneyBoostExponent).add(1)
+	);
+	const rows = [
+		`<tr><td>Current ${resource.name}</td><td>${format(game[resourceId])}</td></tr>`,
+		parent ? `<tr><td>${resourceLabel(config, parent)} chain multiplier</td><td>${format(parentMultiplier)}x</td></tr>` : "",
+		`<tr><td>Relic and potion multiplier</td><td>${format(relicPotionMultiplier, 2)}x</td></tr>`,
+		resourceId === "money" ? `<tr><td>Stone mining multiplier</td><td>${format(miningMultiplier, 2)}x</td></tr>` : "",
+		resourceId === "money" ? `<tr><td>Estimated money per second</td><td>$${format(moneyPerSecond)}/s</td></tr>` : `<tr><td>Money translation</td><td>More ${resource.name} improves the chain shown below; Money itself is produced by Multi.</td></tr>`
+	].filter(Boolean).join("");
+	const relics = relicRows(config, resourceId);
+	const potion = potionRow(config, resourceId);
+	const tiers = buttonTierRows(config, resourceId);
+	return `
+		<p>${resource.name} is part of the resource chain. Higher resources multiply gains for the tier below them; relics and active potions multiply the affected resource type.</p>
+		<table class="breakdownTable"><tbody>${rows}</tbody></table>
+		<h2>Bonus Items</h2>
+		<table class="breakdownTable">
+			<thead><tr><th>Item</th><th>Bonus</th><th>Total multiplier</th></tr></thead>
+			<tbody>${relics.length ? relics.join("") : `<tr><td colspan="3">No relic bonuses for ${resource.name}.</td></tr>`}${potion}</tbody>
+		</table>
+		<h2>Chain Effects</h2>
+		<table class="breakdownTable">
+			<thead><tr><th>Tier</th><th>Effect</th></tr></thead>
+			<tbody>${tiers.length ? tiers.join("") : `<tr><td colspan="2">No button tier currently depends directly on ${resource.name}.</td></tr>`}</tbody>
+		</table>
+		${resourceId === "money" ? `<h2>Money Formula</h2><p><code>Multi (${format(game.multi)}) x money bonuses (${format(game.relicPotionMultipliers[0], 2)}x) x Stone (${format(miningMultiplier, 2)}x) = $${format(moneyPerSecond)}/s</code></p>` : ""}
+	`;
+}
+
 export function showDialog({
 	title,
 	message,
@@ -92,6 +166,19 @@ export function clearCrateNotificationBlink() {
 	const notification = document.getElementById("crateNotification");
 	if (notification) notification.classList.remove("blinking");
 }
+
+export function showResourceBreakdown(config, resourceId) {
+	const resource = config.resourceById[resourceId];
+	if (!resource) return;
+	document.getElementById("resourceBreakdownTitle").textContent = resource.name;
+	document.getElementById("resourceBreakdownContent").innerHTML = resourceBreakdownHtml(config, resourceId);
+	document.getElementById("resourceBreakdownScreen").style.display = "block";
+}
+
+export function closeResourceBreakdown() {
+	document.getElementById("resourceBreakdownScreen").style.display = "none";
+}
+
 
 export function initializeStaticViews(config) {
 	const modernHelpTemplate = document.getElementById("modern-help-content-template");

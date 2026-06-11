@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="theme-color" content="#132239">
 	<title>Absolute BS 2 - Liquid Glass</title>
-	<link rel="icon" type="image/x-icon" href="images/icon2.png">
+	<link rel="icon" type="image/png" href="images/brand-icon-32.png">
 	<link rel="stylesheet" href="css/modern.css">
 </head>
 <body data-theme="modern" data-world="1">
@@ -46,7 +46,7 @@
 
 		<aside id="resourcesScreen" class="glass resourceRail">
 			<div class="brandBlock">
-				<img src="images/icon.png" alt="" class="brandIcon">
+				<img src="images/brand-icon.png" alt="" class="brandIcon">
 				<div>
 					<span class="eyebrow">Absolute Button Simulator 2</span>
 					<strong>Liquid Glass</strong>
@@ -154,6 +154,19 @@
 				<button id="messageDialogCancel" type="button">Cancel</button>
 				<button id="messageDialogConfirm" class="primaryAction" type="button">OK</button>
 			</div>
+		</div>
+	</div>
+
+	<div id="resourceBreakdownScreen" class="modalShell">
+		<div class="glass modalPanel resourceBreakdownPanel">
+			<div class="modalHeading">
+				<div>
+					<span class="eyebrow">Resource breakdown</span>
+					<h1 id="resourceBreakdownTitle">Money</h1>
+				</div>
+				<button class="circleButton" data-action="close-resource-breakdown" aria-label="Close">X</button>
+			</div>
+			<div id="resourceBreakdownContent" class="resourceBreakdownContent"></div>
 		</div>
 	</div>
 
@@ -294,11 +307,11 @@
 	</template>
 
 	<template id="resource-row-template">
-		<div class="resourceText">
+		<button class="resourceText" data-action="show-resource-breakdown">
 			<span class="resourceDot"></span>
 			<span data-field="resource-name"></span>
 			<strong data-field="resource-value">0</strong>
-		</div>
+		</button>
 	</template>
 
 	<template id="potion-icon-template">

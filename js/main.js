@@ -43,6 +43,7 @@ import {
 import {
 	closeWorldPurchase,
 	clearCrateNotificationBlink,
+	closeResourceBreakdown,
 	hideHelp,
 	hidePotionTooltip,
 	initializeDialog,
@@ -51,6 +52,7 @@ import {
 	showHelp,
 	showMessage,
 	showPotionTooltip,
+	showResourceBreakdown,
 	showTextPrompt,
 	updateVisuals
 } from "./ui.js";
@@ -107,9 +109,19 @@ function activateButton(element) {
 	const action = element.dataset.action;
 	if (action === "buy-button") {
 		const button = findWorldButton(config, element.dataset.tier, Number(element.dataset.buttonIndex));
-		if (button && buyButton(config, element.dataset.tier, button)) updateAffectedButtons(config, element.dataset.tier);
+		if (button && buyButton(config, element.dataset.tier, button)) {
+			element.classList.remove("clicked");
+			void element.offsetWidth;
+			element.classList.add("clicked");
+			updateAffectedButtons(config, element.dataset.tier);
+		}
 	} else if (action === "free-resource") {
-		if (claimWorldFreeButton(config, element.dataset.tier)) updateAffectedButtons(config, element.dataset.tier);
+		if (claimWorldFreeButton(config, element.dataset.tier)) {
+			element.classList.remove("clicked");
+			void element.offsetWidth;
+			element.classList.add("clicked");
+			updateAffectedButtons(config, element.dataset.tier);
+		}
 	} else if (action === "show-items") {
 		if (element.dataset.itemType === "crates") clearCrateNotificationBlink();
 		showItems(config, element.dataset.itemType);
@@ -121,6 +133,8 @@ function activateButton(element) {
 	else if (action === "next-world") nextWorld(config);
 	else if (action === "purchase-world") purchaseWorld(config, (type, id) => addItem(config, type, id));
 	else if (action === "close-world-purchase") closeWorldPurchase();
+	else if (action === "show-resource-breakdown") showResourceBreakdown(config, element.dataset.resourceId);
+	else if (action === "close-resource-breakdown") closeResourceBreakdown();
 	else if (action === "show-help") showHelp();
 	else if (action === "hide-help") hideHelp();
 	else if (action === "save") saveState();

@@ -468,6 +468,19 @@ button,
 	filter: brightness(1.08) drop-shadow(0 18px 20px rgba(0, 0, 0, 0.3));
 }
 
+.button.clicked {
+	animation: buttonClickPulse 280ms ease;
+}
+
+@keyframes buttonClickPulse {
+	0% { transform: scale(1); }
+	45% {
+		transform: scale(0.92);
+		filter: brightness(1.35) drop-shadow(0 0 24px rgba(255, 255, 255, 0.55));
+	}
+	100% { transform: scale(1); }
+}
+
 .button span,
 .button strong,
 .button small {
@@ -514,14 +527,22 @@ button,
 }
 
 .resourceText {
+	width: 100%;
+	border: 1px solid rgba(255, 255, 255, 0.1);
 	display: grid;
 	grid-template-columns: 10px 1fr auto;
 	gap: 9px;
 	align-items: center;
 	padding: 10px 12px;
-	border: 1px solid rgba(255, 255, 255, 0.1);
 	border-radius: 16px;
 	background: rgba(255, 255, 255, 0.06);
+	text-align: left;
+	transition: 160ms ease;
+}
+
+.resourceText:hover {
+	background: rgba(255, 255, 255, 0.13);
+	transform: translateY(-1px);
 }
 
 .resourceDot {
@@ -696,6 +717,47 @@ button,
 	max-width: 600px;
 	margin-top: 10vh;
 	text-align: center;
+}
+
+.resourceBreakdownPanel {
+	width: min(860px, 100%);
+}
+
+.resourceBreakdownContent {
+	color: var(--muted);
+	line-height: 1.55;
+}
+
+.resourceBreakdownContent h2 {
+	color: var(--text);
+	margin: 22px 0 8px;
+}
+
+.breakdownTable {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 10px 0 16px;
+}
+
+.breakdownTable th,
+.breakdownTable td {
+	padding: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	text-align: left;
+	vertical-align: top;
+}
+
+.breakdownTable th {
+	color: var(--text);
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.breakdownTable code,
+.resourceBreakdownContent code {
+	padding: 3px 6px;
+	border-radius: 7px;
+	background: rgba(255, 255, 255, 0.1);
+	color: var(--text);
 }
 
 .modalClose {
