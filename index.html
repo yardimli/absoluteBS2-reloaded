@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Absolute BS 2</title>
+	<link rel="icon" type="image/x-icon" href="images/icon2.png">
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div id="backgroundPattern"></div>
+
+<!--Buttons-->
+<div id="buttons"></div>
+
+<!--Right-side resources tab-->
+<div id="resourcesScreen">
+	<img src="images/icon.png" id="logo">
+	<p id="logoText">Absolute Button<br>Simulator 2</p>
+	<hr style="margin-top: 66px; height: 3px; background-color: rgba(0,0,0,0.5); border: none">
+	<h1 style="float: right; color: #444">Resources</h1><br><br><br>
+	<p style="float: right; text-align: right">
+		<span class="resourceText" style="color: #070">Money: <span id="money">0</span></span><br>
+		<span class="resourceText" style="color: #b00">Multi: <span id="multi">0</span></span><br>
+		<span class="resourceText" style="color: #60b">Prestige: <span id="prestige">0</span></span><br>
+		<span class="resourceText" style="color: #dd0">Power: <span id="power">0</span></span><br>
+		<span class="resourceText" style="color: #0bf; display: none">Super prestige: <span id="superPrestige">0</span></span><br>
+		<span class="resourceText" style="color: white; display: none">Ascension: <span id="ascension">0</span></span><br>
+		<span class="resourceText" style="color: #f50; display: none">Infernal: <span id="infernal">0</span></span><br>
+	</p>
+	<img src="images/potion1.png" class="potionIcon" style="top: 86px" onmouseover="setPotionTooltip(1)" onmouseout="setPotionTooltip(0)">
+	<img src="images/potion2.png" class="potionIcon" style="top: 140px" onmouseover="setPotionTooltip(2)" onmouseout="setPotionTooltip(0)">
+	<img src="images/potion3.png" class="potionIcon" style="top: 194px" onmouseover="setPotionTooltip(3)" onmouseout="setPotionTooltip(0)">
+	<img src="images/potion4.png" class="potionIcon" style="top: 248px" onmouseover="setPotionTooltip(4)" onmouseout="setPotionTooltip(0)">
+	<img src="images/potion5.png" class="potionIcon" style="top: 302px" onmouseover="setPotionTooltip(5)" onmouseout="setPotionTooltip(0)">
+	<div id="potionTooltip">Money potion: 00:00.00</div>
+	<button style="position: absolute; bottom: 38px; left: 4px" onclick="save()">Save</button>
+	<button style="position: absolute; bottom: 38px; left: 76px; background-color: #d99" onclick="hardReset()">Hard reset</button>
+	<button style="position: absolute; bottom: 4px; left: 4px" onclick="exportGame()">Export</button>
+	<button style="position: absolute; bottom: 4px; left: 86px" onclick="importGame()">Import</button>
+	<p style="position: absolute; bottom: 4px; right: 4px; text-align: right">v0.2.2<br><a href="changelog.txt">Changelog</a></p>
+</div>
+
+<!--Top bar-->
+<div id="topBar">
+	<div class="topBarArrow" style="background-image: url('images/buttonLeft.png'); display: none" onclick="previousWorld()"></div>
+	<div id="topBarWorld">World 1<br>Overworld</div>
+	<div class="topBarArrow" style="background-image: url('images/buttonRight.png')" onclick="nextWorld()"></div>
+</div>
+<div style="position: fixed; top: 0; right: 0; width: 70vw; min-height: 108px; overflow-x: auto; overflow-y: hidden">
+	<div class="topButton" onclick="showItems(4)">Potions</div>
+	<div class="topButton" onclick="showItems(3)">Relics</div>
+	<div class="topButton" onclick="showItems(2)">Patterns</div>
+	<div class="topButton" onclick="showItems(1)">Crates<span id="crateNotification">+1</span></div>
+	<div class="topButton2" onclick="displayMiningScreen()">Mining</div>
+</div>
+
+<!--Bottom bar-->
+<div id="bottomBar">
+	<div id="bottomBarBack"></div>
+	<div id="XPBarBack"></div>
+	<div id="XPBar"></div>
+	<p style="font-size: 55px; line-height: 80px; margin: 0; margin-top: 10px">Level <span id="level">1</span></p>
+</div>
+
+<!--Items-->
+<div id="itemScreen">
+	<h1 id="itemScreenTitle" style="color: #ddd">Patterns</h1><br>
+	<div id="itemScreenInner" style="width: calc(100% - 310px)"></div>
+	<div id="itemScreenInfo">
+		<div id="itemScreenIcon"></div>
+		<h1 id="itemScreenName"></h1>
+		<p id="itemScreenInfoText"></p>
+	</div>
+	<p class="closeButton" onclick="showItems(0)">X</p>
+</div>
+
+<!--World purchase screen-->
+<div id="worldPurchaseScreen">
+	<p id="worldPurchaseText" style="font-size: 6vh; font-weight: bold; margin-bottom: 3vh">Unlock world 2</p>
+	<p style="font-size: 3vh; margin-bottom: 3vh">And get new buttons!</p>
+	<center><button id="worldPurchaseButton" onclick="purchaseWorld()" style="height: 60px; border: 3px solid black">Purchase world 2<br>Costs $1.00e22</button></center>
+	<p class="closeButton" onclick="$('#worldPurchaseScreen').css('display', 'none')">X</p>
+</div>
+
+<!--Mining-->
+<div id="miningScreen">
+	<h1 style="color: #dcb">Mining</h1><br>
+	<p style="color: #ddd; margin-bottom: 10px">Miners will automatically mine ores for you. Each ore multiplies the gain of the previous ore, and (stone ^ 0.5) multiplies money gain! (Currently *<span id="miningBoost">1.00</span>)</p>
+	<button id="minerPurchaseButton" onclick="purchaseMiner()" style="height: 60px; border: 3px solid black; margin-bottom: 10px">Buy a miner<br>Costs $1.00e35</button>
+	<p style="color: #ddd">
+		You have <span id="miners">0</span> miners<br><br>
+		Next ore in <span id="miningCooldown">00:00.00</span><br><br>
+		You have <span class="miningResource">0</span> <span style="color: #aaa">stone</span><br>
+		You have <span class="miningResource">0</span> <span style="color: #db9">iron</span><br>
+		You have <span class="miningResource">0</span> <span style="color: #fb0">gold</span><br>
+		You have <span class="miningResource">0</span> <span style="color: #00f">sapphire</span><br>
+		You have <span class="miningResource">0</span> <span style="color: #0f0">emerald</span><br>
+		You have <span class="miningResource">0</span> <span style="color: #f00">ruby</span><br>
+		You have <span class="miningResource">0</span> <span style="color: #8ff">diamond</span>
+	</p>
+	<p class="closeButton" onclick="$('#miningScreen').css('display', 'none')">X</p>
+</div>
+
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/break_eternity.js"></script>
+<script src="js/Mousetrap.js"></script>
+<script src="js/constantsv022.js"></script>
+<script src="js/scriptv0221.js"></script>
+</body>
+
+</html>
