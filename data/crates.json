@@ -1,5 +1,6 @@
 {
   "categoryWeights": {"pattern": 1, "relic": 5, "potion": 3},
+  "modernCategoryWeights": {"relic": 5, "potion": 3},
   "items": [
     {
       "id": 0,

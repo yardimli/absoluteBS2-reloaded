@@ -42,9 +42,13 @@ import {
 	closeWorldPurchase,
 	hideHelp,
 	hidePotionTooltip,
+	initializeDialog,
 	initializeStaticViews,
+	showConfirmation,
 	showHelp,
+	showMessage,
 	showPotionTooltip,
+	showTextPrompt,
 	updateVisuals
 } from "./ui.js";
 
@@ -53,6 +57,7 @@ const config = await loadConfig();
 loadState(config);
 initializeStaticViews(config);
 initializeMiningView(config);
+initializeDialog();
 calculateItemMultipliers(config);
 setPattern(config, game.currentPattern[0], game.currentPattern[1]);
 renderWorld(config);
@@ -63,8 +68,13 @@ if (!game.hasSeenHelp) {
 	saveState();
 }
 
-function hardReset() {
-	if (!confirm("Are you sure you want to reset? You will lose everything!")) return;
+async function hardReset() {
+	const confirmed = await showConfirmation(
+		"Hard reset",
+		"Are you sure? This permanently removes all game progress.",
+		"Reset everything"
+	);
+	if (!confirmed) return;
 	resetState(config);
 	saveState();
 	location.reload();
@@ -73,20 +83,20 @@ function hardReset() {
 async function exportGame() {
 	try {
 		await navigator.clipboard.writeText(exportState());
-		alert("Copied to clipboard!");
+		showMessage("Export complete", "Your save data was copied to the clipboard.");
 	} catch {
-		alert("Error copying to clipboard, try again.");
+		showMessage("Export failed", "The save could not be copied. Check browser clipboard permissions and try again.");
 	}
 }
 
-function importGame() {
-	const value = prompt("Input your save here:");
+async function importGame() {
+	const value = await showTextPrompt("Import save", "Paste your exported save data below.");
 	if (!value) return;
 	try {
 		importState(config, value);
 		location.reload();
 	} catch {
-		alert("Invalid input.");
+		showMessage("Import failed", "That save data is invalid or incomplete.");
 	}
 }
 

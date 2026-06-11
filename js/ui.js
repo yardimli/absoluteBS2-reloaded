@@ -3,8 +3,91 @@ import {format, formatTime} from "./format.js";
 import {levelToColour, levelToXp} from "./progression.js";
 
 let currentPotionTooltip = 0;
+let dialogResolver = null;
+
+function dialogElement(id) {
+	return document.getElementById(id);
+}
+
+function closeDialog(result) {
+	dialogElement("messageDialog").style.display = "none";
+	const resolver = dialogResolver;
+	dialogResolver = null;
+	if (resolver) resolver(result);
+}
+
+export function showDialog({
+	title,
+	message,
+	image = "",
+	imageAlt = "",
+	input = false,
+	inputValue = "",
+	confirmLabel = "OK",
+	cancelLabel = ""
+}) {
+	if (dialogResolver) closeDialog(null);
+	dialogElement("messageDialogTitle").textContent = title;
+	dialogElement("messageDialogText").textContent = message;
+	const artwork = dialogElement("messageDialogImage");
+	artwork.src = image;
+	artwork.alt = imageAlt;
+	artwork.style.display = image ? "block" : "none";
+	const field = dialogElement("messageDialogInput");
+	field.style.display = input ? "block" : "none";
+	field.value = inputValue;
+	const confirmButton = dialogElement("messageDialogConfirm");
+	confirmButton.textContent = confirmLabel;
+	const cancelButton = dialogElement("messageDialogCancel");
+	cancelButton.textContent = cancelLabel;
+	cancelButton.style.display = cancelLabel ? "inline-block" : "none";
+	dialogElement("messageDialog").style.display = "block";
+	if (input) field.focus();
+	else confirmButton.focus();
+	return new Promise(resolve => {
+		dialogResolver = resolve;
+	});
+}
+
+export function showMessage(title, message, image = "", imageAlt = "") {
+	return showDialog({title, message, image, imageAlt});
+}
+
+export function showConfirmation(title, message, confirmLabel = "Confirm") {
+	return showDialog({title, message, confirmLabel, cancelLabel: "Cancel"});
+}
+
+export function showTextPrompt(title, message, inputValue = "") {
+	return showDialog({
+		title,
+		message,
+		input: true,
+		inputValue,
+		confirmLabel: "Import",
+		cancelLabel: "Cancel"
+	});
+}
+
+export function initializeDialog() {
+	dialogElement("messageDialogConfirm").addEventListener("click", () => {
+		const field = dialogElement("messageDialogInput");
+		closeDialog(field.style.display === "none" ? true : field.value);
+	});
+	dialogElement("messageDialogCancel").addEventListener("click", () => closeDialog(null));
+	dialogElement("messageDialogClose").addEventListener("click", () => closeDialog(null));
+	dialogElement("messageDialogInput").addEventListener("keydown", event => {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			closeDialog(event.currentTarget.value);
+		}
+	});
+}
 
 export function initializeStaticViews(config) {
+	const modernHelpTemplate = document.getElementById("modern-help-content-template");
+	if (modernHelpTemplate) {
+		document.getElementById("helpScreen").replaceChildren(modernHelpTemplate.content.cloneNode(true));
+	}
 	const resourceList = document.getElementById("resourceList");
 	resourceList.replaceChildren();
 	for (const resource of config.progression.resources) {

@@ -1,5 +1,6 @@
 import {game} from "./state.js";
 import {format} from "./format.js";
+import {showConfirmation, showMessage} from "./ui.js";
 
 const ITEM_TITLES = {
 	crates: "Crates",
@@ -55,9 +56,12 @@ export function addItem(config, type, id, specialType = 0) {
 		else game.patterns.push([id, specialType, 1]);
 		const pattern = config.patternById[id];
 		const special = config.patternSpecialById[specialType];
-		alert(isModern()
-			? `Got the ${pattern.modernName} wallpaper!`
-			: `Got a ${special.namePrefix}${pattern.name} pattern!`);
+		showMessage(
+			"Pattern reward",
+			`${special.namePrefix}${pattern.name} is a cosmetic background pattern.`,
+			special.imageSuffix ? pattern.colorImage : pattern.image,
+			`${special.namePrefix}${pattern.name} pattern`
+		);
 		return;
 	}
 	if (type === "relic") {
@@ -65,13 +69,25 @@ export function addItem(config, type, id, specialType = 0) {
 		if (existing) existing[1]++;
 		else game.relics.push([id, 1]);
 		calculateItemMultipliers(config);
-		alert(`Got a ${config.relicById[id].name} relic!`);
+		const relic = config.relicById[id];
+		showMessage(
+			"Relic reward",
+			`${relic.name}\nPermanent effect per copy: +${relic.bonus * 100}% ${relic.resource} gain.`,
+			themedImage(relic),
+			relic.name
+		);
 		return;
 	}
 	const existing = findStack(game.potions, id);
 	if (existing) existing[1]++;
 	else game.potions.push([id, 1]);
-	alert(`Got a ${config.potionById[id].name}!`);
+	const potion = config.potionById[id];
+	showMessage(
+		"Potion reward",
+		`${potion.name}\nWhen activated, this doubles ${potion.resource} gain for ${config.potions.durationSeconds / 60} minutes.`,
+		themedImage(potion),
+		potion.name
+	);
 }
 
 function rollPatternSpecial(config) {
@@ -84,12 +100,9 @@ function rollPatternSpecial(config) {
 export function openCrate(config, crateId) {
 	const crate = config.crateById[crateId];
 	if (!crate || !removeStack(game.crates, crateId)) return;
-	const category = weightedCategory(config.crates.categoryWeights);
-	const entries = category === "pattern" && isModern()
-		? config.patterns.items
-			.filter(pattern => pattern.world <= game.worldsUnlocked)
-			.map(pattern => ({id: pattern.id, weight: pattern.modernWeight}))
-		: crate.contents[category];
+	const categoryWeights = isModern() ? config.crates.modernCategoryWeights : config.crates.categoryWeights;
+	const category = weightedCategory(categoryWeights);
+	const entries = crate.contents[category];
 	const itemId = weightedChoice(entries);
 	const special = category === "pattern" && !isModern() ? rollPatternSpecial(config) : 0;
 	addItem(config, category, itemId, special);
@@ -110,24 +123,13 @@ function patternPresentation(config, patternId, specialId) {
 }
 
 export function setPattern(config, patternNumber, specialId) {
+	if (isModern()) return;
 	const patternId = patternNumber - 1;
 	const presentation = patternPresentation(config, patternId, specialId);
 	const background = document.getElementById("backgroundPattern");
-	if (isModern()) {
-		if (presentation.world > game.worldsUnlocked) return;
-		game.currentPattern = [patternNumber, 0];
-		document.body.style.setProperty("--world-background", `url("${presentation.image}")`);
-		const worldBackground = document.getElementById("worldBackground");
-		if (worldBackground) {
-			worldBackground.style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 25, 0.02), rgba(4, 12, 25, 0.18)), url("${presentation.image}")`;
-		}
-		background.style.backgroundImage = "none";
-		background.style.filter = "none";
-	} else {
-		game.currentPattern = [patternNumber, specialId];
-		background.style.backgroundImage = `url("${presentation.image}")`;
-		background.style.filter = presentation.filter;
-	}
+	game.currentPattern = [patternNumber, specialId];
+	background.style.backgroundImage = `url("${presentation.image}")`;
+	background.style.filter = presentation.filter;
 }
 
 function itemCard(config, type, entry, index) {
@@ -173,9 +175,7 @@ export function showItems(config, type) {
 		return;
 	}
 	game.currentItemScreen = type;
-	document.getElementById("itemScreenTitle").textContent = type === "patterns" && isModern()
-		? "Wallpapers"
-		: ITEM_TITLES[type];
+	document.getElementById("itemScreenTitle").textContent = ITEM_TITLES[type];
 	document.getElementById("itemScreen").style.display = "block";
 	renderItems(config, type);
 }
@@ -220,13 +220,13 @@ export function showItemInfo(config, card) {
 		const item = config.crateById[entry[0]];
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		name.textContent = item.name;
-		info.textContent = "May contain a pattern, relic or potion.";
+		info.textContent = isModern() ? "Contains a permanent relic or temporary potion." : "May contain a pattern, relic or potion.";
 	} else if (type === "patterns") {
 		const item = patternPresentation(config, entry[0], entry[1]);
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		icon.style.filter = item.filter;
-		name.textContent = isModern() ? item.name : `${item.name}\nPattern rarity: ${item.rarity}`;
-		info.textContent = isModern() ? `World ${item.world} wallpaper. Select it to use it as the current background.` : "";
+		name.textContent = `${item.name}\nPattern rarity: ${item.rarity}`;
+		info.textContent = "";
 	} else if (type === "relics") {
 		const item = config.relicById[entry[0]];
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
@@ -246,8 +246,15 @@ export function hideItemInfo() {
 	document.getElementById("itemScreenInfoText").textContent = "";
 }
 
-export function activatePotion(config, potionId) {
-	if (game.potionCooldowns[potionId] > 0 && !confirm("This potion is already active. Use another and reset its timer?")) return;
+export async function activatePotion(config, potionId) {
+	if (game.potionCooldowns[potionId] > 0) {
+		const confirmed = await showConfirmation(
+			"Potion already active",
+			"Use another potion of this type and reset its timer to five minutes?",
+			"Use potion"
+		);
+		if (!confirmed) return;
+	}
 	if (!removeStack(game.potions, potionId)) return;
 	game.potionCooldowns[potionId] = config.potions.durationSeconds;
 	calculateItemMultipliers(config);

@@ -1,6 +1,7 @@
 import {currentWorld, game, setCurrentWorld} from "./state.js";
 import {calculateButtonGain, canBuyButton, claimFreeResource} from "./progression.js";
 import {format} from "./format.js";
+import {showMessage} from "./ui.js";
 
 const buttonsRoot = () => document.getElementById("buttons");
 let renderedWorldId = null;
@@ -157,7 +158,13 @@ export function purchaseWorld(config, addItem) {
 	if (world.rewardCrate) {
 		addItem("crate", config.crateByKey[world.rewardCrate].id);
 		game.cratesNotChecked++;
-		alert(`Got an advanced crate for unlocking world ${nextId}!`);
+		const crate = config.crateByKey[world.rewardCrate];
+		showMessage(
+			"World unlocked",
+			`World ${nextId} is now available.\nYou also received one ${crate.name}.`,
+			document.body.dataset.theme === "modern" ? crate.modernImage : crate.image,
+			crate.name
+		);
 	}
 	setCurrentWorld(nextId);
 	renderWorld(config);

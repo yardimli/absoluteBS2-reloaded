@@ -289,6 +289,20 @@
 	<p>Higher ores increase how much of the ore immediately below them you receive. For example, each Stone roll gives your current Iron amount plus 1 Stone, while each Ruby roll gives your current Diamond amount plus 1 Ruby. Stone boosts passive Money gain by <code>sqrt(Stone) + 1</code>; 9 Stone gives a 4x Money multiplier and 100 Stone gives an 11x multiplier.</p>
 </div>
 
+<div id="messageDialog" class="messageDialogShell" role="dialog" aria-modal="true" aria-labelledby="messageDialogTitle">
+	<div class="messageDialogPanel">
+		<button id="messageDialogClose" class="messageDialogClose" type="button" aria-label="Close">X</button>
+		<img id="messageDialogImage" class="messageDialogImage" alt="">
+		<h2 id="messageDialogTitle"></h2>
+		<p id="messageDialogText"></p>
+		<textarea id="messageDialogInput" class="messageDialogInput" rows="5"></textarea>
+		<div class="messageDialogActions">
+			<button id="messageDialogCancel" type="button">Cancel</button>
+			<button id="messageDialogConfirm" type="button">OK</button>
+		</div>
+	</div>
+</div>
+
 <template id="resource-row-template">
 	<span class="resourceText"><span data-field="resource-name"></span>: <span data-field="resource-value">0</span></span><br>
 </template>

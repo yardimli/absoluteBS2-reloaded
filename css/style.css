@@ -511,6 +511,64 @@ button:hover {
 	background-color: rgba(0, 0, 0, 0.12);
 }
 
+.messageDialogShell {
+	position: fixed;
+	inset: 0;
+	z-index: 20;
+	display: none;
+	padding: 24px;
+	background: rgba(0, 0, 0, 0.65);
+}
+
+.messageDialogPanel {
+	position: relative;
+	width: min(520px, 100%);
+	margin: 10vh auto 0;
+	padding: 30px;
+	border: 6px solid #333;
+	border-radius: 16px;
+	background: #666;
+	color: #fff;
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.messageDialogClose {
+	position: absolute;
+	top: 10px;
+	right: 12px;
+}
+
+.messageDialogImage {
+	display: none;
+	width: 180px;
+	height: 180px;
+	margin: 0 auto 16px;
+	object-fit: contain;
+	image-rendering: pixelated;
+}
+
+.messageDialogInput {
+	display: none;
+	width: 100%;
+	margin-top: 12px;
+	padding: 10px;
+	box-sizing: border-box;
+	resize: vertical;
+}
+
+.messageDialogActions {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 20px;
+}
+
+.messageDialogActions button {
+	min-width: 110px;
+	padding: 10px 16px;
+}
+
 @media (max-width: 700px) {
 	#helpScreen {
 		width: 92vw;
