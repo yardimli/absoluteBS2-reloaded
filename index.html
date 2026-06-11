@@ -116,15 +116,69 @@
 	<hr style="border-color: #444;">
 	
 	<h3>Buttons & Multipliers <img src="images/button1.png" style="height:24px; vertical-align:middle;" alt="Button"></h3>
-	<p>Click buttons to gain resources. Each tier of resource is used to buy the next tier's multiplier, which boosts the previous tier's gain.</p>
-	<ul>
-		<li><span style="color:#070">Money</span> buys <span style="color:#b00">Multi</span></li>
-		<li><span style="color:#b00">Multi</span> buys <span style="color:#60b">Prestige</span></li>
-		<li><span style="color:#60b">Prestige</span> buys <span style="color:#dd0">Power</span></li>
-		<li><span style="color:#dd0">Power</span> buys <span style="color:#0bf">Super Prestige</span> (Unlocked in World 2)</li>
-		<li><span style="color:#0bf">Super Prestige</span> buys <span style="color:white">Ascension</span> (Unlocked in World 2)</li>
-		<li><span style="color:white">Ascension</span> buys <span style="color:#f50">Infernal</span> (Unlocked in World 3)</li>
-	</ul>
+	<p>Your resources form a chain. A resource is spent on buttons that award the next resource, and owning a higher resource increases how much of the resource immediately below it those buttons award.</p>
+	<table class="helpTable">
+		<thead>
+			<tr><th>Resource</th><th>What it does</th><th>What increases it</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><span style="color:#070">Money</span></td>
+				<td>Money is generated automatically. Your base income is your current <span style="color:#b00">Multi</span> every second, before relic, potion, and Stone bonuses. Spend Money on Multi buttons.</td>
+				<td><span style="color:#b00">Multi</span>, Money relics, Money potions, and Stone.</td>
+			</tr>
+			<tr>
+				<td><span style="color:#b00">Multi</span></td>
+				<td>Every point of Multi adds directly to your base Money per second. Spend Multi on Prestige buttons.</td>
+				<td>Each Multi button's listed gain is multiplied by <code>Prestige + 1</code>, then by Multi relic and potion bonuses.</td>
+			</tr>
+			<tr>
+				<td><span style="color:#60b">Prestige</span></td>
+				<td>Prestige makes Multi buttons award more Multi. Spend Prestige on Power buttons.</td>
+				<td>Each Prestige button's listed gain is multiplied by <code>Power + 1</code>, then by Prestige relic and potion bonuses.</td>
+			</tr>
+			<tr>
+				<td><span style="color:#dd0">Power</span></td>
+				<td>Power makes Prestige buttons award more Prestige. Spend Power on Super Prestige buttons in World 2.</td>
+				<td>Each Power button's listed gain is multiplied by <code>Super Prestige + 1</code>, then by Power relic and potion bonuses.</td>
+			</tr>
+			<tr>
+				<td><span style="color:#0bf">Super Prestige</span></td>
+				<td>Super Prestige makes Power buttons award more Power. Spend it on Ascension buttons in World 2.</td>
+				<td>Each Super Prestige button's listed gain is multiplied by <code>Ascension + 1</code>, then by Super Prestige potion bonuses.</td>
+			</tr>
+			<tr>
+				<td><span style="color:white">Ascension</span></td>
+				<td>Ascension makes Super Prestige buttons award more Super Prestige. Spend it on Infernal buttons in World 3.</td>
+				<td>Each Ascension button's listed gain is multiplied by <code>Infernal + 1</code>.</td>
+			</tr>
+			<tr>
+				<td><span style="color:#f50">Infernal</span></td>
+				<td>Infernal makes Ascension buttons award more Ascension. It is currently the highest resource tier.</td>
+				<td>Infernal buttons award their listed amount; there is currently no higher resource multiplying their gain.</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p><b>Money income:</b> each second you gain approximately <code>Multi x Money bonuses x (sqrt(Stone) + 1)</code>. For example, 100 Multi with no other bonuses produces about $100 per second. A 2x Money potion raises that to $200 per second. If you also have 9 Stone, the Stone multiplier is 4x, raising it to $800 per second.</p>
+	<p><b>Example of the resource chain:</b> if a Multi button normally gives +80 Multi and you own 4 Prestige, it gives <code>80 x (4 + 1) = 400 Multi</code> before relics or potions. That new Multi then increases your Money income by 400 per second.</p>
+
+	<h3>Purchases and Resets</h3>
+	<p>Multi purchases only spend Money and do not reset anything. Buying Prestige or a higher resource resets all lower resources, but you keep the resource you bought and every resource above it.</p>
+	<table class="helpTable">
+		<thead>
+			<tr><th>Button purchased</th><th>Cost</th><th>Resources reset</th></tr>
+		</thead>
+		<tbody>
+			<tr><td><span style="color:#b00">Multi</span></td><td><span style="color:#070">Money</span></td><td>None</td></tr>
+			<tr><td><span style="color:#60b">Prestige</span></td><td><span style="color:#b00">Multi</span></td><td>Money returns to 0 and Multi returns to 1.</td></tr>
+			<tr><td><span style="color:#dd0">Power</span></td><td><span style="color:#60b">Prestige</span></td><td>Money, Multi, and Prestige.</td></tr>
+			<tr><td><span style="color:#0bf">Super Prestige</span></td><td><span style="color:#dd0">Power</span></td><td>Money through Power.</td></tr>
+			<tr><td><span style="color:white">Ascension</span></td><td><span style="color:#0bf">Super Prestige</span></td><td>Money through Super Prestige.</td></tr>
+			<tr><td><span style="color:#f50">Infernal</span></td><td><span style="color:white">Ascension</span></td><td>Money through Ascension.</td></tr>
+		</tbody>
+	</table>
+	<p>Relics, potions, ores, miners, patterns, XP, levels, crates, and unlocked worlds are not removed by these resource resets.</p>
 	
 	<h3>Worlds</h3>
 	<p>Unlock new worlds to access higher tier buttons and new features.</p>
