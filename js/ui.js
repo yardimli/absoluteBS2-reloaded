@@ -274,7 +274,8 @@ export function hidePotionTooltip() {
 
 export function showHelp() {
 	document.getElementById("helpScreenOverlay").style.display = "block";
-	document.getElementById("helpScreen").style.display = "block";
+	const helpScreen = document.getElementById("helpScreen");
+	helpScreen.style.display = helpScreen.classList.contains("helpPanel") ? "flex" : "block";
 }
 
 export function hideHelp() {

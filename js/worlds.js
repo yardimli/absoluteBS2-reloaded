@@ -26,8 +26,13 @@ function resourceLabel(config, resourceId) {
 	return resource.shortName || resource.name;
 }
 
+function stylesheetUrl(image) {
+	if (/^(?:[a-z]+:|\/)/i.test(image)) return image;
+	return image.startsWith("../") ? image : `../${image}`;
+}
+
 function setModernBackground(image) {
-	document.body.style.setProperty("--world-background", `url("${image}")`);
+	document.body.style.setProperty("--world-background", `url("${stylesheetUrl(image)}")`);
 	const background = document.getElementById("worldBackground");
 	if (background) background.style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 25, 0.02), rgba(4, 12, 25, 0.18)), url("${image}")`;
 }
