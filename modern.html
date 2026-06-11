@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="css/modern.css">
 </head>
 <body data-theme="modern" data-world="1">
+	<div id="worldBackground" aria-hidden="true"></div>
 	<div id="backgroundPattern" aria-hidden="true"></div>
 	<div class="worldAtmosphere" aria-hidden="true"></div>
 
@@ -30,9 +31,17 @@
 			<button class="circleButton" data-action="next-world" aria-label="Next world">›</button>
 		</div>
 
+		<div class="headerProgress">
+			<div class="headerLevel">
+				<span>Level</span>
+				<strong id="level">1</strong>
+			</div>
+			<div id="XPBarBack"><div id="XPBar"></div></div>
+		</div>
+
 		<nav class="primaryNav" aria-label="Game features">
 			<button data-action="show-items" data-item-type="crates">Crates <span id="crateNotification">+1</span></button>
-			<button data-action="show-items" data-item-type="patterns">Patterns</button>
+			<button data-action="show-items" data-item-type="patterns">Wallpapers</button>
 			<button data-action="show-items" data-item-type="relics">Relics</button>
 			<button data-action="show-items" data-item-type="potions">Potions</button>
 			<button id="miningNavButton" data-action="show-mining">Mining</button>
@@ -41,19 +50,6 @@
 
 	<main class="gameLayout">
 		<section class="contentColumn">
-			<div class="heroGlass">
-				<div>
-					<span class="eyebrow">Current progression</span>
-					<h1>Shape the flow of every resource.</h1>
-					<p>Each tier amplifies the one below it. Build momentum, reset strategically, and climb into the next world.</p>
-				</div>
-				<div class="levelOrb">
-					<span>Level</span>
-					<strong id="level">1</strong>
-				</div>
-				<div id="XPBarBack"><div id="XPBar"></div></div>
-			</div>
-
 			<div id="buttons" class="worldSections" aria-live="polite"></div>
 		</section>
 
@@ -97,7 +93,7 @@
 			<div class="modalHeading">
 				<div>
 					<span class="eyebrow">Collection</span>
-					<h1 id="itemScreenTitle">Patterns</h1>
+					<h1 id="itemScreenTitle">Wallpapers</h1>
 				</div>
 				<button class="circleButton" data-action="close-items" aria-label="Close">×</button>
 			</div>
@@ -160,9 +156,9 @@
 		<h2>Money income</h2>
 		<p><code>Multi × Money bonuses × (sqrt(Stone) + 1)</code>. Relics are permanent, potions last five minutes, and Stone comes from Mining.</p>
 		<h2>Resets</h2>
-		<p>Buying Prestige or any higher tier resets every resource below the purchased tier. XP, levels, worlds, miners, ores, crates, patterns, relics, and potions remain.</p>
+		<p>Buying Prestige or any higher tier resets every resource below the purchased tier. XP, levels, worlds, miners, ores, crates, wallpapers, relics, and potions remain.</p>
 		<h2>Collections</h2>
-		<p>Leveling awards Basic crates through level 99. Unlocking Worlds 2 and 3 awards Advanced crates. Crates contain patterns, permanent relics, or temporary potions.</p>
+		<p>Leveling awards Basic crates through level 99. Unlocking Worlds 2 and 3 awards Advanced crates. Crates contain wallpapers from unlocked worlds, permanent relics, or temporary potions. Each world has three wallpapers, and entering a world chooses one of its scenes at random.</p>
 		<h2>Mining</h2>
 		<p>Mining unlocks in World 2. The timer runs at <code>60 ÷ miners</code> seconds, capped at 120 effective miners. Ores progress from Stone through Diamond.</p>
 	</div>
@@ -182,10 +178,7 @@
 	<template id="world-section-template">
 		<section class="worldSection">
 			<div class="sectionHeading">
-				<div>
-					<span class="eyebrow">Resource tier</span>
-					<h2><span data-field="section-name"></span></h2>
-				</div>
+				<h2><span data-field="section-name"></span></h2>
 				<strong data-field="section-resource">0</strong>
 			</div>
 			<div class="buttonGrid" data-field="section-buttons"></div>
@@ -194,18 +187,13 @@
 
 	<template id="game-button-template">
 		<button class="button" data-action="buy-button">
-			<span class="buttonGlow"></span>
-			<span class="gainLabel" data-field="gain-name"></span>
-			<strong>+<span data-field="gain-value"></span></strong>
-			<small><span data-field="cost-name"></span> cost</small>
-			<span class="costValue" data-field="cost-value"></span>
+			<strong class="gainValue">+<span data-field="gain-value"></span></strong>
+			<span class="costLine"><span data-field="cost-name"></span> <span data-field="cost-value"></span></span>
 		</button>
 	</template>
 
 	<template id="free-button-template">
 		<button class="button freeButton" data-action="free-resource">
-			<span class="buttonGlow"></span>
-			<span class="gainLabel">Recovery</span>
 			<strong>Get <span data-field="free-amount"></span></strong>
 			<span data-field="free-resource"></span>
 			<small>Requires <span data-field="required-amount"></span> <span data-field="required-resource"></span></small>

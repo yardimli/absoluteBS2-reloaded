@@ -21,6 +21,10 @@ function themedImage(item) {
 	return document.body.dataset.theme === "modern" && item.modernImage ? item.modernImage : item.image;
 }
 
+function isModern() {
+	return document.body.dataset.theme === "modern";
+}
+
 function weightedCategory(weights) {
 	return weightedChoice(Object.entries(weights).map(([id, weight]) => ({id, weight})));
 }
@@ -49,8 +53,11 @@ export function addItem(config, type, id, specialType = 0) {
 		const existing = findStack(game.patterns, id, specialType);
 		if (existing) existing[2]++;
 		else game.patterns.push([id, specialType, 1]);
+		const pattern = config.patternById[id];
 		const special = config.patternSpecialById[specialType];
-		alert(`Got a ${special.namePrefix}${config.patternById[id].name} pattern!`);
+		alert(isModern()
+			? `Got the ${pattern.modernName} wallpaper!`
+			: `Got a ${special.namePrefix}${pattern.name} pattern!`);
 		return;
 	}
 	if (type === "relic") {
@@ -78,33 +85,49 @@ export function openCrate(config, crateId) {
 	const crate = config.crateById[crateId];
 	if (!crate || !removeStack(game.crates, crateId)) return;
 	const category = weightedCategory(config.crates.categoryWeights);
-	const itemId = weightedChoice(crate.contents[category]);
-	addItem(config, category, itemId, category === "pattern" ? rollPatternSpecial(config) : 0);
+	const entries = category === "pattern" && isModern()
+		? config.patterns.items
+			.filter(pattern => pattern.world <= game.worldsUnlocked)
+			.map(pattern => ({id: pattern.id, weight: pattern.modernWeight}))
+		: crate.contents[category];
+	const itemId = weightedChoice(entries);
+	const special = category === "pattern" && !isModern() ? rollPatternSpecial(config) : 0;
+	addItem(config, category, itemId, special);
 	renderItems(config, "crates");
 }
 
 function patternPresentation(config, patternId, specialId) {
 	const pattern = config.patternById[patternId];
 	const special = config.patternSpecialById[specialId];
+	const modern = isModern();
 	return {
-		image: document.body.dataset.theme === "modern"
-			? pattern.modernImage
-			: (special.imageSuffix ? pattern.colorImage : pattern.image),
-		filter: document.body.dataset.theme === "modern" && specialId
-			? `hue-rotate(${specialId === 1 ? 300 : 170}deg)`
-			: special.filter,
-		name: `${special.namePrefix}${pattern.name}`,
-		rarity: pattern.id + 1 + special.rarityBonus
+		image: modern ? pattern.modernImage : (special.imageSuffix ? pattern.colorImage : pattern.image),
+		filter: modern ? "none" : special.filter,
+		name: modern ? pattern.modernName : `${special.namePrefix}${pattern.name}`,
+		rarity: pattern.id + 1 + special.rarityBonus,
+		world: pattern.world
 	};
 }
 
 export function setPattern(config, patternNumber, specialId) {
 	const patternId = patternNumber - 1;
 	const presentation = patternPresentation(config, patternId, specialId);
-	game.currentPattern = [patternNumber, specialId];
 	const background = document.getElementById("backgroundPattern");
-	background.style.backgroundImage = `url("${presentation.image}")`;
-	background.style.filter = presentation.filter;
+	if (isModern()) {
+		if (presentation.world > game.worldsUnlocked) return;
+		game.currentPattern = [patternNumber, 0];
+		document.body.style.setProperty("--world-background", `url("${presentation.image}")`);
+		const worldBackground = document.getElementById("worldBackground");
+		if (worldBackground) {
+			worldBackground.style.backgroundImage = `linear-gradient(180deg, rgba(4, 12, 25, 0.02), rgba(4, 12, 25, 0.18)), url("${presentation.image}")`;
+		}
+		background.style.backgroundImage = "none";
+		background.style.filter = "none";
+	} else {
+		game.currentPattern = [patternNumber, specialId];
+		background.style.backgroundImage = `url("${presentation.image}")`;
+		background.style.filter = presentation.filter;
+	}
 }
 
 function itemCard(config, type, entry, index) {
@@ -150,7 +173,9 @@ export function showItems(config, type) {
 		return;
 	}
 	game.currentItemScreen = type;
-	document.getElementById("itemScreenTitle").textContent = ITEM_TITLES[type];
+	document.getElementById("itemScreenTitle").textContent = type === "patterns" && isModern()
+		? "Wallpapers"
+		: ITEM_TITLES[type];
 	document.getElementById("itemScreen").style.display = "block";
 	renderItems(config, type);
 }
@@ -168,7 +193,10 @@ export function renderItems(config, type = game.currentItemScreen) {
 	if (type === "crates") game.cratesNotChecked = 0;
 	const root = document.getElementById("itemScreenInner");
 	root.replaceChildren();
-	collection.forEach((entry, index) => root.append(itemCard(config, type, entry, index)));
+	collection
+		.map((entry, index) => ({entry, index}))
+		.filter(({entry}) => type !== "patterns" || !isModern() || config.patternById[entry[0]].world <= game.worldsUnlocked)
+		.forEach(({entry, index}) => root.append(itemCard(config, type, entry, index)));
 }
 
 export function activateItem(config, card) {
@@ -197,8 +225,8 @@ export function showItemInfo(config, card) {
 		const item = patternPresentation(config, entry[0], entry[1]);
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		icon.style.filter = item.filter;
-		name.textContent = `${item.name}\nPattern rarity: ${item.rarity}`;
-		info.textContent = "";
+		name.textContent = isModern() ? item.name : `${item.name}\nPattern rarity: ${item.rarity}`;
+		info.textContent = isModern() ? `World ${item.world} wallpaper. Select it to use it as the current background.` : "";
 	} else if (type === "relics") {
 		const item = config.relicById[entry[0]];
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
