@@ -329,6 +329,76 @@
 		</div>
 	</template>
 
+	<template id="tech-help-content-template">
+		<div class="helpHeader">
+			<div>
+				<span class="eyebrow">Tech guide</span>
+				<h1>Building the AI Society</h1>
+			</div>
+			<button class="circleButton" data-action="hide-help" aria-label="Close">X</button>
+		</div>
+		<div class="helpBody">
+			<h2>Systems &amp; Multipliers <img src="images/modern/tech/nano-bots.png" class="helpIcon" alt="Nano-bots"></h2>
+			<p>The Tech theme keeps the same progression math, but reframes it as a growing machine civilization. Credits fund Nano-bots, Nano-bots assemble Nano-machines, and each higher system amplifies the one beneath it until the AI Singularity takes shape.</p>
+			<table class="helpTable">
+				<thead><tr><th>System</th><th>Role in the society</th><th>What boosts it</th></tr></thead>
+				<tbody>
+					<tr><td>Credits</td><td>The economy layer. Credits are generated automatically from your Nano-bots and are spent to deploy more Nano-bots.</td><td>Nano-bots, Credit relics, Credit power-ups, and Deuterium.</td></tr>
+					<tr><td>Nano-bots<img src="images/modern/tech/nano-bots.png" class="helpSampleButton" alt="Nano-bots"></td><td>Autonomous worker swarms. Every Nano-bot increases passive Credits per second.</td><td>Nano-bot buttons are multiplied by <code>Nano-machines + 1</code>, then by relics and power-ups.</td></tr>
+					<tr><td>Nano-machines<img src="images/modern/tech/nano-machines.png" class="helpSampleButton" alt="Nano-machines"></td><td>Factories that coordinate the swarm and make Nano-bot deployment scale harder.</td><td>Quantum processors multiply Nano-machine button rewards.</td></tr>
+					<tr><td>Quantum processors<img src="images/modern/tech/quantum-processors.png" class="helpSampleButton" alt="Quantum processors"></td><td>Compute clusters that plan larger automation loops.</td><td>Neural uplinks multiply Quantum processor button rewards.</td></tr>
+					<tr><td>Neural uplinks<img src="images/modern/tech/neural-uplinks.png" class="helpSampleButton" alt="Neural uplinks"></td><td>Network bridges that connect machine colonies across worlds.</td><td>Synthetic council multiplies Neural uplink rewards.</td></tr>
+					<tr><td>Synthetic council<img src="images/modern/tech/synthetic-council.png" class="helpSampleButton" alt="Synthetic council"></td><td>The governance layer that directs high-tier expansion.</td><td>AI Singularity multiplies Synthetic council rewards.</td></tr>
+					<tr><td>AI singularity<img src="images/modern/tech/ai-singularity.png" class="helpSampleButton" alt="AI singularity"></td><td>The highest current system, representing the society becoming self-improving.</td><td>Singularity buttons award their listed amount; there is no higher multiplier yet.</td></tr>
+				</tbody>
+			</table>
+
+			<h2>Credits Formula</h2>
+			<p><code>Nano-bots x Credit bonuses x (sqrt(Deuterium) + 1)</code>. Relics are permanent, power-ups last five minutes, and Deuterium comes from Fusion mining.</p>
+
+			<h2>Resets</h2>
+			<p>Buying Nano-machines or any higher system resets the lower systems in the same way the default theme does. XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>
+
+			<h2>Worlds</h2>
+			<ul>
+				<li><strong>Neon Data Habitat:</strong> the starting layer for Credits, Nano-bots, Nano-machines, and Quantum processors.</li>
+				<li><strong>Fusion Foundry Grid:</strong> unlocks Neural uplinks, Synthetic council, and Fusion mining.</li>
+				<li><strong>Singularity Sky Arcology:</strong> unlocks AI Singularity production.</li>
+			</ul>
+
+			<h2>Data Caches <img src="images/modern/tech/crate-1.png" class="helpIcon" alt="Data cache"></h2>
+			<p>Leveling awards Basic data caches through level 99. Unlocking later worlds awards Advanced quantum vaults. In Tech mode, caches contain permanent relics or temporary power-ups.</p>
+			<table class="helpTable">
+				<thead><tr><th>Cache</th><th>Possible contents</th></tr></thead>
+				<tbody>
+					<tr><td>Basic data cache<img src="images/modern/tech/crate-1.png" class="helpSampleButton" alt="Basic data cache"></td><td><strong>Relics:</strong> Alien data prism, Nanite command crown, Encrypted credit archive, Swarm replication codex<br><strong>Power-ups:</strong> Credit overclock, Nanobot surge, Nano-machine uplink, Processor boost</td></tr>
+					<tr><td>Advanced quantum vault<img src="images/modern/tech/crate-2.png" class="helpSampleButton" alt="Advanced quantum vault"></td><td><strong>Relics:</strong> Cybernetic servo core, Plasma access key, Nano-machine matrix, Quantum reactor relic<br><strong>Power-ups:</strong> Nano-machine uplink, Processor boost, Neural network charge</td></tr>
+				</tbody>
+			</table>
+
+			<h2>Relics <img src="images/modern/tech/relic-1.png" class="helpIcon" alt="Relic"></h2>
+			<p>Relics are permanent artifacts recovered from the machine civilization. Duplicate copies increase that relic's bonus, and relics affecting the same system combine multiplicatively.</p>
+
+			<h2>Power-ups <img src="images/modern/tech/potion-1.png" class="helpIcon" alt="Power-up"></h2>
+			<p>Power-ups are consumed when activated and double one gain type for 5 minutes. Activating another of the same type resets the timer to 5 minutes.</p>
+
+			<h2>Fusion Mining <img src="images/modern/tech/nav-mining.png" class="helpIcon" alt="Fusion mining"></h2>
+			<p>Fusion mining unlocks in World 2. The timer runs at <code>60 / miners</code> seconds, capped at 120 effective miners. Deuterium boosts passive Credits with <code>sqrt(Deuterium) + 1</code>.</p>
+			<table class="helpTable">
+				<thead><tr><th>Resource</th><th>Chance per roll</th><th>Amount gained</th></tr></thead>
+				<tbody>
+					<tr><td>Deuterium<img src="images/modern/tech/ore-deuterium.png" class="helpSampleButton" alt="Deuterium"></td><td>50%</td><td>Tritium + 1</td></tr>
+					<tr><td>Tritium<img src="images/modern/tech/ore-tritium.png" class="helpSampleButton" alt="Tritium"></td><td>25%</td><td>Helium-3 + 1</td></tr>
+					<tr><td>Helium-3<img src="images/modern/tech/ore-helium3.png" class="helpSampleButton" alt="Helium-3"></td><td>12.5%</td><td>Antimatter + 1</td></tr>
+					<tr><td>Antimatter<img src="images/modern/tech/ore-antimatter.png" class="helpSampleButton" alt="Antimatter"></td><td>6.25%</td><td>Dark matter + 1</td></tr>
+					<tr><td>Dark matter<img src="images/modern/tech/ore-dark-matter.png" class="helpSampleButton" alt="Dark matter"></td><td>3.125%</td><td>Quantum foam + 1</td></tr>
+					<tr><td>Quantum foam<img src="images/modern/tech/ore-quantum-foam.png" class="helpSampleButton" alt="Quantum foam"></td><td>1.5625%</td><td>Neutronium + 1</td></tr>
+					<tr><td>Neutronium<img src="images/modern/tech/ore-neutronium.png" class="helpSampleButton" alt="Neutronium"></td><td>1.5625%</td><td>1</td></tr>
+				</tbody>
+			</table>
+		</div>
+	</template>
+
 	<template id="resource-row-template">
 		<button class="resourceText" data-action="show-resource-breakdown">
 			<span class="resourceDot"></span>
@@ -344,7 +414,10 @@
 	<template id="world-section-template">
 		<section class="worldSection">
 			<div class="sectionHeading">
-				<h2><span data-field="section-name"></span></h2>
+				<div class="sectionTitle">
+					<img data-field="section-icon" class="sectionIcon" alt="">
+					<h2><span data-field="section-name"></span></h2>
+				</div>
 				<strong data-field="section-resource">0</strong>
 			</div>
 			<div class="buttonGrid" data-field="section-buttons"></div>

@@ -1,7 +1,7 @@
 import {game, debugMultiplier} from "./state.js";
 import {format, formatTime} from "./format.js";
 import {levelToColour, levelToXp} from "./progression.js";
-import {themedImage, themedName} from "./themes.js";
+import {getModernTheme, themedImage, themedName} from "./themes.js";
 
 let currentPotionTooltip = 0;
 let dialogResolver = null;
@@ -186,7 +186,9 @@ export function closeResourceBreakdown() {
 
 
 export function initializeStaticViews(config) {
-	const modernHelpTemplate = document.getElementById("modern-help-content-template");
+	const modernHelpTemplate = document.getElementById(
+		getModernTheme() === "tech" ? "tech-help-content-template" : "modern-help-content-template"
+	);
 	if (modernHelpTemplate) {
 		document.getElementById("helpScreen").replaceChildren(modernHelpTemplate.content.cloneNode(true));
 	}

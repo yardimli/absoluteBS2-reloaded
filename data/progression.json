@@ -1,12 +1,12 @@
 {
   "resources": [
     {"id": "money", "name": "Money", "techName": "Credits", "color": "#070", "initial": "0"},
-    {"id": "multi", "name": "Multi", "techName": "Nano-bots", "color": "#b00", "initial": "1"},
-    {"id": "prestige", "name": "Prestige", "techName": "Nano-machines", "color": "#60b", "initial": "0"},
-    {"id": "power", "name": "Power", "techName": "Quantum processors", "color": "#dd0", "initial": "0"},
-    {"id": "superPrestige", "name": "Super prestige", "shortName": "S-prestige", "techName": "Neural uplinks", "techShortName": "Uplinks", "color": "#0bf", "initial": "0", "unlockWorld": 2},
-    {"id": "ascension", "name": "Ascension", "techName": "Synthetic council", "techShortName": "Council", "color": "#fff", "initial": "0", "unlockWorld": 2},
-    {"id": "infernal", "name": "Infernal", "techName": "AI singularity", "techShortName": "Singularity", "color": "#f50", "initial": "0", "unlockWorld": 3}
+    {"id": "multi", "name": "Multi", "techName": "Nano-bots", "techIcon": "images/modern/tech/nano-bots.png", "color": "#b00", "initial": "1"},
+    {"id": "prestige", "name": "Prestige", "techName": "Nano-machines", "techIcon": "images/modern/tech/nano-machines.png", "color": "#60b", "initial": "0"},
+    {"id": "power", "name": "Power", "techName": "Quantum processors", "techIcon": "images/modern/tech/quantum-processors.png", "color": "#dd0", "initial": "0"},
+    {"id": "superPrestige", "name": "Super prestige", "shortName": "S-prestige", "techName": "Neural uplinks", "techShortName": "Uplinks", "techIcon": "images/modern/tech/neural-uplinks.png", "color": "#0bf", "initial": "0", "unlockWorld": 2},
+    {"id": "ascension", "name": "Ascension", "techName": "Synthetic council", "techShortName": "Council", "techIcon": "images/modern/tech/synthetic-council.png", "color": "#fff", "initial": "0", "unlockWorld": 2},
+    {"id": "infernal", "name": "Infernal", "techName": "AI singularity", "techShortName": "Singularity", "techIcon": "images/modern/tech/ai-singularity.png", "color": "#f50", "initial": "0", "unlockWorld": 3}
   ],
   "tiers": [
     {"id": "multi", "className": "button1", "image": "images/button1.png", "costResource": "money", "gainResource": "multi", "parentResource": "prestige", "relicIndex": 1, "xp": 0, "resets": []},

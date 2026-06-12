@@ -2,7 +2,7 @@ import {currentWorld, game, setCurrentWorld} from "./state.js";
 import {calculateButtonGain, canBuyButton, claimFreeResource} from "./progression.js";
 import {format} from "./format.js";
 import {showMessage} from "./ui.js";
-import {getModernTheme, themedBackgrounds, themedImage, themedName, themedShortName} from "./themes.js";
+import {getModernTheme, themedBackgrounds, themedIcon, themedImage, themedName, themedShortName} from "./themes.js";
 
 const buttonsRoot = () => document.getElementById("buttons");
 let renderedWorldId = null;
@@ -91,6 +91,13 @@ export function renderWorld(config) {
 		const fragment = document.getElementById("world-section-template").content.cloneNode(true);
 		const sectionElement = fragment.querySelector(".worldSection");
 		const nameElement = fragment.querySelector('[data-field="section-name"]');
+		const iconElement = fragment.querySelector('[data-field="section-icon"]');
+		const sectionIcon = themedIcon(config.resourceById[tier.gainResource]);
+		if (iconElement && sectionIcon) {
+			iconElement.src = sectionIcon;
+			iconElement.alt = themedName(config.resourceById[tier.gainResource]);
+			iconElement.style.display = "block";
+		}
 		nameElement.textContent = resourceLabel(config, tier.gainResource);
 		nameElement.style.color = config.resourceById[tier.gainResource].color;
 		const resourceElement = fragment.querySelector('[data-field="section-resource"]');

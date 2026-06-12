@@ -446,6 +446,20 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	margin-bottom: 16px;
 }
 
+.sectionTitle {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.sectionIcon {
+	display: none;
+	width: 58px;
+	height: 58px;
+	object-fit: contain;
+	filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.28));
+}
+
 .sectionHeading h2 {
 	margin: 0;
 	font-size: clamp(1.5rem, 3vw, 2.3rem);
@@ -472,7 +486,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	min-height: 0;
 	padding: 15%;
 	border: 0;
-	border-radius: 18px;
+	/*border-radius: 18px;*/
 	overflow: hidden;
 	text-align: center;
 	background-color: transparent;
@@ -485,7 +499,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 8px;
+	/*gap: 8px;*/
 	text-shadow: 0 2px 5px rgba(255, 255, 255, 0.7);
 }
 
@@ -511,7 +525,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	100% { transform: scale(1); }
 }
 
-.button span,
+/*.button span,*/
 .button strong,
 .button small {
 	position: relative;
@@ -520,15 +534,19 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 
 .gainValue {
 	margin: 0;
-	font-size: clamp(1rem, 1.5vw, 1.3rem);
+	font-size: clamp(1rem, 1.5vw, 1.2rem);
 	color: #172033;
 }
 
 .costLine {
 	font-weight: 700;
-	font-size: clamp(0.72rem, 1vw, 0.9rem);
+	font-size: clamp(0.72rem, 1vw, 0.8rem);
 	color: #172033;
 	white-space: nowrap;
+}
+
+.costLine span {
+	display: block;
 }
 
 .freeButton {
@@ -1175,7 +1193,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	.button {
 		min-height: 0;
 		padding: 14%;
-		border-radius: 19px;
+		/*border-radius: 19px;*/
 	}
 
 	.modalShell {

@@ -57,6 +57,11 @@ export function themedImage(item) {
 	return item?.image;
 }
 
+export function themedIcon(item) {
+	if (getModernTheme() === TECH_THEME && item?.techIcon) return item.techIcon;
+	return item?.modernIcon || item?.icon || "";
+}
+
 export function themedBackgrounds(world) {
 	if (getModernTheme() === TECH_THEME && world?.techBackgrounds) return world.techBackgrounds;
 	return world?.modernBackgrounds || [];
