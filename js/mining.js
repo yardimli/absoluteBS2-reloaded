@@ -1,5 +1,6 @@
 import {game} from "./state.js";
 import {format, formatTime} from "./format.js";
+import {themedImage, themedName} from "./themes.js";
 
 export function initializeMiningView(config) {
 	const list = document.getElementById("miningResourceList");
@@ -7,14 +8,15 @@ export function initializeMiningView(config) {
 	for (const ore of config.mining.ores) {
 		const fragment = document.getElementById("mining-resource-template").content.cloneNode(true);
 		const image = fragment.querySelector('[data-field="ore-image"]');
-		if (image && ore.image) {
-			image.src = ore.image;
-			image.alt = ore.name;
+		const oreImage = themedImage(ore);
+		if (image && oreImage) {
+			image.src = oreImage;
+			image.alt = themedName(ore);
 		}
 		const amount = fragment.querySelector('[data-field="ore-amount"]');
 		amount.dataset.oreId = ore.id;
 		const name = fragment.querySelector('[data-field="ore-name"]');
-		name.textContent = ore.name.toLowerCase();
+		name.textContent = themedName(ore).toLowerCase();
 		name.style.color = ore.color;
 		list.append(fragment);
 	}

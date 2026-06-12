@@ -1,20 +1,7 @@
 import {game} from "./state.js";
 import {format} from "./format.js";
 import {showConfirmation, showMessage} from "./ui.js";
-
-const ITEM_TITLES = {
-	crates: "Crates",
-	patterns: "Patterns",
-	relics: "Relics",
-	potions: "Potions"
-};
-
-const MODERN_HEADING_ICONS = {
-	crates: "images/modern/nav-crates.png",
-	patterns: "images/modern/pattern-1.png",
-	relics: "images/modern/nav-relics.png",
-	potions: "images/modern/nav-potions.png"
-};
+import {themedCollectionTitle, themedHeadingIcon, themedImage, themedName} from "./themes.js";
 
 function weightedChoice(entries) {
 	let remaining = entries.reduce((total, entry) => total + entry.weight, 0);
@@ -23,10 +10,6 @@ function weightedChoice(entries) {
 		remaining -= entry.weight;
 	}
 	return entries[entries.length - 1].id;
-}
-
-function themedImage(item) {
-	return document.body.dataset.theme === "modern" && item.modernImage ? item.modernImage : item.image;
 }
 
 function isModern() {
@@ -65,9 +48,9 @@ export function addItem(config, type, id, specialType = 0) {
 		const special = config.patternSpecialById[specialType];
 		showMessage(
 			"Pattern reward",
-			`${special.namePrefix}${pattern.name} is a cosmetic background pattern.`,
+			`${special.namePrefix}${themedName(pattern)} is a cosmetic background pattern.`,
 			special.imageSuffix ? pattern.colorImage : pattern.image,
-			`${special.namePrefix}${pattern.name} pattern`
+			`${special.namePrefix}${themedName(pattern)} pattern`
 		);
 		return;
 	}
@@ -79,9 +62,9 @@ export function addItem(config, type, id, specialType = 0) {
 		const relic = config.relicById[id];
 		showMessage(
 			"Relic reward",
-			`${relic.name}\nPermanent effect per copy: +${relic.bonus * 100}% ${relic.resource} gain.`,
+			`${themedName(relic)}\nPermanent effect per copy: +${relic.bonus * 100}% ${relic.resource} gain.`,
 			themedImage(relic),
-			relic.name
+			themedName(relic)
 		);
 		return;
 	}
@@ -90,10 +73,10 @@ export function addItem(config, type, id, specialType = 0) {
 	else game.potions.push([id, 1]);
 	const potion = config.potionById[id];
 	showMessage(
-		"Potion reward",
-		`${potion.name}\nWhen activated, this doubles ${potion.resource} gain for ${config.potions.durationSeconds / 60} minutes.`,
+		isModern() ? "Power-up reward" : "Potion reward",
+		`${themedName(potion)}\nWhen activated, this doubles ${potion.resource} gain for ${config.potions.durationSeconds / 60} minutes.`,
 		themedImage(potion),
-		potion.name
+		themedName(potion)
 	);
 }
 
@@ -149,7 +132,7 @@ function itemCard(config, type, entry, index) {
 	if (type === "crates") {
 		const item = config.crateById[entry[0]];
 		image.src = themedImage(item);
-		image.alt = item.name;
+		image.alt = themedName(item);
 		amount.textContent = entry[1];
 		card.dataset.itemId = entry[0];
 	} else if (type === "patterns") {
@@ -163,12 +146,12 @@ function itemCard(config, type, entry, index) {
 	} else if (type === "relics") {
 		const item = config.relicById[entry[0]];
 		image.src = themedImage(item);
-		image.alt = item.name;
+		image.alt = themedName(item);
 		amount.textContent = entry[1];
 	} else {
 		const item = config.potionById[entry[0]];
 		image.src = themedImage(item);
-		image.alt = item.name;
+		image.alt = themedName(item);
 		amount.textContent = entry[1];
 		card.dataset.itemId = entry[0];
 	}
@@ -182,11 +165,11 @@ export function showItems(config, type) {
 		return;
 	}
 	game.currentItemScreen = type;
-	document.getElementById("itemScreenTitle").textContent = ITEM_TITLES[type];
+	document.getElementById("itemScreenTitle").textContent = themedCollectionTitle(type);
 	const headingIcon = document.getElementById("itemScreenHeadingIcon");
 	if (headingIcon) {
-		headingIcon.src = MODERN_HEADING_ICONS[type];
-		headingIcon.alt = ITEM_TITLES[type];
+		headingIcon.src = themedHeadingIcon(type);
+		headingIcon.alt = themedCollectionTitle(type);
 	}
 	document.getElementById("itemScreen").style.display = "block";
 	renderItems(config, type);
@@ -231,8 +214,8 @@ export function showItemInfo(config, card) {
 	if (type === "crates") {
 		const item = config.crateById[entry[0]];
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
-		name.textContent = item.name;
-		info.textContent = isModern() ? "Contains a permanent relic or temporary potion." : "May contain a pattern, relic or potion.";
+		name.textContent = themedName(item);
+		info.textContent = isModern() ? "Contains a permanent relic or temporary power-up." : "May contain a pattern, relic or potion.";
 	} else if (type === "patterns") {
 		const item = patternPresentation(config, entry[0], entry[1]);
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
@@ -242,12 +225,12 @@ export function showItemInfo(config, card) {
 	} else if (type === "relics") {
 		const item = config.relicById[entry[0]];
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
-		name.textContent = item.name;
+		name.textContent = themedName(item);
 		info.textContent = `+${item.bonus * 100}% ${item.resource} gain (total: ${item.bonus * 100 * entry[1]}%)`;
 	} else {
 		const item = config.potionById[entry[0]];
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
-		name.textContent = item.name;
+		name.textContent = themedName(item);
 		info.textContent = `Multiplies ${item.resource} gain by ${config.potions.multiplier} for ${config.potions.durationSeconds / 60} minutes.`;
 	}
 }

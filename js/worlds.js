@@ -2,6 +2,7 @@ import {currentWorld, game, setCurrentWorld} from "./state.js";
 import {calculateButtonGain, canBuyButton, claimFreeResource} from "./progression.js";
 import {format} from "./format.js";
 import {showMessage} from "./ui.js";
+import {getModernTheme, themedBackgrounds, themedImage, themedName, themedShortName} from "./themes.js";
 
 const buttonsRoot = () => document.getElementById("buttons");
 let renderedWorldId = null;
@@ -23,7 +24,7 @@ function setButtonAvailability(element, available) {
 
 function resourceLabel(config, resourceId) {
 	const resource = config.resourceById[resourceId];
-	return resource.shortName || resource.name;
+	return themedShortName(resource);
 }
 
 function stylesheetUrl(image) {
@@ -41,7 +42,7 @@ function buildPurchaseButton(config, tier, section, button, buttonIndex) {
 	const fragment = document.getElementById("game-button-template").content.cloneNode(true);
 	const element = fragment.querySelector(".button");
 	element.classList.add(tier.className);
-	const image = document.body.dataset.theme === "modern" ? section.modernImage : section.image;
+	const image = document.body.dataset.theme === "modern" ? themedImage(section) : section.image;
 	element.style.backgroundImage = `url("${image}")`;
 	element.dataset.tier = tier.id;
 	element.dataset.buttonIndex = buttonIndex;
@@ -59,7 +60,7 @@ function buildFreeButton(config, tier, section, freeButton) {
 	const fragment = document.getElementById("free-button-template").content.cloneNode(true);
 	const element = fragment.querySelector(".button");
 	element.classList.add(tier.className);
-	const image = document.body.dataset.theme === "modern" ? section.modernImage : section.image;
+	const image = document.body.dataset.theme === "modern" ? themedImage(section) : section.image;
 	element.style.backgroundImage = `url("${image}")`;
 	element.dataset.tier = tier.id;
 	element.dataset.targetResource = freeButton.targetResource;
@@ -73,16 +74,17 @@ function buildFreeButton(config, tier, section, freeButton) {
 export function renderWorld(config) {
 	const world = config.worldById[currentWorld];
 	const modern = document.body.dataset.theme === "modern";
+	const renderKey = modern ? `${getModernTheme()}:${world.id}` : String(world.id);
 	document.body.style.backgroundColor = modern ? "transparent" : world.background;
 	document.body.dataset.world = world.id;
-	if (modern && renderedWorldId !== world.id) {
-		const backgrounds = world.modernBackgrounds || [];
+	if (modern && renderedWorldId !== renderKey) {
+		const backgrounds = themedBackgrounds(world);
 		const background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 		if (background) setModernBackground(background);
 	}
-	renderedWorldId = world.id;
+	renderedWorldId = renderKey;
 	document.getElementById("topBarWorldNumber").textContent = `World ${world.id}`;
-	document.getElementById("topBarWorldName").textContent = world.name;
+	document.getElementById("topBarWorldName").textContent = themedName(world);
 	buttonsRoot().replaceChildren();
 	for (const section of world.sections) {
 		const tier = config.tierById[section.tier];
@@ -233,9 +235,9 @@ export function purchaseWorld(config, addItem) {
 		const crate = config.crateByKey[world.rewardCrate];
 		showMessage(
 			"World unlocked",
-			`World ${nextId} is now available.\nYou also received one ${crate.name}.`,
-			document.body.dataset.theme === "modern" ? crate.modernImage : crate.image,
-			crate.name
+			`World ${nextId} is now available.\nYou also received one ${themedName(crate)}.`,
+			document.body.dataset.theme === "modern" ? themedImage(crate) : crate.image,
+			themedName(crate)
 		);
 	}
 	setCurrentWorld(nextId);

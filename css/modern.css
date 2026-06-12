@@ -10,6 +10,15 @@
 	--world-background: url("../images/modern/world-1.png");
 }
 
+body[data-modern-theme="tech"] {
+	--glass: rgba(4, 16, 34, 0.58);
+	--glass-strong: rgba(2, 12, 28, 0.84);
+	--line: rgba(99, 236, 255, 0.28);
+	--text: #f4fdff;
+	--muted: rgba(191, 239, 255, 0.72);
+	--shadow: 0 24px 90px rgba(0, 229, 255, 0.15), 0 18px 60px rgba(112, 68, 255, 0.16);
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -303,9 +312,19 @@ button,
 .navRelics { background-image: url("../images/modern/nav-relics.png"); }
 .navPotions { background-image: url("../images/modern/nav-potions.png"); }
 
+body[data-modern-theme="tech"] .navCrates { background-image: url("../images/modern/tech/crate-1.png"); }
+body[data-modern-theme="tech"] .navRelics { background-image: url("../images/modern/tech/relic-1.png"); }
+body[data-modern-theme="tech"] .navPotions { background-image: url("../images/modern/tech/potion-1.png"); }
+body[data-modern-theme="tech"] .topShell .circleButton[data-action="previous-world"] { background-image: url("../images/modern/tech/nav-prev.png"); }
+body[data-modern-theme="tech"] .topShell .circleButton[data-action="next-world"] { background-image: url("../images/modern/tech/nav-next.png"); }
+
 .navMining {
 	order: -1;
 	background-image: url("../images/modern/nav-mining.png");
+}
+
+body[data-modern-theme="tech"] .navMining {
+	background-image: url("../images/modern/tech/nav-mining.png");
 }
 
 #crateNotification {
@@ -413,6 +432,13 @@ button,
 .worldSection[data-tier="superPrestige"] { --section-a: rgba(75, 218, 255, 0.58); --section-b: rgba(75, 125, 255, 0.3); }
 .worldSection[data-tier="ascension"] { --section-a: rgba(255, 255, 255, 0.5); --section-b: rgba(151, 180, 255, 0.3); }
 .worldSection[data-tier="infernal"] { --section-a: rgba(255, 93, 45, 0.62); --section-b: rgba(174, 39, 255, 0.34); }
+
+body[data-modern-theme="tech"] .worldSection[data-tier="multi"] { --section-a: rgba(62, 255, 236, 0.58); --section-b: rgba(42, 116, 255, 0.36); }
+body[data-modern-theme="tech"] .worldSection[data-tier="prestige"] { --section-a: rgba(130, 104, 255, 0.62); --section-b: rgba(56, 235, 255, 0.34); }
+body[data-modern-theme="tech"] .worldSection[data-tier="power"] { --section-a: rgba(255, 66, 231, 0.58); --section-b: rgba(67, 155, 255, 0.34); }
+body[data-modern-theme="tech"] .worldSection[data-tier="superPrestige"] { --section-a: rgba(99, 255, 188, 0.58); --section-b: rgba(87, 61, 255, 0.36); }
+body[data-modern-theme="tech"] .worldSection[data-tier="ascension"] { --section-a: rgba(255, 255, 255, 0.46); --section-b: rgba(0, 221, 255, 0.36); }
+body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a: rgba(255, 55, 177, 0.62); --section-b: rgba(46, 239, 255, 0.38); }
 
 .sectionHeading {
 	justify-content: space-between;

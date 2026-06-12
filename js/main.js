@@ -26,7 +26,6 @@ import {
 	calculateItemMultipliers,
 	closeItems,
 	hideItemInfo,
-	renderItems,
 	setPattern,
 	showItemInfo,
 	showItems
@@ -57,10 +56,12 @@ import {
 	showTextPrompt,
 	updateVisuals
 } from "./ui.js";
+import {applyModernTheme, toggleModernTheme} from "./themes.js";
 
 window.isDevVersion = false;
 const config = await loadConfig();
 loadState(config);
+applyModernTheme();
 initializeStaticViews(config);
 initializeMiningView(config);
 initializeDialog();
@@ -142,6 +143,18 @@ function activateButton(element) {
 	else if (action === "hard-reset") hardReset();
 	else if (action === "export") exportGame();
 	else if (action === "import") importGame();
+	else if (action === "toggle-modern-theme") {
+		toggleModernTheme();
+		initializeStaticViews(config);
+		initializeMiningView(config);
+		renderWorld(config);
+		if (game.currentItemScreen) {
+			const itemScreen = game.currentItemScreen;
+			game.currentItemScreen = "";
+			showItems(config, itemScreen);
+		}
+		updateVisuals(config);
+	}
 	else if (action === "switch-theme") {
 		saveState();
 		location.href = element.dataset.target;

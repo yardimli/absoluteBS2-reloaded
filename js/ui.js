@@ -1,6 +1,7 @@
 import {game, debugMultiplier} from "./state.js";
 import {format, formatTime} from "./format.js";
 import {levelToColour, levelToXp} from "./progression.js";
+import {themedImage, themedName} from "./themes.js";
 
 let currentPotionTooltip = 0;
 let dialogResolver = null;
@@ -23,7 +24,7 @@ function totalUnopenedCrates() {
 
 function resourceLabel(config, resourceId) {
 	const resource = config.resourceById[resourceId];
-	return resource?.name || resourceId;
+	return themedName(resource) || resourceId;
 }
 
 function relicRows(config, resourceId) {
@@ -32,7 +33,7 @@ function relicRows(config, resourceId) {
 		.filter(({relic}) => relic?.resource === resourceId)
 		.map(({relic, amount}) => {
 			const total = relic.bonus * amount;
-			return `<tr><td>${relic.name} x${amount}</td><td>+${format(new Decimal(total * 100), 2)}%</td><td>${format(new Decimal(1 + total), 2)}x</td></tr>`;
+			return `<tr><td>${themedName(relic)} x${amount}</td><td>+${format(new Decimal(total * 100), 2)}%</td><td>${format(new Decimal(1 + total), 2)}x</td></tr>`;
 		});
 }
 
@@ -40,7 +41,7 @@ function potionRow(config, resourceId) {
 	const potion = config.potions.items.find(item => item.resource === resourceId);
 	if (!potion) return "";
 	const active = game.potionCooldowns[potion.id] > 0;
-	return `<tr><td>${potion.name}</td><td>${active ? "Active" : "Inactive"}</td><td>${active ? `${config.potions.multiplier}x for ${formatTime(game.potionCooldowns[potion.id])}` : "No current bonus"}</td></tr>`;
+	return `<tr><td>${themedName(potion)}</td><td>${active ? "Active" : "Inactive"}</td><td>${active ? `${config.potions.multiplier}x for ${formatTime(game.potionCooldowns[potion.id])}` : "No current bonus"}</td></tr>`;
 }
 
 function buttonTierRows(config, resourceId) {
@@ -69,27 +70,27 @@ function resourceBreakdownHtml(config, resourceId) {
 		game.miningResources[config.oreIndexById[config.mining.moneyBoostOre]].pow(config.mining.moneyBoostExponent).add(1)
 	);
 	const rows = [
-		`<tr><td>Current ${resource.name}</td><td>${format(game[resourceId])}</td></tr>`,
+		`<tr><td>Current ${themedName(resource)}</td><td>${format(game[resourceId])}</td></tr>`,
 		parent ? `<tr><td>${resourceLabel(config, parent)} chain multiplier</td><td>${format(parentMultiplier)}x</td></tr>` : "",
 		`<tr><td>Relic and potion multiplier</td><td>${format(relicPotionMultiplier, 2)}x</td></tr>`,
 		resourceId === "money" ? `<tr><td>Stone mining multiplier</td><td>${format(miningMultiplier, 2)}x</td></tr>` : "",
-		resourceId === "money" ? `<tr><td>Estimated money per second</td><td>$${format(moneyPerSecond)}/s</td></tr>` : `<tr><td>Money translation</td><td>More ${resource.name} improves the chain shown below; Money itself is produced by Multi.</td></tr>`
+		resourceId === "money" ? `<tr><td>Estimated money per second</td><td>$${format(moneyPerSecond)}/s</td></tr>` : `<tr><td>Money translation</td><td>More ${themedName(resource)} improves the chain shown below; Money itself is produced by Multi.</td></tr>`
 	].filter(Boolean).join("");
 	const relics = relicRows(config, resourceId);
 	const potion = potionRow(config, resourceId);
 	const tiers = buttonTierRows(config, resourceId);
 	return `
-		<p>${resource.name} is part of the resource chain. Higher resources multiply gains for the tier below them; relics and active potions multiply the affected resource type.</p>
+		<p>${themedName(resource)} is part of the resource chain. Higher resources multiply gains for the tier below them; relics and active potions multiply the affected resource type.</p>
 		<table class="breakdownTable"><tbody>${rows}</tbody></table>
 		<h2>Bonus Items</h2>
 		<table class="breakdownTable">
 			<thead><tr><th>Item</th><th>Bonus</th><th>Total multiplier</th></tr></thead>
-			<tbody>${relics.length ? relics.join("") : `<tr><td colspan="3">No relic bonuses for ${resource.name}.</td></tr>`}${potion}</tbody>
+			<tbody>${relics.length ? relics.join("") : `<tr><td colspan="3">No relic bonuses for ${themedName(resource)}.</td></tr>`}${potion}</tbody>
 		</table>
 		<h2>Chain Effects</h2>
 		<table class="breakdownTable">
 			<thead><tr><th>Tier</th><th>Effect</th></tr></thead>
-			<tbody>${tiers.length ? tiers.join("") : `<tr><td colspan="2">No button tier currently depends directly on ${resource.name}.</td></tr>`}</tbody>
+			<tbody>${tiers.length ? tiers.join("") : `<tr><td colspan="2">No button tier currently depends directly on ${themedName(resource)}.</td></tr>`}</tbody>
 		</table>
 		${resourceId === "money" ? `<h2>Money Formula</h2><p><code>Multi (${format(game.multi)}) x money bonuses (${format(game.relicPotionMultipliers[0], 2)}x) x Stone (${format(miningMultiplier, 2)}x) = $${format(moneyPerSecond)}/s</code></p>` : ""}
 	`;
@@ -174,7 +175,7 @@ export function clearCrateNotificationBlink() {
 export function showResourceBreakdown(config, resourceId) {
 	const resource = config.resourceById[resourceId];
 	if (!resource) return;
-	document.getElementById("resourceBreakdownTitle").textContent = resource.name;
+	document.getElementById("resourceBreakdownTitle").textContent = themedName(resource);
 	document.getElementById("resourceBreakdownContent").innerHTML = resourceBreakdownHtml(config, resourceId);
 	document.getElementById("resourceBreakdownScreen").style.display = "block";
 }
@@ -196,7 +197,7 @@ export function initializeStaticViews(config) {
 		const row = fragment.querySelector(".resourceText");
 		row.style.color = resource.color;
 		row.dataset.resourceId = resource.id;
-		fragment.querySelector('[data-field="resource-name"]').textContent = resource.name;
+		fragment.querySelector('[data-field="resource-name"]').textContent = themedName(resource);
 		fragment.querySelector('[data-field="resource-value"]').id = resource.id;
 		resourceList.append(fragment);
 	}
@@ -205,8 +206,8 @@ export function initializeStaticViews(config) {
 	for (const potion of config.potions.items) {
 		const fragment = document.getElementById("potion-icon-template").content.cloneNode(true);
 		const icon = fragment.querySelector(".potionIcon");
-		icon.src = document.body.dataset.theme === "modern" && potion.modernImage ? potion.modernImage : potion.image;
-		icon.alt = potion.name;
+		icon.src = themedImage(potion);
+		icon.alt = themedName(potion);
 		icon.dataset.potionId = potion.id;
 		icon.style.top = `${86 + potion.id * 54}px`;
 		icons.append(fragment);
@@ -248,7 +249,7 @@ export function updateVisuals(config) {
 	if (currentPotionTooltip) {
 		const potion = config.potionById[currentPotionTooltip - 1];
 		document.getElementById("potionTooltip").textContent =
-			`${potion.name}: ${formatTime(game.potionCooldowns[potion.id])}`;
+			`${themedName(potion)}: ${formatTime(game.potionCooldowns[potion.id])}`;
 	}
 	document.getElementById("level").textContent = format(game.level);
 	document.getElementById("bottomBar").style.backgroundColor = levelToColour(game.level.toNumber());
