@@ -41,6 +41,7 @@ import {
 } from "./mining.js";
 import {
 	closeMessageDialog,
+	closeSectionLore,
 	closeWorldPurchase,
 	clearCrateNotificationBlink,
 	closeResourceBreakdown,
@@ -53,6 +54,7 @@ import {
 	showMessage,
 	showPotionTooltip,
 	showResourceBreakdown,
+	showSectionLore,
 	showTextPrompt,
 	updateVisuals
 } from "./ui.js";
@@ -137,6 +139,8 @@ function activateButton(element) {
 	else if (action === "close-world-purchase") closeWorldPurchase();
 	else if (action === "show-resource-breakdown") showResourceBreakdown(config, element.dataset.resourceId);
 	else if (action === "close-resource-breakdown") closeResourceBreakdown();
+	else if (action === "show-section-lore") showSectionLore(config, element.dataset.resourceId);
+	else if (action === "close-section-lore") closeSectionLore();
 	else if (action === "show-help") showHelp();
 	else if (action === "hide-help") hideHelp();
 	else if (action === "save") saveState();
@@ -169,6 +173,7 @@ function closeBackdropModal(element) {
 	if (element.id === "itemScreen") closeItems();
 	else if (element.id === "miningScreen") closeMining();
 	else if (element.id === "resourceBreakdownScreen") closeResourceBreakdown();
+	else if (element.id === "sectionLoreScreen") closeSectionLore();
 	else if (element.id === "worldPurchaseScreen") closeWorldPurchase();
 	else if (element.id === "messageDialog") closeMessageDialog();
 	else return false;

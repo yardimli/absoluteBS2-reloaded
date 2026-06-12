@@ -182,6 +182,22 @@
 		</div>
 	</div>
 
+	<div id="sectionLoreScreen" class="modalShell">
+		<div class="glass modalPanel sectionLorePanel">
+			<div class="modalHeading">
+				<div class="modalTitleGroup">
+					<img id="sectionLoreIcon" class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
+					<div>
+						<span id="sectionLoreEyebrow" class="eyebrow">Section lore</span>
+						<h1 id="sectionLoreTitle">Section</h1>
+					</div>
+				</div>
+				<button class="circleButton" data-action="close-section-lore" aria-label="Close">X</button>
+			</div>
+			<div id="sectionLoreContent" class="resourceBreakdownContent sectionLoreContent"></div>
+		</div>
+	</div>
+
 	<div id="helpScreenOverlay" class="modalBackdrop" data-action="hide-help"></div>
 	<div id="helpScreen" class="glass helpPanel">
 		<div class="helpHeader">
@@ -416,10 +432,10 @@
 	<template id="world-section-template">
 		<section class="worldSection">
 			<div class="sectionHeading">
-				<div class="sectionTitle">
+				<button class="sectionTitle" type="button" data-action="show-section-lore">
 					<img data-field="section-icon" class="sectionIcon" alt="">
 					<h2><span data-field="section-name"></span></h2>
-				</div>
+				</button>
 				<strong data-field="section-resource">0</strong>
 			</div>
 			<div class="buttonGrid" data-field="section-buttons"></div>

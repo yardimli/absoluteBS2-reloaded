@@ -450,6 +450,22 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	display: flex;
 	align-items: center;
 	gap: 12px;
+	border: 0;
+	padding: 4px 10px 4px 4px;
+	border-radius: 20px;
+	background: transparent;
+	color: inherit;
+	text-align: left;
+	cursor: pointer;
+	transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.sectionTitle:hover,
+.sectionTitle:focus-visible {
+	background: rgba(255, 255, 255, 0.12);
+	transform: translateY(-1px);
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+	outline: none;
 }
 
 .sectionIcon {
@@ -829,9 +845,21 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	width: min(860px, 100%);
 }
 
+.sectionLorePanel {
+	width: min(780px, 100%);
+}
+
 .resourceBreakdownContent {
 	color: var(--muted);
 	line-height: 1.55;
+}
+
+.sectionLoreContent p {
+	margin: 0 0 14px;
+}
+
+.sectionLoreContent strong {
+	color: var(--text);
 }
 
 .resourceBreakdownContent h2 {

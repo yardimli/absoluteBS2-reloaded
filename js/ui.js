@@ -1,7 +1,7 @@
 import {game, debugMultiplier} from "./state.js";
 import {format, formatTime} from "./format.js";
 import {levelToColour, levelToXp, passiveLevelMultiplier, passiveResourceIncome} from "./progression.js";
-import {getModernTheme, themedImage, themedName} from "./themes.js";
+import {getModernTheme, themedIcon, themedImage, themedName} from "./themes.js";
 
 let currentPotionTooltip = 0;
 let dialogResolver = null;
@@ -25,6 +25,15 @@ function totalUnopenedCrates() {
 function resourceLabel(config, resourceId) {
 	const resource = config.resourceById[resourceId];
 	return themedName(resource) || resourceId;
+}
+
+function escapeHtml(value) {
+	return String(value ?? "")
+		.replaceAll("&", "&amp;")
+		.replaceAll("<", "&lt;")
+		.replaceAll(">", "&gt;")
+		.replaceAll('"', "&quot;")
+		.replaceAll("'", "&#39;");
 }
 
 function relicRows(config, resourceId) {
@@ -197,6 +206,31 @@ export function showResourceBreakdown(config, resourceId) {
 
 export function closeResourceBreakdown() {
 	document.getElementById("resourceBreakdownScreen").style.display = "none";
+}
+
+export function showSectionLore(config, resourceId) {
+	const resource = config.resourceById[resourceId];
+	if (!resource) return;
+	const theme = getModernTheme();
+	const lore = resource.lore?.[theme] || resource.lore?.liquid;
+	if (!lore) return;
+	const icon = themedIcon(resource);
+	const title = themedName(resource);
+	document.getElementById("sectionLoreTitle").textContent = title;
+	document.getElementById("sectionLoreEyebrow").textContent = theme === "tech" ? "Tech lore" : "Fantasy lore";
+	const iconElement = document.getElementById("sectionLoreIcon");
+	iconElement.src = icon || "images/brand-icon-256.png";
+	iconElement.alt = title;
+	document.getElementById("sectionLoreContent").innerHTML = `
+		<p>${escapeHtml(lore.origin)}</p>
+		<p><strong>Created by:</strong> ${escapeHtml(lore.createdBy)}</p>
+		<p><strong>Effects the chain:</strong> ${escapeHtml(lore.effects)}</p>
+	`;
+	document.getElementById("sectionLoreScreen").style.display = "block";
+}
+
+export function closeSectionLore() {
+	document.getElementById("sectionLoreScreen").style.display = "none";
 }
 
 

@@ -90,9 +90,11 @@ export function renderWorld(config) {
 		const tier = config.tierById[section.tier];
 		const fragment = document.getElementById("world-section-template").content.cloneNode(true);
 		const sectionElement = fragment.querySelector(".worldSection");
+		const titleElement = fragment.querySelector(".sectionTitle");
 		const nameElement = fragment.querySelector('[data-field="section-name"]');
 		const iconElement = fragment.querySelector('[data-field="section-icon"]');
 		const sectionIcon = themedIcon(config.resourceById[tier.gainResource]);
+		if (titleElement) titleElement.dataset.resourceId = tier.gainResource;
 		if (iconElement && sectionIcon) {
 			iconElement.src = sectionIcon;
 			iconElement.alt = themedName(config.resourceById[tier.gainResource]);
