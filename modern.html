@@ -231,6 +231,7 @@
 			</tbody>
 		</table>
 		<p><strong>Money income:</strong> each second you gain approximately <code>Multi x Money bonuses x (sqrt(Stone) + 1)</code>. For example, 100 Multi with no other bonuses produces about $100 per second. A 2x Money potion raises that to $200 per second. If you also have 9 Stone, the Stone multiplier is 4x, raising it to $800 per second.</p>
+		<p><strong>Passive upper-tier income:</strong> Prestige and every higher resource also creates the resource directly below it every tick. The per-minute amount is <code>upper resource x clamp(level / 10, 1, 10)</code>. For example, 100 Infernal at level 100 creates 1,000 Ascension per minute.</p>
 		<p><strong>Example of the resource chain:</strong> if a Multi button normally gives +80 Multi and you own 4 Prestige, it gives <code>80 x (4 + 1) = 400 Multi</code> before relics or potions. That new Multi then increases your Money income by 400 per second.</p>
 
 		<h2>Purchases and Resets</h2>
@@ -355,6 +356,7 @@
 
 			<h2>Credits Formula</h2>
 			<p><code>Nano-bots x Credit bonuses x (sqrt(Deuterium) + 1)</code>. Relics are permanent, power-ups last five minutes, and Deuterium comes from Fusion mining.</p>
+			<p><strong>Passive system output:</strong> Nano-machines and every higher system also fabricates the system directly below it every tick. The per-minute output is <code>upper system x clamp(level / 10, 1, 10)</code>. For example, 100 AI Singularity at level 100 creates 1,000 Synthetic council per minute.</p>
 
 			<h2>Resets</h2>
 			<p>Buying Nano-machines or any higher system resets the lower systems in the same way the default theme does. XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>

@@ -1,6 +1,6 @@
 import {game, debugMultiplier} from "./state.js";
 import {format, formatTime} from "./format.js";
-import {levelToColour, levelToXp} from "./progression.js";
+import {levelToColour, levelToXp, passiveLevelMultiplier, passiveResourceIncome} from "./progression.js";
 import {getModernTheme, themedImage, themedName} from "./themes.js";
 
 let currentPotionTooltip = 0;
@@ -56,6 +56,18 @@ function buttonTierRows(config, resourceId) {
 		});
 }
 
+function passiveGenerationRows(config, resourceId) {
+	return (config.progression.passiveGenerators || [])
+		.filter(generator => generator.targetResource === resourceId || generator.sourceResource === resourceId)
+		.map(generator => {
+			const rate = passiveResourceIncome(generator);
+			if (generator.targetResource === resourceId) {
+				return `<tr><td>${resourceLabel(config, generator.sourceResource)} passive generation</td><td>+${format(rate, 2)}/s, or +${format(rate.mul(generator.intervalSeconds), 2)}/min</td></tr>`;
+			}
+			return `<tr><td>Produces ${resourceLabel(config, generator.targetResource)}</td><td>+${format(rate, 2)}/s, or +${format(rate.mul(generator.intervalSeconds), 2)}/min</td></tr>`;
+		});
+}
+
 function resourceBreakdownHtml(config, resourceId) {
 	const resource = config.resourceById[resourceId];
 	const resourceIndex = config.progression.resources.findIndex(item => item.id === resourceId);
@@ -74,14 +86,17 @@ function resourceBreakdownHtml(config, resourceId) {
 		parent ? `<tr><td>${resourceLabel(config, parent)} chain multiplier</td><td>${format(parentMultiplier)}x</td></tr>` : "",
 		`<tr><td>Relic and potion multiplier</td><td>${format(relicPotionMultiplier, 2)}x</td></tr>`,
 		resourceId === "money" ? `<tr><td>Stone mining multiplier</td><td>${format(miningMultiplier, 2)}x</td></tr>` : "",
+		resourceId !== "money" ? `<tr><td>Level passive multiplier</td><td>${format(passiveLevelMultiplier(), 2)}x</td></tr>` : "",
 		resourceId === "money" ? `<tr><td>Estimated money per second</td><td>$${format(moneyPerSecond)}/s</td></tr>` : `<tr><td>Money translation</td><td>More ${themedName(resource)} improves the chain shown below; Money itself is produced by Multi.</td></tr>`
 	].filter(Boolean).join("");
 	const relics = relicRows(config, resourceId);
 	const potion = potionRow(config, resourceId);
 	const tiers = buttonTierRows(config, resourceId);
+	const passiveRows = passiveGenerationRows(config, resourceId);
 	return `
-		<p>${themedName(resource)} is part of the resource chain. Higher resources multiply gains for the tier below them; relics and active potions multiply the affected resource type.</p>
+		<p>${themedName(resource)} is part of the resource chain. Higher resources multiply button gains for the tier below them, and now also passively generate that lower tier every tick using your level multiplier.</p>
 		<table class="breakdownTable"><tbody>${rows}</tbody></table>
+		${passiveRows.length ? `<h2>Passive Generation</h2><table class="breakdownTable"><tbody>${passiveRows.join("")}</tbody></table>` : ""}
 		<h2>Bonus Items</h2>
 		<table class="breakdownTable">
 			<thead><tr><th>Item</th><th>Bonus</th><th>Total multiplier</th></tr></thead>

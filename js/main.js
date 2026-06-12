@@ -8,7 +8,7 @@ import {
 	saveState,
 	setDebugMultiplier
 } from "./state.js";
-import {buyButton, xpToLevel} from "./progression.js";
+import {applyPassiveResourceGeneration, buyButton, xpToLevel} from "./progression.js";
 import {
 	claimWorldFreeButton,
 	findWorldButton,
@@ -234,6 +234,7 @@ function updateSimulation() {
 			.mul(miningMoneyMultiplier(config))
 			.mul(elapsedSeconds)
 	);
+	applyPassiveResourceGeneration(config, elapsedSeconds);
 	let potionExpired = false;
 	game.potionCooldowns = game.potionCooldowns.map(cooldown => {
 		if (cooldown <= 0) return 0;

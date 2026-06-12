@@ -16,6 +16,13 @@
     {"id": "ascension", "className": "button5", "image": "images/button5.png", "costResource": "superPrestige", "gainResource": "ascension", "parentResource": "infernal", "relicIndex": 5, "xp": 64, "resets": ["money", "multi", "prestige", "power", "superPrestige"]},
     {"id": "infernal", "className": "button6", "image": "images/button6.png", "costResource": "ascension", "gainResource": "infernal", "parentResource": null, "relicIndex": 6, "xp": 256, "resets": ["money", "multi", "prestige", "power", "superPrestige", "ascension"]}
   ],
+  "passiveGenerators": [
+    {"sourceResource": "prestige", "targetResource": "multi", "intervalSeconds": 60},
+    {"sourceResource": "power", "targetResource": "prestige", "intervalSeconds": 60},
+    {"sourceResource": "superPrestige", "targetResource": "power", "intervalSeconds": 60},
+    {"sourceResource": "ascension", "targetResource": "superPrestige", "intervalSeconds": 60},
+    {"sourceResource": "infernal", "targetResource": "ascension", "intervalSeconds": 60}
+  ],
   "leveling": {
     "xpDivisor": 5,
     "levelExponent": 0.6,

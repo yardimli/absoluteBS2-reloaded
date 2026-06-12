@@ -182,15 +182,31 @@ export function updateAffectedButtons(config, purchasedTierId) {
 }
 
 export function updatePassiveIncomeButtons(config) {
-	document.querySelectorAll('[data-resource-header="money"]').forEach(element => {
-		element.textContent = `${resourceLabel(config, "money")}: ${format(game.money)}`;
+	const passiveResources = new Set(["money"]);
+	for (const generator of config.progression.passiveGenerators || []) {
+		passiveResources.add(generator.targetResource);
+	}
+	document.querySelectorAll("[data-resource-header]").forEach(element => {
+		if (!passiveResources.has(element.dataset.resourceHeader)) return;
+		const resourceId = element.dataset.resourceHeader;
+		element.textContent = `${resourceLabel(config, resourceId)}: ${format(game[resourceId])}`;
 	});
-	document.querySelectorAll('[data-action="buy-button"][data-tier="multi"]').forEach(element => {
+	document.querySelectorAll('[data-action="buy-button"]').forEach(element => {
 		const world = config.worldById[currentWorld];
-		const section = world.sections.find(item => item.tier === "multi");
-		const tier = config.tierById.multi;
-		const button = section.buttons[Number(element.dataset.buttonIndex)];
+		const tier = config.tierById[element.dataset.tier];
+		if (!passiveResources.has(tier.costResource) && !passiveResources.has(tier.parentResource)) return;
+		const tierSection = world.sections.find(item => item.tier === element.dataset.tier);
+		if (!tierSection) return;
+		const button = tierSection.buttons[Number(element.dataset.buttonIndex)];
 		setButtonAvailability(element, canBuyButton(tier, button));
+		setField(element, "gain-value", format(calculateButtonGain(config, tier, button)));
+	});
+	document.querySelectorAll('[data-action="free-resource"]').forEach(element => {
+		const section = config.worldById[currentWorld].sections.find(item => item.tier === element.dataset.tier);
+		const free = section?.freeButton;
+		if (!free || !passiveResources.has(free.requiredResource)) return;
+		const available = game[free.requiredResource].gte(free.requiredAmount) && game[free.targetResource].lt(free.amount);
+		setButtonAvailability(element, available);
 	});
 }
 

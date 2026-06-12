@@ -162,6 +162,7 @@
 	</table>
 
 	<p><b>Money income:</b> each second you gain approximately <code>Multi x Money bonuses x (sqrt(Stone) + 1)</code>. For example, 100 Multi with no other bonuses produces about $100 per second. A 2x Money potion raises that to $200 per second. If you also have 9 Stone, the Stone multiplier is 4x, raising it to $800 per second.</p>
+	<p><b>Passive upper-tier income:</b> Prestige and every higher resource also creates the resource directly below it every tick. The per-minute amount is <code>upper resource x clamp(level / 10, 1, 10)</code>. For example, 100 Infernal at level 100 creates 1,000 Ascension per minute.</p>
 	<p><b>Example of the resource chain:</b> if a Multi button normally gives +80 Multi and you own 4 Prestige, it gives <code>80 x (4 + 1) = 400 Multi</code> before relics or potions. That new Multi then increases your Money income by 400 per second.</p>
 
 	<h3>Purchases and Resets</h3>
