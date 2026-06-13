@@ -142,6 +142,8 @@ function activateButton(element) {
 	else if (action === "close-resource-breakdown") closeResourceBreakdown();
 	else if (action === "show-section-lore") showSectionLore(config, element.dataset.resourceId);
 	else if (action === "close-section-lore") closeSectionLore();
+	else if (action === "show-resources") document.body.classList.add("resourcesOpen");
+	else if (action === "hide-resources") document.body.classList.remove("resourcesOpen");
 	else if (action === "show-help") showHelp();
 	else if (action === "hide-help") hideHelp();
 	else if (action === "save") saveState();
@@ -178,6 +180,14 @@ function closeBackdropModal(element) {
 }
 
 document.addEventListener("click", event => {
+	if (
+		document.body.classList.contains("resourcesOpen") &&
+		!event.target.closest("#resourcesScreen") &&
+		!event.target.closest('[data-action="show-resources"]')
+	) {
+		document.body.classList.remove("resourcesOpen");
+		return;
+	}
 	if (event.target.id === "helpScreenOverlay") {
 		hideHelp();
 		return;

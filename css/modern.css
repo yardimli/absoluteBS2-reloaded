@@ -24,12 +24,16 @@ body[data-modern-theme="tech"] {
 }
 
 html {
-	min-height: 100%;
+	width: 100%;
+	height: 100%;
 	background: #0c1728;
+	overflow: hidden;
 }
 
 body {
-	min-height: 100vh;
+	width: 100%;
+	height: 100vh;
+	height: 100dvh;
 	margin: 0;
 	color: var(--text);
 	background-color: #0c1728;
@@ -41,8 +45,10 @@ body {
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
-	overflow-x: hidden;
+	overflow: hidden;
 	transition: background-image 500ms ease;
+	display: flex;
+	flex-direction: column;
 }
 
 body::before {
@@ -283,6 +289,11 @@ button,
 	transition: 180ms ease;
 }
 
+.navResources {
+	display: none;
+	background-image: url("../images/brand-icon.png");
+}
+
 .navImageButton::after {
 	content: attr(data-tooltip);
 	position: absolute;
@@ -356,16 +367,22 @@ body[data-modern-theme="tech"] .navMining {
 	position: relative;
 	z-index: 2;
 	width: 100%;
-	margin: 16px 0 60px;
+	flex: 1 1 auto;
+	min-height: 0;
+	margin: 16px 0 0;
 	padding: 0 8px;
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) 300px;
 	gap: 8px;
-	align-items: start;
+	align-items: stretch;
+	overflow: hidden;
 }
 
 .contentColumn {
 	min-width: 0;
+	min-height: 0;
+	overflow: auto;
+	padding-bottom: 16px;
 }
 
 #XPBarBack {
@@ -610,10 +627,17 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 }
 
 .resourceRail {
-	top:100px;
-	position: sticky;
+	position: relative;
+	min-height: 0;
+	max-height: 100%;
+	overflow: auto;
 	padding: 20px;
 	border-radius: 30px;
+}
+
+.resourceRailClose {
+	display: none;
+	margin-left: auto;
 }
 
 .railHeading {
@@ -1210,13 +1234,45 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 		flex-wrap: wrap;
 	}
 
+	.navResources {
+		display: inline-block;
+	}
+
 	.gameLayout {
 		grid-template-columns: 1fr;
 	}
 
 	.resourceRail {
-		position: static;
-		grid-row: 1;
+		position: fixed;
+		inset: 12px;
+		z-index: 60;
+		display: none;
+		max-height: none;
+		overflow: auto;
+	}
+
+	body.resourcesOpen .resourceRail {
+		display: flex;
+		flex-direction: column;
+	}
+
+	body.resourcesOpen .gameLayout {
+		z-index: 70;
+	}
+
+	body.resourcesOpen::before {
+		content: "";
+		position: fixed;
+		inset: 0;
+		z-index: 55;
+		display: block;
+		background: rgba(3, 8, 18, 0.52);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+	}
+
+	.resourceRailClose {
+		display: inline-flex;
 	}
 
 	.resourceList {
@@ -1260,6 +1316,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	}
 
 	.resourceRail {
+		inset: 8px;
 		padding: 16px;
 		border-radius: 24px;
 	}
