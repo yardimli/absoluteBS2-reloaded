@@ -296,6 +296,13 @@ export function previousWorld(config) {
 export function showWorldPurchase(config, worldId) {
 	const world = config.worldById[worldId];
 	if (!world) return;
+	const panel = document.querySelector("#worldPurchaseScreen .worldPurchaseModal");
+	if (panel) {
+		const backgrounds = themedBackgrounds(world);
+		const background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+		if (background) panel.style.setProperty("--world-purchase-background", `url("../${background}")`);
+		else panel.style.removeProperty("--world-purchase-background");
+	}
 	document.getElementById("worldPurchaseText").textContent = `Unlock world ${worldId}`;
 	document.getElementById("worldPurchaseButtonLabel").textContent = `Purchase world ${worldId}`;
 	document.getElementById("worldPurchaseButtonCost").textContent = `Costs $${format(world.unlockCost)}`;

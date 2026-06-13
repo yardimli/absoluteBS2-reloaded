@@ -848,6 +848,27 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	overflow: auto;
 }
 
+.worldPurchaseModal {
+	--world-purchase-background: none;
+	background-color: rgba(8, 16, 34, 0.6);
+}
+
+.worldPurchaseModal::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background-image: var(--world-purchase-background);
+	background-size: cover;
+	background-position: center;
+	opacity: 0.4;
+}
+
+.worldPurchaseModal > * {
+	position: relative;
+	z-index: 1;
+}
+
 .resourceBreakdownPanel {
 	width: min(860px, 100%);
 }

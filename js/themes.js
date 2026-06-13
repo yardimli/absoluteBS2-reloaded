@@ -16,9 +16,9 @@ export function applyModernTheme() {
 	const theme = getModernTheme();
 	document.body.dataset.modernTheme = theme;
 	const toggle = document.getElementById("modernThemeToggle");
-	if (toggle) toggle.textContent = theme === TECH_THEME ? "Liquid Theme" : "Tech Theme";
+	if (toggle) toggle.textContent = theme === TECH_THEME ? "Fantasy Theme" : "Tech Theme";
 	const brand = document.querySelector(".brandBlock strong");
-	if (brand) brand.textContent = theme === TECH_THEME ? "AI Society" : "Liquid Glass";
+	if (brand) brand.textContent = theme === TECH_THEME ? "AI Society" : "Fantasy Glass";
 	const labels = theme === TECH_THEME
 		? {navCrates: "Data caches", navRelics: "Relics", navPotions: "Power-ups", navMining: "Fusion mining"}
 		: {navCrates: "Crates", navRelics: "Relics", navPotions: "Potions", navMining: "Mining"};
