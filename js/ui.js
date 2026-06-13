@@ -271,7 +271,7 @@ export function updateVisuals(config) {
 		if (value) value.textContent = format(game[resource.id]);
 		const row = document.querySelector(`[data-resource-id="${resource.id}"]`);
 		if (row) {
-			const visibleDisplay = document.body.dataset.theme === "modern" ? "grid" : "inline";
+			const visibleDisplay = "flex";
 			row.style.display = !resource.unlockWorld || game.worldsUnlocked >= resource.unlockWorld ? visibleDisplay : "none";
 		}
 	}

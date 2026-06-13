@@ -1067,7 +1067,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	border-radius: 32px;
 	overflow: hidden;
 	background-color: var(--glass-strong);
-	display: flex;
+	display: none;
 	flex-direction: column;
 }
 
