@@ -17,9 +17,57 @@ function setOptionalField(root, field, value) {
 }
 
 function setButtonAvailability(element, available) {
+	const changed = element.disabled === available;
 	element.disabled = !available;
 	element.setAttribute("aria-disabled", available ? "false" : "true");
 	element.style.filter = available ? "none" : "brightness(70%)";
+	return changed;
+}
+
+function buttonGridCapacity(grid, buttons) {
+	if (!buttons.length) return 0;
+	const style = window.getComputedStyle(grid);
+	const gap = Number.parseFloat(style.columnGap || style.gap) || 0;
+	const width = grid.clientWidth || grid.getBoundingClientRect().width;
+	const maxButtonWidth = 150;
+	if (window.matchMedia("(max-width: 700px)").matches) return Math.min(4, buttons.length);
+	return Math.max(1, Math.min(buttons.length, Math.floor((width + gap) / (maxButtonWidth + gap))));
+}
+
+function updateButtonGridSize(grid, visibleCount) {
+	const style = window.getComputedStyle(grid);
+	const gap = Number.parseFloat(style.columnGap || style.gap) || 0;
+	const width = grid.clientWidth || grid.getBoundingClientRect().width;
+	const targetCount = window.matchMedia("(max-width: 700px)").matches ? Math.max(visibleCount, 4) : visibleCount;
+	const calculated = (width - gap * Math.max(targetCount - 1, 0)) / targetCount;
+	const size = Math.max(1, Math.min(150, calculated));
+	grid.style.setProperty("--button-size", `${size}px`);
+}
+
+function visibleButtonsForCapacity(buttons, capacity) {
+	if (buttons.length <= capacity) return new Set(buttons);
+	const enabled = buttons.filter(button => !button.disabled);
+	if (enabled.length >= capacity) return new Set(enabled.slice(-capacity));
+	const visible = new Set(enabled);
+	for (const button of buttons) {
+		if (visible.size >= capacity) break;
+		visible.add(button);
+	}
+	return visible;
+}
+
+export function updateButtonGridVisibility() {
+	document.querySelectorAll(".buttonGrid").forEach(grid => {
+		const buttons = Array.from(grid.querySelectorAll(".button"));
+		const capacity = buttonGridCapacity(grid, buttons);
+		const visibleButtons = visibleButtonsForCapacity(buttons, capacity);
+		const visibleCount = Math.max(visibleButtons.size, 1);
+		grid.style.setProperty("--visible-buttons", visibleCount);
+		updateButtonGridSize(grid, visibleCount);
+		buttons.forEach(button => {
+			button.style.display = visibleButtons.has(button) ? "flex" : "none";
+		});
+	});
 }
 
 function resourceLabel(config, resourceId) {
@@ -113,6 +161,7 @@ export function renderWorld(config) {
 	}
 	document.getElementById("previousWorldButton").style.display = currentWorld === 1 ? "none" : "inline-block";
 	updateWorldButtons(config);
+	updateButtonGridVisibility();
 }
 
 export function updateWorldButtons(config) {
@@ -134,6 +183,7 @@ export function updateWorldButtons(config) {
 		const available = game[free.requiredResource].gte(free.requiredAmount) && game[free.targetResource].lt(free.amount);
 		setButtonAvailability(element, available);
 	});
+	updateButtonGridVisibility();
 }
 
 function affectedTiers(config, purchasedTier) {
@@ -181,10 +231,12 @@ export function updateAffectedButtons(config, purchasedTierId) {
 		const available = game[free.requiredResource].gte(free.requiredAmount) && game[free.targetResource].lt(free.amount);
 		setButtonAvailability(element, available);
 	});
+	updateButtonGridVisibility();
 }
 
 export function updatePassiveIncomeButtons(config) {
 	const passiveResources = new Set(["money"]);
+	let visibilityChanged = false;
 	for (const generator of config.progression.passiveGenerators || []) {
 		passiveResources.add(generator.targetResource);
 	}
@@ -200,7 +252,8 @@ export function updatePassiveIncomeButtons(config) {
 		const tierSection = world.sections.find(item => item.tier === element.dataset.tier);
 		if (!tierSection) return;
 		const button = tierSection.buttons[Number(element.dataset.buttonIndex)];
-		setButtonAvailability(element, canBuyButton(tier, button));
+		const changed = setButtonAvailability(element, canBuyButton(tier, button));
+		visibilityChanged = visibilityChanged || changed;
 		setField(element, "gain-value", format(calculateButtonGain(config, tier, button)));
 	});
 	document.querySelectorAll('[data-action="free-resource"]').forEach(element => {
@@ -208,8 +261,10 @@ export function updatePassiveIncomeButtons(config) {
 		const free = section?.freeButton;
 		if (!free || !passiveResources.has(free.requiredResource)) return;
 		const available = game[free.requiredResource].gte(free.requiredAmount) && game[free.targetResource].lt(free.amount);
-		setButtonAvailability(element, available);
+		const changed = setButtonAvailability(element, available);
+		visibilityChanged = visibilityChanged || changed;
 	});
+	if (visibilityChanged) updateButtonGridVisibility();
 }
 
 export function findWorldButton(config, tierId, buttonIndex) {

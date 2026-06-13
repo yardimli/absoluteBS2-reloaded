@@ -490,19 +490,25 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 }
 
 .buttonGrid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(112px, 142px));
-	gap: 10px;
+	--button-grid-gap: 10px;
+	--visible-buttons: 1;
+	--button-size: 150px;
+	display: flex;
+	flex-wrap: nowrap;
+	gap: var(--button-grid-gap);
+	overflow: hidden;
+	justify-content: flex-start;
 }
 
 .button {
 	position: relative;
 	--button-text: #f8fbff;
 	--button-text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85), 0 0 8px rgba(0, 0, 0, 0.55);
-	width: 100%;
+	width: var(--button-size);
+	max-width: var(--button-size);
 	aspect-ratio: 1;
 	min-height: 0;
-	padding: 15%;
+	/*padding: 15%;*/
 	border: 0;
 	/*border-radius: 18px;*/
 	overflow: hidden;
@@ -519,6 +525,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	justify-content: center;
 	/*gap: 8px;*/
 	text-shadow: var(--button-text-shadow);
+	flex: 0 0 var(--button-size);
 }
 
 .button.button1 {
@@ -1243,12 +1250,12 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	}
 
 	.worldSection {
-		padding: 16px;
+		padding: 8px;
 		border-radius: 24px;
 	}
 
 	.buttonGrid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		--button-grid-gap: 3px;
 	}
 
 	.button {

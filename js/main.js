@@ -17,6 +17,7 @@ import {
 	purchaseWorld,
 	renderWorld,
 	updateAffectedButtons,
+	updateButtonGridVisibility,
 	updatePassiveIncomeButtons,
 	updateWorldButtons
 } from "./worlds.js";
@@ -229,6 +230,15 @@ document.getElementById("buttons").addEventListener("mouseover", event => {
 	if (!mouseDown) return;
 	const element = event.target.closest('[data-action="buy-button"]');
 	if (element) activateButton(element);
+});
+
+let buttonGridResizeFrame = 0;
+window.addEventListener("resize", () => {
+	if (buttonGridResizeFrame) cancelAnimationFrame(buttonGridResizeFrame);
+	buttonGridResizeFrame = requestAnimationFrame(() => {
+		buttonGridResizeFrame = 0;
+		updateButtonGridVisibility();
+	});
 });
 
 function updateSimulation() {
