@@ -259,6 +259,29 @@ button,
 	font-size: 1rem;
 }
 
+.circleButton[data-action^="close-"],
+.circleButton[data-action="hide-help"],
+.resourceRailClose,
+.messageDialogClose {
+	border: 0;
+	background-color: transparent;
+	background-image: url("../images/modern/close-fantasy.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	box-shadow: none;
+	font-size: 0;
+	line-height: 0;
+	filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.28));
+}
+
+body[data-modern-theme="tech"] .circleButton[data-action^="close-"],
+body[data-modern-theme="tech"] .circleButton[data-action="hide-help"],
+body[data-modern-theme="tech"] .resourceRailClose,
+body[data-modern-theme="tech"] .messageDialogClose {
+	background-image: url("../images/modern/tech/close-tech.png");
+}
+
 .primaryNav {
 	display: flex;
 	justify-content: flex-end;
@@ -893,6 +916,15 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	z-index: 1;
 }
 
+.worldPurchaseModal .modalClose {
+	z-index: 3;
+}
+
+.worldPurchaseModal h1,
+.worldPurchaseModal .eyebrow {
+	padding-inline: 48px;
+}
+
 .resourceBreakdownPanel {
 	width: min(860px, 100%);
 }
@@ -1330,7 +1362,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	}
 
 	.worldSection {
-		padding: 8px;
+		padding: 4px;
 		border-radius: 24px;
 	}
 
@@ -1343,6 +1375,12 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 		padding: 14%;
 		/*border-radius: 19px;*/
 	}
+
+	.sectionHeading {
+		gap: 4px;
+		margin-bottom: 4px;
+	}
+
 
 	.modalShell {
 		padding: 8px;

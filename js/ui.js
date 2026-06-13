@@ -42,7 +42,8 @@ function relicRows(config, resourceId) {
 		.filter(({relic}) => relic?.resource === resourceId)
 		.map(({relic, amount}) => {
 			const total = relic.bonus * amount;
-			return `<tr><td>${themedName(relic)} x${amount}</td><td>+${format(new Decimal(total * 100), 2)}%</td><td>${format(new Decimal(1 + total), 2)}x</td></tr>`;
+			const resource = resourceLabel(config, relic.resource);
+			return `<tr><td>${themedName(relic)} x${amount}</td><td>Affects ${resource}: +${format(new Decimal(total * 100), 2)}%</td><td>${format(new Decimal(1 + total), 2)}x ${resource} gain</td></tr>`;
 		});
 }
 
@@ -50,7 +51,8 @@ function potionRow(config, resourceId) {
 	const potion = config.potions.items.find(item => item.resource === resourceId);
 	if (!potion) return "";
 	const active = game.potionCooldowns[potion.id] > 0;
-	return `<tr><td>${themedName(potion)}</td><td>${active ? "Active" : "Inactive"}</td><td>${active ? `${config.potions.multiplier}x for ${formatTime(game.potionCooldowns[potion.id])}` : "No current bonus"}</td></tr>`;
+	const resource = resourceLabel(config, potion.resource);
+	return `<tr><td>${themedName(potion)}</td><td>Affects ${resource}: ${active ? "Active" : "Inactive"}</td><td>${active ? `${config.potions.multiplier}x ${resource} gain for ${formatTime(game.potionCooldowns[potion.id])}` : "No current bonus"}</td></tr>`;
 }
 
 function buttonTierRows(config, resourceId) {
@@ -285,7 +287,7 @@ export function updateVisuals(config) {
 	if (currentPotionTooltip) {
 		const potion = config.potionById[currentPotionTooltip - 1];
 		document.getElementById("potionTooltip").textContent =
-			`${themedName(potion)}: ${formatTime(game.potionCooldowns[potion.id])}`;
+			`${themedName(potion)} affects ${resourceLabel(config, potion.resource)}: ${formatTime(game.potionCooldowns[potion.id])}`;
 	}
 	document.getElementById("level").textContent = format(game.level);
 	document.getElementById("bottomBar").style.backgroundColor = levelToColour(game.level.toNumber());

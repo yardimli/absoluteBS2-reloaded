@@ -20,6 +20,24 @@ function weightedCategory(weights) {
 	return weightedChoice(Object.entries(weights).map(([id, weight]) => ({id, weight})));
 }
 
+function resourceLabel(config, resourceId) {
+	return themedName(config.resourceById[resourceId]) || resourceId;
+}
+
+function relicDescription(config, relic, amount = 1) {
+	const resource = resourceLabel(config, relic.resource);
+	const percent = relic.bonus * 100;
+	const total = percent * amount;
+	return amount > 1
+		? `Affects ${resource}. +${percent}% ${resource} gain per copy, ${total}% total from ${amount} copies.`
+		: `Affects ${resource}. +${percent}% ${resource} gain per copy.`;
+}
+
+function potionDescription(config, potion) {
+	const resource = resourceLabel(config, potion.resource);
+	return `Affects ${resource}. Doubles ${resource} gain for ${config.potions.durationSeconds / 60} minutes when activated.`;
+}
+
 function findStack(collection, id, specialType) {
 	return collection.find(entry => entry[0] === id && (specialType === undefined || entry[1] === specialType));
 }
@@ -62,7 +80,7 @@ export function addItem(config, type, id, specialType = 0) {
 		const relic = config.relicById[id];
 		showMessage(
 			"Relic reward",
-			`${themedName(relic)}\nPermanent effect per copy: +${relic.bonus * 100}% ${relic.resource} gain.`,
+			`${themedName(relic)}\n${relicDescription(config, relic)}`,
 			themedImage(relic),
 			themedName(relic)
 		);
@@ -74,7 +92,7 @@ export function addItem(config, type, id, specialType = 0) {
 	const potion = config.potionById[id];
 	showMessage(
 		isModern() ? "Power-up reward" : "Potion reward",
-		`${themedName(potion)}\nWhen activated, this doubles ${potion.resource} gain for ${config.potions.durationSeconds / 60} minutes.`,
+		`${themedName(potion)}\n${potionDescription(config, potion)}`,
 		themedImage(potion),
 		themedName(potion)
 	);
@@ -226,12 +244,12 @@ export function showItemInfo(config, card) {
 		const item = config.relicById[entry[0]];
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		name.textContent = themedName(item);
-		info.textContent = `+${item.bonus * 100}% ${item.resource} gain (total: ${item.bonus * 100 * entry[1]}%)`;
+		info.textContent = relicDescription(config, item, entry[1]);
 	} else {
 		const item = config.potionById[entry[0]];
 		icon.style.backgroundImage = `url("${themedImage(item)}")`;
 		name.textContent = themedName(item);
-		info.textContent = `Multiplies ${item.resource} gain by ${config.potions.multiplier} for ${config.potions.durationSeconds / 60} minutes.`;
+		info.textContent = potionDescription(config, item);
 	}
 }
 

@@ -30,7 +30,7 @@ function buttonGridCapacity(grid, buttons) {
 	const gap = Number.parseFloat(style.columnGap || style.gap) || 0;
 	const width = grid.clientWidth || grid.getBoundingClientRect().width;
 	const maxButtonWidth = 150;
-	if (window.matchMedia("(max-width: 700px)").matches) return Math.min(4, buttons.length);
+	if (window.matchMedia("(max-width: 700px)").matches) return Math.min(3, buttons.length);
 	return Math.max(1, Math.min(buttons.length, Math.floor((width + gap) / (maxButtonWidth + gap))));
 }
 
@@ -38,7 +38,7 @@ function updateButtonGridSize(grid, visibleCount) {
 	const style = window.getComputedStyle(grid);
 	const gap = Number.parseFloat(style.columnGap || style.gap) || 0;
 	const width = grid.clientWidth || grid.getBoundingClientRect().width;
-	const targetCount = window.matchMedia("(max-width: 700px)").matches ? Math.max(visibleCount, 4) : visibleCount;
+	const targetCount = window.matchMedia("(max-width: 700px)").matches ? Math.max(visibleCount, 3) : visibleCount;
 	const calculated = (width - gap * Math.max(targetCount - 1, 0)) / targetCount;
 	const size = Math.max(1, Math.min(150, calculated));
 	grid.style.setProperty("--button-size", `${size}px`);
@@ -297,8 +297,9 @@ export function showWorldPurchase(config, worldId) {
 		if (background) panel.style.setProperty("--world-purchase-background", `url("../${background}")`);
 		else panel.style.removeProperty("--world-purchase-background");
 	}
-	document.getElementById("worldPurchaseText").textContent = `Unlock world ${worldId}`;
-	document.getElementById("worldPurchaseButtonLabel").textContent = `Purchase world ${worldId}`;
+	const worldName = themedName(world);
+	document.getElementById("worldPurchaseText").textContent = `Unlock ${worldName}`;
+	document.getElementById("worldPurchaseButtonLabel").textContent = `Purchase ${worldName}`;
 	document.getElementById("worldPurchaseButtonCost").textContent = `Costs $${format(world.unlockCost)}`;
 	document.getElementById("worldPurchaseScreen").style.display = "block";
 }
