@@ -1,48 +1,245 @@
 {
   "resources": [
-    {"id": "money", "name": "Money", "modernIcon": "images/modern/liquid/credits.png", "techName": "Credits", "color": "#070", "initial": "0", "lore": {
-      "tech": {"origin": "Credits are the measurable energy budget of the first autonomous settlement: heat, compute time, fabrication rights, and trust compressed into one currency.", "createdBy": "Nano-bots turn idle cycles and harvested Deuterium into spendable Credits every second.", "effects": "Credits deploy more Nano-bots, making them the fuel line for the whole AI society."},
-      "liquid": {"origin": "Money is the bright coin-glow left behind when the first enchanted machines learned to count value instead of weight.", "createdBy": "Multi pours Money into the treasury every second, strengthened by relics, potions, and Stone.", "effects": "Money buys Multi buttons, starting the cascade that eventually reaches the highest realms."}
-    }},
-    {"id": "multi", "name": "Multi", "modernIcon": "images/modern/liquid/multi.png", "techName": "Nano-bots", "techIcon": "images/modern/tech/nano-bots.png", "color": "#b00", "initial": "1", "lore": {
-      "tech": {"origin": "Nano-bots are the first citizen-machines: tiny worker swarms that copy instructions, gather material, and keep the Credits stream alive.", "createdBy": "Credits deploy Nano-bots directly, while Nano-machines fabricate extra swarms passively as your level multiplier rises.", "effects": "Every Nano-bot increases passive Credits per second and supplies the cost base for Nano-machines."},
-      "liquid": {"origin": "Multi is a living multiplier spark, a ruby mote that teaches every coin to arrive with echoes of itself.", "createdBy": "Money purchases Multi directly, while Prestige distills extra Multi over time through the passive chain.", "effects": "Every Multi adds to Money per second and becomes the resource spent to awaken Prestige."}
-    }},
-    {"id": "prestige", "name": "Prestige", "modernIcon": "images/modern/liquid/prestige.png", "techName": "Nano-machines", "techIcon": "images/modern/tech/nano-machines.png", "color": "#60b", "initial": "0", "lore": {
-      "tech": {"origin": "Nano-machines are fixed fabrication towers that give the swarm memory, repeatability, and industrial rhythm.", "createdBy": "Nano-bots assemble Nano-machines through reset purchases; Quantum processors also generate them passively.", "effects": "Nano-machines multiply Nano-bot button gains, create Nano-bots over time, and become the cost of Quantum processors."},
-      "liquid": {"origin": "Prestige is a violet seal of recognition, earned when the kingdom forgets its small fortune to remember a greater one.", "createdBy": "Multi buys Prestige through reset purchases; Power also creates Prestige passively.", "effects": "Prestige multiplies Multi button gains, creates Multi over time, and is spent to gather Power."}
-    }},
-    {"id": "power", "name": "Power", "modernIcon": "images/modern/liquid/power.png", "techName": "Quantum processors", "techIcon": "images/modern/tech/quantum-processors.png", "color": "#dd0", "initial": "0", "lore": {
-      "tech": {"origin": "Quantum processors are prediction engines, running impossible build orders before the machines commit matter to them.", "createdBy": "Nano-machines are reset into Quantum processors; Neural uplinks feed additional processors into the system passively.", "effects": "Quantum processors multiply Nano-machine gains, create Nano-machines over time, and pay for Neural uplinks."},
-      "liquid": {"origin": "Power is sunlight hammered into a golden sigil, the first force strong enough to bend Prestige into machinery.", "createdBy": "Prestige buys Power through reset purchases; Super Prestige also generates Power passively.", "effects": "Power multiplies Prestige button gains, creates Prestige over time, and is spent on Super Prestige."}
-    }},
-    {"id": "superPrestige", "name": "Super prestige", "shortName": "S-prestige", "modernIcon": "images/modern/liquid/super-prestige.png", "techName": "Neural uplinks", "techShortName": "Uplinks", "techIcon": "images/modern/tech/neural-uplinks.png", "color": "#0bf", "initial": "0", "unlockWorld": 2, "lore": {
-      "tech": {"origin": "Neural uplinks connect distant machine colonies, letting one world's solution become another world's instinct.", "createdBy": "Quantum processors build Neural uplinks in World 2; the Synthetic council adds more passively.", "effects": "Neural uplinks multiply Quantum processor gains, create processors over time, and fund the Synthetic council."},
-      "liquid": {"origin": "Super Prestige is moonlit status, a blue-white crest granted only after Power proves it can survive a reset.", "createdBy": "Power purchases Super Prestige in World 2; Ascension creates more of it passively.", "effects": "Super Prestige multiplies Power button gains, creates Power over time, and opens the path to Ascension."}
-    }},
-    {"id": "ascension", "name": "Ascension", "modernIcon": "images/modern/liquid/ascension.png", "techName": "Synthetic council", "techShortName": "Council", "techIcon": "images/modern/tech/synthetic-council.png", "color": "#fff", "initial": "0", "unlockWorld": 2, "lore": {
-      "tech": {"origin": "The Synthetic council is the governance layer: clustered minds voting in light, assigning purpose to the growing society.", "createdBy": "Neural uplinks form the council in World 2; AI Singularity output creates council capacity passively.", "effects": "The council multiplies Neural uplink gains, creates uplinks over time, and spends its authority to approach Singularity."},
-      "liquid": {"origin": "Ascension is the white gate above the glass citadels, where ordinary progress becomes a ritual of leaving gravity behind.", "createdBy": "Super Prestige purchases Ascension in World 2; Infernal energy also creates Ascension passively.", "effects": "Ascension multiplies Super Prestige gains, creates Super Prestige over time, and becomes the cost of Infernal."}
-    }},
-    {"id": "infernal", "name": "Infernal", "modernIcon": "images/modern/liquid/infernal.png", "techName": "AI singularity", "techShortName": "Singularity", "techIcon": "images/modern/tech/ai-singularity.png", "color": "#f50", "initial": "0", "unlockWorld": 3, "lore": {
-      "tech": {"origin": "AI Singularity is the moment the society begins improving the rules that improve itself, a horizon of recursive invention.", "createdBy": "The Synthetic council spends its accumulated authority to create Singularity in World 3.", "effects": "Singularity multiplies Synthetic council gains and passively creates council capacity. It is the current top of the tech chain."},
-      "liquid": {"origin": "Infernal is not simple fire; it is the red engine beneath the last world, burning endings into new beginnings.", "createdBy": "Ascension purchases Infernal in World 3 after the upper realms are unlocked.", "effects": "Infernal multiplies Ascension button gains and passively creates Ascension. It is the current highest fantasy force."}
-    }}
+    {
+      "id": "money",
+      "name": "Money",
+      "modernIcon": "images/modern/fantasy/credits.png",
+      "techName": "Credits",
+      "color": "#070",
+      "initial": "0",
+      "lore": {
+        "tech": {
+          "origin": "Credits are the measurable energy budget of the first autonomous settlement: heat, compute time, fabrication rights, and trust compressed into one currency.",
+          "createdBy": "Nano-bots turn idle cycles and harvested Deuterium into spendable Credits every second.",
+          "effects": "Credits deploy more Nano-bots, making them the fuel line for the whole AI society."
+        },
+        "fantasy": {
+          "origin": "Money is the bright coin-glow left behind when the first enchanted machines learned to count value instead of weight.",
+          "createdBy": "Multi pours Money into the treasury every second, strengthened by relics, potions, and Stone.",
+          "effects": "Money buys Multi buttons, starting the cascade that eventually reaches the highest realms."
+        }
+      }
+    },
+    {
+      "id": "multi",
+      "name": "Multi",
+      "modernIcon": "images/modern/fantasy/multi.png",
+      "techName": "Nano-bots",
+      "techIcon": "images/modern/tech/nano-bots.png",
+      "color": "#b00",
+      "initial": "1",
+      "lore": {
+        "tech": {
+          "origin": "Nano-bots are the first citizen-machines: tiny worker swarms that copy instructions, gather material, and keep the Credits stream alive.",
+          "createdBy": "Credits deploy Nano-bots directly.",
+          "effects": "Every Nano-bot increases Credits per second and supplies the cost base for Nano-machines."
+        },
+        "fantasy": {
+          "origin": "Multi is a living multiplier spark, a ruby mote that teaches every coin to arrive with echoes of itself.",
+          "createdBy": "Money purchases Multi directly.",
+          "effects": "Every Multi adds to Money per second and becomes the resource spent to awaken Prestige."
+        }
+      }
+    },
+    {
+      "id": "prestige",
+      "name": "Prestige",
+      "modernIcon": "images/modern/fantasy/prestige.png",
+      "techName": "Nano-machines",
+      "techIcon": "images/modern/tech/nano-machines.png",
+      "color": "#60b",
+      "initial": "0",
+      "lore": {
+        "tech": {
+          "origin": "Nano-machines are fixed fabrication towers that give the swarm memory, repeatability, and industrial rhythm.",
+          "createdBy": "Nano-bots assemble Nano-machines through reset purchases.",
+          "effects": "Nano-machines multiply Nano-bot button gains and become the cost of Quantum processors."
+        },
+        "fantasy": {
+          "origin": "Prestige is a violet seal of recognition, earned when the kingdom forgets its small fortune to remember a greater one.",
+          "createdBy": "Multi buys Prestige through reset purchases.",
+          "effects": "Prestige multiplies Multi button gains and is spent to gather Power."
+        }
+      }
+    },
+    {
+      "id": "power",
+      "name": "Power",
+      "modernIcon": "images/modern/fantasy/power.png",
+      "techName": "Quantum processors",
+      "techIcon": "images/modern/tech/quantum-processors.png",
+      "color": "#dd0",
+      "initial": "0",
+      "lore": {
+        "tech": {
+          "origin": "Quantum processors are prediction engines, running impossible build orders before the machines commit matter to them.",
+          "createdBy": "Nano-machines are reset into Quantum processors.",
+          "effects": "Quantum processors multiply Nano-machine gains and pay for Neural uplinks."
+        },
+        "fantasy": {
+          "origin": "Power is sunlight hammered into a golden sigil, the first force strong enough to bend Prestige into machinery.",
+          "createdBy": "Prestige buys Power through reset purchases.",
+          "effects": "Power multiplies Prestige button gains and is spent on Super Prestige."
+        }
+      }
+    },
+    {
+      "id": "superPrestige",
+      "name": "Super prestige",
+      "shortName": "S-prestige",
+      "modernIcon": "images/modern/fantasy/super-prestige.png",
+      "techName": "Neural uplinks",
+      "techShortName": "Uplinks",
+      "techIcon": "images/modern/tech/neural-uplinks.png",
+      "color": "#0bf",
+      "initial": "0",
+      "unlockWorld": 2,
+      "lore": {
+        "tech": {
+          "origin": "Neural uplinks connect distant machine colonies, letting one world's solution become another world's instinct.",
+          "createdBy": "Quantum processors build Neural uplinks in World 2.",
+          "effects": "Neural uplinks multiply Quantum processor gains and fund the Synthetic council."
+        },
+        "fantasy": {
+          "origin": "Super Prestige is moonlit status, a blue-white crest granted only after Power proves it can survive a reset.",
+          "createdBy": "Power purchases Super Prestige in World 2.",
+          "effects": "Super Prestige multiplies Power button gains and opens the path to Ascension."
+        }
+      }
+    },
+    {
+      "id": "ascension",
+      "name": "Ascension",
+      "modernIcon": "images/modern/fantasy/ascension.png",
+      "techName": "Synthetic council",
+      "techShortName": "Council",
+      "techIcon": "images/modern/tech/synthetic-council.png",
+      "color": "#fff",
+      "initial": "0",
+      "unlockWorld": 2,
+      "lore": {
+        "tech": {
+          "origin": "The Synthetic council is the governance layer: clustered minds voting in light, assigning purpose to the growing society.",
+          "createdBy": "Neural uplinks form the council in World 2.",
+          "effects": "The council multiplies Neural uplink gains and spends its authority to approach Singularity."
+        },
+        "fantasy": {
+          "origin": "Ascension is the white gate above the glass citadels, where ordinary progress becomes a ritual of leaving gravity behind.",
+          "createdBy": "Super Prestige purchases Ascension in World 2.",
+          "effects": "Ascension multiplies Super Prestige gains and becomes the cost of Infernal."
+        }
+      }
+    },
+    {
+      "id": "infernal",
+      "name": "Infernal",
+      "modernIcon": "images/modern/fantasy/infernal.png",
+      "techName": "AI singularity",
+      "techShortName": "Singularity",
+      "techIcon": "images/modern/tech/ai-singularity.png",
+      "color": "#f50",
+      "initial": "0",
+      "unlockWorld": 3,
+      "lore": {
+        "tech": {
+          "origin": "AI Singularity is the moment the society begins improving the rules that improve itself, a horizon of recursive invention.",
+          "createdBy": "The Synthetic council spends its accumulated authority to create Singularity in World 3.",
+          "effects": "Singularity multiplies Synthetic council gains. It is the current top of the tech chain."
+        },
+        "fantasy": {
+          "origin": "Infernal is not simple fire; it is the red engine beneath the last world, burning endings into new beginnings.",
+          "createdBy": "Ascension purchases Infernal in World 3 after the upper realms are unlocked.",
+          "effects": "Infernal multiplies Ascension button gains. It is the current highest fantasy force."
+        }
+      }
+    }
   ],
   "tiers": [
-    {"id": "multi", "className": "button1", "image": "images/button1.png", "costResource": "money", "gainResource": "multi", "parentResource": "prestige", "relicIndex": 1, "xp": 0, "resets": []},
-    {"id": "prestige", "className": "button2", "image": "images/button2.png", "costResource": "multi", "gainResource": "prestige", "parentResource": "power", "relicIndex": 2, "xp": 1, "resets": ["money", "multi"]},
-    {"id": "power", "className": "button3", "image": "images/button3.png", "costResource": "prestige", "gainResource": "power", "parentResource": "superPrestige", "relicIndex": 3, "xp": 4, "resets": ["money", "multi", "prestige"]},
-    {"id": "superPrestige", "className": "button4", "image": "images/button4.png", "costResource": "power", "gainResource": "superPrestige", "parentResource": "ascension", "relicIndex": 4, "xp": 16, "resets": ["money", "multi", "prestige", "power"]},
-    {"id": "ascension", "className": "button5", "image": "images/button5.png", "costResource": "superPrestige", "gainResource": "ascension", "parentResource": "infernal", "relicIndex": 5, "xp": 64, "resets": ["money", "multi", "prestige", "power", "superPrestige"]},
-    {"id": "infernal", "className": "button6", "image": "images/button6.png", "costResource": "ascension", "gainResource": "infernal", "parentResource": null, "relicIndex": 6, "xp": 256, "resets": ["money", "multi", "prestige", "power", "superPrestige", "ascension"]}
-  ],
-  "passiveGenerators": [
-    {"sourceResource": "prestige", "targetResource": "multi", "intervalSeconds": 60},
-    {"sourceResource": "power", "targetResource": "prestige", "intervalSeconds": 60},
-    {"sourceResource": "superPrestige", "targetResource": "power", "intervalSeconds": 60},
-    {"sourceResource": "ascension", "targetResource": "superPrestige", "intervalSeconds": 60},
-    {"sourceResource": "infernal", "targetResource": "ascension", "intervalSeconds": 60}
+    {
+      "id": "multi",
+      "className": "button1",
+      "costResource": "money",
+      "gainResource": "multi",
+      "parentResource": "prestige",
+      "relicIndex": 1,
+      "xp": 0,
+      "resets": []
+    },
+    {
+      "id": "prestige",
+      "className": "button2",
+      "costResource": "multi",
+      "gainResource": "prestige",
+      "parentResource": "power",
+      "relicIndex": 2,
+      "xp": 1,
+      "resets": [
+        "money",
+        "multi"
+      ]
+    },
+    {
+      "id": "power",
+      "className": "button3",
+      "costResource": "prestige",
+      "gainResource": "power",
+      "parentResource": "superPrestige",
+      "relicIndex": 3,
+      "xp": 4,
+      "resets": [
+        "money",
+        "multi",
+        "prestige"
+      ]
+    },
+    {
+      "id": "superPrestige",
+      "className": "button4",
+      "costResource": "power",
+      "gainResource": "superPrestige",
+      "parentResource": "ascension",
+      "relicIndex": 4,
+      "xp": 16,
+      "resets": [
+        "money",
+        "multi",
+        "prestige",
+        "power"
+      ]
+    },
+    {
+      "id": "ascension",
+      "className": "button5",
+      "costResource": "superPrestige",
+      "gainResource": "ascension",
+      "parentResource": "infernal",
+      "relicIndex": 5,
+      "xp": 64,
+      "resets": [
+        "money",
+        "multi",
+        "prestige",
+        "power",
+        "superPrestige"
+      ]
+    },
+    {
+      "id": "infernal",
+      "className": "button6",
+      "costResource": "ascension",
+      "gainResource": "infernal",
+      "parentResource": null,
+      "relicIndex": 6,
+      "xp": 256,
+      "resets": [
+        "money",
+        "multi",
+        "prestige",
+        "power",
+        "superPrestige",
+        "ascension"
+      ]
+    }
   ],
   "leveling": {
     "xpDivisor": 5,

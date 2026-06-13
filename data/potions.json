@@ -2,10 +2,45 @@
   "durationSeconds": 300,
   "multiplier": 2,
   "items": [
-    {"id": 0, "name": "Money potion", "techName": "Credit overclock", "image": "images/potion1.png", "modernImage": "images/modern/potion-1.png", "techImage": "images/modern/tech/potion-1.png", "resource": "money"},
-    {"id": 1, "name": "Multi potion", "techName": "Nanobot surge", "image": "images/potion2.png", "modernImage": "images/modern/potion-2.png", "techImage": "images/modern/tech/potion-2.png", "resource": "multi"},
-    {"id": 2, "name": "Prestige potion", "techName": "Nano-machine uplink", "image": "images/potion3.png", "modernImage": "images/modern/potion-3.png", "techImage": "images/modern/tech/potion-3.png", "resource": "prestige"},
-    {"id": 3, "name": "Power potion", "techName": "Processor boost", "image": "images/potion4.png", "modernImage": "images/modern/potion-4.png", "techImage": "images/modern/tech/potion-4.png", "resource": "power"},
-    {"id": 4, "name": "Super prestige potion", "techName": "Neural network charge", "image": "images/potion5.png", "modernImage": "images/modern/potion-5.png", "techImage": "images/modern/tech/potion-5.png", "resource": "superPrestige"}
+    {
+      "id": 0,
+      "name": "Money potion",
+      "techName": "Credit overclock",
+      "modernImage": "images/modern/potion-1.png",
+      "techImage": "images/modern/tech/potion-1.png",
+      "resource": "money"
+    },
+    {
+      "id": 1,
+      "name": "Multi potion",
+      "techName": "Nanobot surge",
+      "modernImage": "images/modern/potion-2.png",
+      "techImage": "images/modern/tech/potion-2.png",
+      "resource": "multi"
+    },
+    {
+      "id": 2,
+      "name": "Prestige potion",
+      "techName": "Nano-machine uplink",
+      "modernImage": "images/modern/potion-3.png",
+      "techImage": "images/modern/tech/potion-3.png",
+      "resource": "prestige"
+    },
+    {
+      "id": 3,
+      "name": "Power potion",
+      "techName": "Processor boost",
+      "modernImage": "images/modern/potion-4.png",
+      "techImage": "images/modern/tech/potion-4.png",
+      "resource": "power"
+    },
+    {
+      "id": 4,
+      "name": "Super prestige potion",
+      "techName": "Neural network charge",
+      "modernImage": "images/modern/potion-5.png",
+      "techImage": "images/modern/tech/potion-5.png",
+      "resource": "superPrestige"
+    }
   ]
 }

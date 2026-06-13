@@ -1,12 +1,76 @@
 {
   "items": [
-    {"id": 0, "name": "Magic dice", "techName": "Alien data prism", "image": "images/relic1.png", "modernImage": "images/modern/relic-1.png", "techImage": "images/modern/tech/relic-1.png", "resource": "money", "bonus": 0.2},
-    {"id": 1, "name": "Ruby crown", "techName": "Nanite command crown", "image": "images/relic2.png", "modernImage": "images/modern/relic-2.png", "techImage": "images/modern/tech/relic-2.png", "resource": "multi", "bonus": 0.3},
-    {"id": 2, "name": "Tome of finances", "techName": "Encrypted credit archive", "image": "images/relic3.png", "modernImage": "images/modern/relic-3.png", "techImage": "images/modern/tech/relic-3.png", "resource": "money", "bonus": 0.75},
-    {"id": 3, "name": "Tome of multi", "techName": "Swarm replication codex", "image": "images/relic4.png", "modernImage": "images/modern/relic-4.png", "techImage": "images/modern/tech/relic-4.png", "resource": "multi", "bonus": 0.75},
-    {"id": 4, "name": "Shiny screw", "techName": "Cybernetic servo core", "image": "images/relic5.png", "modernImage": "images/modern/relic-5.png", "techImage": "images/modern/tech/relic-5.png", "resource": "multi", "bonus": 0.6},
-    {"id": 5, "name": "Golden key", "techName": "Plasma access key", "image": "images/relic6.png", "modernImage": "images/modern/relic-6.png", "techImage": "images/modern/tech/relic-6.png", "resource": "money", "bonus": 1},
-    {"id": 6, "name": "Tome of prestige", "techName": "Nano-machine matrix", "image": "images/relic7.png", "modernImage": "images/modern/relic-7.png", "techImage": "images/modern/tech/relic-7.png", "resource": "prestige", "bonus": 0.75},
-    {"id": 7, "name": "Tome of power", "techName": "Quantum reactor relic", "image": "images/relic8.png", "modernImage": "images/modern/relic-8.png", "techImage": "images/modern/tech/relic-8.png", "resource": "power", "bonus": 0.75}
+    {
+      "id": 0,
+      "name": "Magic dice",
+      "techName": "Alien data prism",
+      "modernImage": "images/modern/relic-1.png",
+      "techImage": "images/modern/tech/relic-1.png",
+      "resource": "money",
+      "bonus": 0.2
+    },
+    {
+      "id": 1,
+      "name": "Ruby crown",
+      "techName": "Nanite command crown",
+      "modernImage": "images/modern/relic-2.png",
+      "techImage": "images/modern/tech/relic-2.png",
+      "resource": "multi",
+      "bonus": 0.3
+    },
+    {
+      "id": 2,
+      "name": "Tome of finances",
+      "techName": "Encrypted credit archive",
+      "modernImage": "images/modern/relic-3.png",
+      "techImage": "images/modern/tech/relic-3.png",
+      "resource": "money",
+      "bonus": 0.75
+    },
+    {
+      "id": 3,
+      "name": "Tome of multi",
+      "techName": "Swarm replication codex",
+      "modernImage": "images/modern/relic-4.png",
+      "techImage": "images/modern/tech/relic-4.png",
+      "resource": "multi",
+      "bonus": 0.75
+    },
+    {
+      "id": 4,
+      "name": "Shiny screw",
+      "techName": "Cybernetic servo core",
+      "modernImage": "images/modern/relic-5.png",
+      "techImage": "images/modern/tech/relic-5.png",
+      "resource": "multi",
+      "bonus": 0.6
+    },
+    {
+      "id": 5,
+      "name": "Golden key",
+      "techName": "Plasma access key",
+      "modernImage": "images/modern/relic-6.png",
+      "techImage": "images/modern/tech/relic-6.png",
+      "resource": "money",
+      "bonus": 1
+    },
+    {
+      "id": 6,
+      "name": "Tome of prestige",
+      "techName": "Nano-machine matrix",
+      "modernImage": "images/modern/relic-7.png",
+      "techImage": "images/modern/tech/relic-7.png",
+      "resource": "prestige",
+      "bonus": 0.75
+    },
+    {
+      "id": 7,
+      "name": "Tome of power",
+      "techName": "Quantum reactor relic",
+      "modernImage": "images/modern/relic-8.png",
+      "techImage": "images/modern/tech/relic-8.png",
+      "resource": "power",
+      "bonus": 0.75
+    }
   ]
 }

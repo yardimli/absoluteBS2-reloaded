@@ -1,19 +1,109 @@
 {
   "specialTypes": [
-    {"id": 0, "namePrefix": "", "imageSuffix": "", "filter": "none", "rarityBonus": 0},
-    {"id": 1, "namePrefix": "red ", "imageSuffix": "_color", "filter": "none", "rarityBonus": 3},
-    {"id": 2, "namePrefix": "blue ", "imageSuffix": "_color", "filter": "hue-rotate(240deg)", "rarityBonus": 3}
+    {
+      "id": 0,
+      "namePrefix": "",
+      "imageSuffix": "",
+      "filter": "none",
+      "rarityBonus": 0
+    },
+    {
+      "id": 1,
+      "namePrefix": "red ",
+      "imageSuffix": "_color",
+      "filter": "none",
+      "rarityBonus": 3
+    },
+    {
+      "id": 2,
+      "namePrefix": "blue ",
+      "imageSuffix": "_color",
+      "filter": "hue-rotate(240deg)",
+      "rarityBonus": 3
+    }
   ],
-  "specialRolls": [{"id": 2, "chance": 0.1}, {"id": 1, "chance": 0.1}],
+  "specialRolls": [
+    {
+      "id": 2,
+      "chance": 0.1
+    },
+    {
+      "id": 1,
+      "chance": 0.1
+    }
+  ],
   "items": [
-    {"id": 0, "name": "Stripes", "image": "images/pattern1.png", "colorImage": "images/pattern1_color.png", "modernName": "Emerald Overlook", "modernImage": "images/modern/world-1.png", "world": 1, "modernWeight": 3},
-    {"id": 1, "name": "Checkerboard", "image": "images/pattern2.png", "colorImage": "images/pattern2_color.png", "modernName": "Crystal Lake", "modernImage": "images/modern/world-1-2.png", "world": 1, "modernWeight": 2},
-    {"id": 2, "name": "Zig-zag", "image": "images/pattern3.png", "colorImage": "images/pattern3_color.png", "modernName": "Golden Ruins", "modernImage": "images/modern/world-1-3.png", "world": 1, "modernWeight": 1},
-    {"id": 3, "name": "Dots", "image": "images/pattern4.png", "colorImage": "images/pattern4_color.png", "modernName": "Crystal Depths", "modernImage": "images/modern/world-2.png", "world": 2, "modernWeight": 3},
-    {"id": 4, "name": "Skulls", "image": "images/pattern5.png", "colorImage": "images/pattern5_color.png", "modernName": "Magma Forge", "modernImage": "images/modern/world-2-2.png", "world": 2, "modernWeight": 2},
-    {"id": 5, "name": "Binary", "image": "images/pattern6.png", "colorImage": "images/pattern6_color.png", "modernName": "Luminous Grotto", "modernImage": "images/modern/world-2-3.png", "world": 2, "modernWeight": 1},
-    {"id": 6, "name": "Stripes 2", "image": "images/pattern7.png", "colorImage": "images/pattern7_color.png", "modernName": "Celestial Isles", "modernImage": "images/modern/world-3.png", "world": 3, "modernWeight": 3},
-    {"id": 7, "name": "Money", "image": "images/pattern8.png", "colorImage": "images/pattern8_color.png", "modernName": "Cloud Temple", "modernImage": "images/modern/world-3-2.png", "world": 3, "modernWeight": 2},
-    {"id": 8, "name": "Warning", "image": "images/pattern9.png", "colorImage": "images/pattern9_color.png", "modernName": "Aurora Bridges", "modernImage": "images/modern/world-3-3.png", "world": 3, "modernWeight": 1}
+    {
+      "id": 0,
+      "name": "Stripes",
+      "modernName": "Emerald Overlook",
+      "modernImage": "images/modern/world-1.png",
+      "world": 1,
+      "modernWeight": 3
+    },
+    {
+      "id": 1,
+      "name": "Checkerboard",
+      "modernName": "Crystal Lake",
+      "modernImage": "images/modern/world-1-2.png",
+      "world": 1,
+      "modernWeight": 2
+    },
+    {
+      "id": 2,
+      "name": "Zig-zag",
+      "modernName": "Golden Ruins",
+      "modernImage": "images/modern/world-1-3.png",
+      "world": 1,
+      "modernWeight": 1
+    },
+    {
+      "id": 3,
+      "name": "Dots",
+      "modernName": "Crystal Depths",
+      "modernImage": "images/modern/world-2.png",
+      "world": 2,
+      "modernWeight": 3
+    },
+    {
+      "id": 4,
+      "name": "Skulls",
+      "modernName": "Magma Forge",
+      "modernImage": "images/modern/world-2-2.png",
+      "world": 2,
+      "modernWeight": 2
+    },
+    {
+      "id": 5,
+      "name": "Binary",
+      "modernName": "Luminous Grotto",
+      "modernImage": "images/modern/world-2-3.png",
+      "world": 2,
+      "modernWeight": 1
+    },
+    {
+      "id": 6,
+      "name": "Stripes 2",
+      "modernName": "Celestial Isles",
+      "modernImage": "images/modern/world-3.png",
+      "world": 3,
+      "modernWeight": 3
+    },
+    {
+      "id": 7,
+      "name": "Money",
+      "modernName": "Cloud Temple",
+      "modernImage": "images/modern/world-3-2.png",
+      "world": 3,
+      "modernWeight": 2
+    },
+    {
+      "id": 8,
+      "name": "Warning",
+      "modernName": "Aurora Bridges",
+      "modernImage": "images/modern/world-3-3.png",
+      "world": 3,
+      "modernWeight": 1
+    }
   ]
 }

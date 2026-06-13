@@ -17,36 +17,135 @@
   "sections": [
     {
       "tier": "multi",
-      "image": "images/button1.png",
       "modernImage": "images/modern/button-1.png",
       "techImage": "images/modern/tech/button-1.png",
       "buttons": [
-        {"cost": "5", "gain": "1"}, {"cost": "100", "gain": "8"}, {"cost": "1200", "gain": "80"},
-        {"cost": "20000", "gain": "750"}, {"cost": "300000", "gain": "7000"}, {"cost": "5e6", "gain": "30000"},
-        {"cost": "8e7", "gain": "120000"}, {"cost": "2e9", "gain": "500000"}, {"cost": "1e11", "gain": "2e6"},
-        {"cost": "6e12", "gain": "8e6"}, {"cost": "5e14", "gain": "4e7"}, {"cost": "1e17", "gain": "3e8"}
+        {
+          "cost": "5",
+          "gain": "1"
+        },
+        {
+          "cost": "100",
+          "gain": "8"
+        },
+        {
+          "cost": "1200",
+          "gain": "80"
+        },
+        {
+          "cost": "20000",
+          "gain": "750"
+        },
+        {
+          "cost": "300000",
+          "gain": "7000"
+        },
+        {
+          "cost": "5e6",
+          "gain": "30000"
+        },
+        {
+          "cost": "8e7",
+          "gain": "120000"
+        },
+        {
+          "cost": "2e9",
+          "gain": "500000"
+        },
+        {
+          "cost": "1e11",
+          "gain": "2e6"
+        },
+        {
+          "cost": "6e12",
+          "gain": "8e6"
+        },
+        {
+          "cost": "5e14",
+          "gain": "4e7"
+        },
+        {
+          "cost": "1e17",
+          "gain": "3e8"
+        }
       ]
     },
     {
       "tier": "prestige",
-      "image": "images/button2.png",
       "modernImage": "images/modern/button-2.png",
       "techImage": "images/modern/tech/button-2.png",
       "buttons": [
-        {"cost": "10000", "gain": "2"}, {"cost": "50000", "gain": "5"}, {"cost": "300000", "gain": "15"},
-        {"cost": "3e6", "gain": "60"}, {"cost": "5e7", "gain": "200"}, {"cost": "2e9", "gain": "750"},
-        {"cost": "8e10", "gain": "2500"}, {"cost": "5e12", "gain": "12000"}, {"cost": "5e14", "gain": "60000"},
-        {"cost": "7.5e16", "gain": "200000"}
+        {
+          "cost": "10000",
+          "gain": "2"
+        },
+        {
+          "cost": "50000",
+          "gain": "5"
+        },
+        {
+          "cost": "300000",
+          "gain": "15"
+        },
+        {
+          "cost": "3e6",
+          "gain": "60"
+        },
+        {
+          "cost": "5e7",
+          "gain": "200"
+        },
+        {
+          "cost": "2e9",
+          "gain": "750"
+        },
+        {
+          "cost": "8e10",
+          "gain": "2500"
+        },
+        {
+          "cost": "5e12",
+          "gain": "12000"
+        },
+        {
+          "cost": "5e14",
+          "gain": "60000"
+        },
+        {
+          "cost": "7.5e16",
+          "gain": "200000"
+        }
       ]
     },
     {
       "tier": "power",
-      "image": "images/button3.png",
       "modernImage": "images/modern/button-3.png",
       "techImage": "images/modern/tech/button-3.png",
       "buttons": [
-        {"cost": "2500", "gain": "2"}, {"cost": "10000", "gain": "6"}, {"cost": "45000", "gain": "15"},
-        {"cost": "250000", "gain": "50"}, {"cost": "1.8e6", "gain": "180"}, {"cost": "1.5e7", "gain": "450"}
+        {
+          "cost": "2500",
+          "gain": "2"
+        },
+        {
+          "cost": "10000",
+          "gain": "6"
+        },
+        {
+          "cost": "45000",
+          "gain": "15"
+        },
+        {
+          "cost": "250000",
+          "gain": "50"
+        },
+        {
+          "cost": "1.8e6",
+          "gain": "180"
+        },
+        {
+          "cost": "1.5e7",
+          "gain": "450"
+        }
       ]
     }
   ]

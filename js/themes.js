@@ -1,6 +1,7 @@
 const MODERN_THEME_KEY = "ABS2ModernTheme";
-const DEFAULT_THEME = "liquid";
+const DEFAULT_THEME = "tech";
 const TECH_THEME = "tech";
+const FANTASY_THEME = "fantasy";
 
 function isModernPage() {
 	return document.body.dataset.theme === "modern";
@@ -8,7 +9,7 @@ function isModernPage() {
 
 export function getModernTheme() {
 	if (!isModernPage()) return DEFAULT_THEME;
-	return localStorage.getItem(MODERN_THEME_KEY) === TECH_THEME ? TECH_THEME : DEFAULT_THEME;
+	return localStorage.getItem(MODERN_THEME_KEY) === FANTASY_THEME ? FANTASY_THEME : TECH_THEME;
 }
 
 export function applyModernTheme() {
@@ -16,7 +17,7 @@ export function applyModernTheme() {
 	const theme = getModernTheme();
 	document.body.dataset.modernTheme = theme;
 	const toggle = document.getElementById("modernThemeToggle");
-	if (toggle) toggle.textContent = theme === TECH_THEME ? "Fantasy Theme" : "Tech Theme";
+	if (toggle) toggle.textContent = theme === TECH_THEME ? "Fantasy" : "Tech";
 	const brand = document.querySelector(".brandBlock strong");
 	if (brand) brand.textContent = theme === TECH_THEME ? "AI Society" : "Fantasy Glass";
 	const labels = theme === TECH_THEME
@@ -36,7 +37,7 @@ export function applyModernTheme() {
 }
 
 export function toggleModernTheme() {
-	const next = getModernTheme() === TECH_THEME ? DEFAULT_THEME : TECH_THEME;
+	const next = getModernTheme() === TECH_THEME ? FANTASY_THEME : TECH_THEME;
 	localStorage.setItem(MODERN_THEME_KEY, next);
 	applyModernTheme();
 	return next;

@@ -29,24 +29,6 @@ export function calculateButtonGain(config, tier, button) {
 		.mul(debugMultiplier);
 }
 
-export function passiveLevelMultiplier() {
-	return Decimal.min(Decimal.max(game.level.div(10), 1), 10);
-}
-
-export function passiveResourceIncome(generator) {
-	return game[generator.sourceResource]
-		.mul(passiveLevelMultiplier())
-		.div(generator.intervalSeconds);
-}
-
-export function applyPassiveResourceGeneration(config, elapsedSeconds) {
-	for (const generator of config.progression.passiveGenerators || []) {
-		game[generator.targetResource] = game[generator.targetResource].add(
-			passiveResourceIncome(generator).mul(elapsedSeconds)
-		);
-	}
-}
-
 export function canBuyButton(tier, button) {
 	return game[tier.costResource].gte(button.cost);
 }

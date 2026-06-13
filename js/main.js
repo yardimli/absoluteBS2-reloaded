@@ -8,7 +8,7 @@ import {
 	saveState,
 	setDebugMultiplier
 } from "./state.js";
-import {applyPassiveResourceGeneration, buyButton, xpToLevel} from "./progression.js";
+import {buyButton, xpToLevel} from "./progression.js";
 import {
 	claimWorldFreeButton,
 	findWorldButton,
@@ -160,10 +160,6 @@ function activateButton(element) {
 		}
 		updateVisuals(config);
 	}
-	else if (action === "switch-theme") {
-		saveState();
-		location.href = element.dataset.target;
-	}
 	else if (action === "debug-multiplier") {
 		setDebugMultiplier(Number(element.dataset.value));
 		updateWorldButtons(config);
@@ -249,7 +245,6 @@ function updateSimulation() {
 			.mul(miningMoneyMultiplier(config))
 			.mul(elapsedSeconds)
 	);
-	applyPassiveResourceGeneration(config, elapsedSeconds);
 	let potionExpired = false;
 	game.potionCooldowns = game.potionCooldowns.map(cooldown => {
 		if (cooldown <= 0) return 0;
