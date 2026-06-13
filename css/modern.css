@@ -7,7 +7,7 @@
 	--text: #f7fbff;
 	--muted: rgba(235, 244, 255, 0.7);
 	--shadow: 0 24px 80px rgba(3, 11, 25, 0.35);
-	--world-background: url("../images/modern/world-1.png");
+	--world-background: url("../images/modern/fantasy/world-1.png");
 }
 
 body[data-modern-theme="tech"] {
@@ -240,11 +240,11 @@ button,
 }
 
 .topShell .circleButton[data-action="previous-world"] {
-	background-image: url("../images/modern/nav-prev.png");
+	background-image: url("../images/modern/fantasy/nav-prev.png");
 }
 
 .topShell .circleButton[data-action="next-world"] {
-	background-image: url("../images/modern/nav-next.png");
+	background-image: url("../images/modern/fantasy/nav-next.png");
 }
 
 .circleButton:hover,
@@ -265,7 +265,7 @@ button,
 .messageDialogClose {
 	border: 0;
 	background-color: transparent;
-	background-image: url("../images/modern/close-fantasy.png");
+	background-image: url("../images/modern/fantasy/close-fantasy.png");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: contain;
@@ -317,6 +317,10 @@ body[data-modern-theme="tech"] .messageDialogClose {
 	background-image: url("../images/brand-icon.png");
 }
 
+.navAutoClicker {
+	background-image: url("../images/modern/tech/auto-bot-1.png");
+}
+
 .navImageButton::after {
 	content: attr(data-tooltip);
 	position: absolute;
@@ -342,9 +346,9 @@ body[data-modern-theme="tech"] .messageDialogClose {
 	transform: translate(-50%, 0);
 }
 
-.navCrates { background-image: url("../images/modern/nav-crates.png"); }
-.navRelics { background-image: url("../images/modern/nav-relics.png"); }
-.navPotions { background-image: url("../images/modern/nav-potions.png"); }
+.navCrates { background-image: url("../images/modern/fantasy/nav-crates.png"); }
+.navRelics { background-image: url("../images/modern/fantasy/nav-relics.png"); }
+.navPotions { background-image: url("../images/modern/fantasy/nav-potions.png"); }
 
 body[data-modern-theme="tech"] .navCrates { background-image: url("../images/modern/tech/crate-1.png"); }
 body[data-modern-theme="tech"] .navRelics { background-image: url("../images/modern/tech/relic-1.png"); }
@@ -352,9 +356,74 @@ body[data-modern-theme="tech"] .navPotions { background-image: url("../images/mo
 body[data-modern-theme="tech"] .topShell .circleButton[data-action="previous-world"] { background-image: url("../images/modern/tech/nav-prev.png"); }
 body[data-modern-theme="tech"] .topShell .circleButton[data-action="next-world"] { background-image: url("../images/modern/tech/nav-next.png"); }
 
+.autoClickerAvatar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 45;
+	width: 86px;
+	height: 86px;
+	object-fit: contain;
+	pointer-events: none;
+	opacity: 0;
+	transform: translate(calc(var(--pet-x, 50vw) - 43px), calc(var(--pet-y, 50vh) - 43px)) scale(0.55);
+	filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.34));
+}
+
+.autoClickerAvatar.isClicking {
+	animation: autoClickerTeleport 780ms ease both;
+}
+
+.autoClickerBurst {
+	position: fixed;
+	z-index: 44;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	pointer-events: none;
+	opacity: 0;
+	transform: translate(-50%, -50%);
+	background:
+		radial-gradient(circle, rgba(255, 255, 255, 0.98) 0 16%, rgba(119, 239, 255, 0.9) 17% 32%, transparent 34%),
+		conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.92), transparent, rgba(181, 117, 255, 0.88), transparent);
+	box-shadow: 0 0 24px rgba(121, 236, 255, 0.8), 0 0 42px rgba(191, 115, 255, 0.45);
+}
+
+.autoClickerBurst.isActive {
+	animation: autoClickerBurst 620ms ease-out both;
+}
+
+@keyframes autoClickerTeleport {
+	0% {
+		opacity: 0;
+		transform: translate(calc(var(--pet-x, 50vw) - 43px), calc(var(--pet-y, 50vh) - 43px)) scale(0.18) rotate(-18deg);
+		filter: blur(8px) drop-shadow(0 0 18px rgba(128, 237, 255, 0.8));
+	}
+	30% {
+		opacity: 1;
+		transform: translate(calc(var(--pet-x, 50vw) - 43px), calc(var(--pet-y, 50vh) - 43px)) scale(1.08) rotate(7deg);
+		filter: blur(0) drop-shadow(0 14px 18px rgba(0, 0, 0, 0.3));
+	}
+	72% {
+		opacity: 1;
+		transform: translate(calc(var(--pet-x, 50vw) - 43px), calc(var(--pet-y, 50vh) - 43px)) scale(0.92) rotate(-4deg);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(calc(var(--pet-x, 50vw) - 43px), calc(var(--pet-y, 50vh) - 43px)) scale(0.22) rotate(18deg);
+		filter: blur(5px) drop-shadow(0 0 18px rgba(255, 255, 255, 0.8));
+	}
+}
+
+@keyframes autoClickerBurst {
+	0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(0deg); }
+	30% { opacity: 1; }
+	100% { opacity: 0; transform: translate(-50%, -50%) scale(5.6) rotate(120deg); }
+}
+
 .navMining {
 	order: -1;
-	background-image: url("../images/modern/nav-mining.png");
+	background-image: url("../images/modern/fantasy/nav-mining.png");
 }
 
 body[data-modern-theme="tech"] .navMining {
@@ -933,6 +1002,57 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	width: min(780px, 100%);
 }
 
+.autoClickerModal {
+	width: min(760px, 100%);
+}
+
+.autoClickerContent {
+	color: var(--muted);
+	line-height: 1.55;
+}
+
+.autoClickerStatus {
+	margin: 16px 0;
+	padding: 14px 16px;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 20px;
+	background: rgba(255, 255, 255, 0.08);
+	color: var(--text);
+	font-weight: 800;
+}
+
+.autoClickerUpgradeGrid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.autoClickerUpgradeCard {
+	padding: 16px;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.autoClickerUpgradeCard h2 {
+	margin: 0 0 8px;
+	color: var(--text);
+}
+
+.autoClickerUpgradeCard strong {
+	display: block;
+	color: var(--text);
+}
+
+.autoClickerUpgradeCard .primaryAction:disabled {
+	opacity: 0.48;
+	cursor: not-allowed;
+}
+
+.autoClickerHint {
+	font-size: 0.9rem;
+}
+
 .resourceBreakdownContent {
 	color: var(--muted);
 	line-height: 1.55;
@@ -1393,6 +1513,10 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	}
 
 	.itemModalLayout {
+		grid-template-columns: 1fr;
+	}
+
+	.autoClickerUpgradeGrid {
 		grid-template-columns: 1fr;
 	}
 

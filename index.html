@@ -33,6 +33,7 @@
 
 		<nav class="primaryNav" aria-label="Game features">
 			<button class="navImageButton navResources" data-action="show-resources" data-tooltip="Resources" aria-label="Resources"></button>
+			<button id="autoClickerNavButton" class="navImageButton navAutoClicker" data-action="show-auto-clicker" data-tooltip="COT bot" aria-label="COT bot"></button>
 			<button class="navImageButton navCrates" data-action="show-items" data-item-type="crates" data-tooltip="Crates" aria-label="Crates"><span id="crateNotification">0</span></button>
 			<button class="navImageButton navRelics" data-action="show-items" data-item-type="relics" data-tooltip="Relics" aria-label="Relics"></button>
 			<button class="navImageButton navPotions" data-action="show-items" data-item-type="potions" data-tooltip="Potions" aria-label="Potions"></button>
@@ -87,12 +88,14 @@
 	</main>
 
 	<div id="bottomBar" class="mobileLevelBar" aria-hidden="true"></div>
+	<img id="autoClickerAvatar" class="autoClickerAvatar" src="images/modern/tech/auto-bot-1.png" alt="">
+	<div id="autoClickerBurst" class="autoClickerBurst" aria-hidden="true"></div>
 
 	<div id="itemScreen" class="modalShell">
 		<div class="glass modalPanel itemModal">
 			<div class="modalHeading">
 				<div class="modalTitleGroup">
-					<img id="itemScreenHeadingIcon" class="modalHeadingIcon" src="images/modern/nav-crates.png" alt="">
+					<img id="itemScreenHeadingIcon" class="modalHeadingIcon" src="images/modern/fantasy/nav-crates.png" alt="">
 					<div>
 						<span class="eyebrow">Collection</span>
 						<h1 id="itemScreenTitle">Crates</h1>
@@ -107,6 +110,40 @@
 					<h2 id="itemScreenName"></h2>
 					<p id="itemScreenInfoText"></p>
 				</aside>
+			</div>
+		</div>
+	</div>
+
+	<div id="autoClickerScreen" class="modalShell">
+		<div class="glass modalPanel autoClickerModal">
+			<div class="modalHeading">
+				<div class="modalTitleGroup">
+					<img id="autoClickerModalIcon" class="modalHeadingIcon" src="images/modern/tech/auto-bot-1.png" alt="">
+					<div>
+						<span id="autoClickerEyebrow" class="eyebrow">Cute operations bot</span>
+						<h1 id="autoClickerTitle">COT-7 upgrades</h1>
+					</div>
+				</div>
+				<button class="circleButton" data-action="close-auto-clicker" aria-label="Close"></button>
+			</div>
+			<div class="modalContent autoClickerContent">
+				<p id="autoClickerDescription">COT-7 is a tiny operations bot built to optimize your AI society.</p>
+				<div class="autoClickerStatus" id="autoClickerStatus">COT-7 acts every 00:10.00.</div>
+				<div class="autoClickerUpgradeGrid">
+					<section class="autoClickerUpgradeCard">
+						<h2 id="autoClickerSpeedName">Servo speed</h2>
+						<strong id="autoClickerSpeedLevel">Level 0/30</strong>
+						<p id="autoClickerSpeedEffect">Action timer: 00:10.00</p>
+						<button id="autoClickerSpeedButton" class="primaryAction" data-action="upgrade-auto-clicker" data-upgrade="speed">Upgrade: $500</button>
+					</section>
+					<section class="autoClickerUpgradeCard">
+						<h2 id="autoClickerIntelligenceName">Planning core</h2>
+						<strong id="autoClickerIntelligenceLevel">Level 0/30</strong>
+						<p id="autoClickerIntelligenceEffect">Chooses simple available buttons.</p>
+						<button id="autoClickerIntelligenceButton" class="primaryAction" data-action="upgrade-auto-clicker" data-upgrade="intelligence">Upgrade: $2,500</button>
+					</section>
+				</div>
+				<p class="autoClickerHint">Higher intelligence lets the helper compare stronger purchases, wait briefly when a better money button is close, and eventually navigate between unlocked worlds before clicking.</p>
 			</div>
 		</div>
 	</div>
@@ -128,7 +165,7 @@
 		<div class="glass modalPanel miningModal">
 			<div class="modalHeading">
 				<div class="modalTitleGroup">
-					<img id="miningHeadingIcon" class="modalHeadingIcon" src="images/modern/nav-mining.png" alt="">
+					<img id="miningHeadingIcon" class="modalHeadingIcon" src="images/modern/fantasy/nav-mining.png" alt="">
 					<div>
 						<span class="eyebrow">Automated extraction</span>
 						<h1>Mining</h1>
@@ -219,6 +256,8 @@
 			<p>Buying Prestige or any higher tier resets every resource below the purchased tier. XP, levels, worlds, miners, ores, crates, relics, and potions remain.</p>
 			<h2>Collections</h2>
 			<p>Leveling awards Basic crates through level 99. Unlocking Worlds 2 and 3 awards Advanced crates. Modern crates contain permanent relics or temporary potions.</p>
+			<h2>Auto Helper</h2>
+			<p>Your helper is available from the start and presses one affordable button every 10 seconds. Upgrade Speed to shorten the timer. Upgrade Intelligence so it picks stronger buttons, waits briefly for better purchases, and eventually navigates between unlocked worlds.</p>
 			<h2>Mining</h2>
 			<p>Mining unlocks in World 2. The timer runs at <code>60 ÷ miners</code> seconds, capped at 120 effective miners. Ores progress from Stone through Diamond.</p>
 		</div>
@@ -233,22 +272,25 @@
 			<button class="circleButton" data-action="hide-help" aria-label="Close"></button>
 		</div>
 		<div class="helpBody">
-			<h2>Buttons &amp; Multipliers <img src="images/modern/button-1.png" class="helpIcon" alt="Button"></h2>
+			<h2>Buttons &amp; Multipliers <img src="images/modern/fantasy/button-1.png" class="helpIcon" alt="Button"></h2>
 			<p>Your resources form a chain. A resource is spent on buttons that award the next resource, and owning a higher resource increases how much of the resource immediately below it those buttons award.</p>
 			<table class="helpTable">
 			<thead><tr><th>Resource</th><th>What it does</th><th>What increases it</th></tr></thead>
 			<tbody>
 				<tr><td><span style="color:#5dff73">Money</span></td><td>Money is generated automatically. Your base income is your current Multi every second, before relic, potion, and Stone bonuses. Spend Money on Multi buttons.</td><td>Multi, Money relics, Money potions, and Stone.</td></tr>
-				<tr><td><span style="color:#ff4567">Multi</span><img src="images/modern/button-1.png" class="helpSampleButton" alt="Multi button"></td><td>Every point of Multi adds directly to your base Money per second. Spend Multi on Prestige buttons.</td><td>Each Multi button's listed gain is multiplied by <code>Prestige + 1</code>, then by Multi relic and potion bonuses.</td></tr>
-				<tr><td><span style="color:#b36aff">Prestige</span><img src="images/modern/button-2.png" class="helpSampleButton" alt="Prestige button"></td><td>Prestige makes Multi buttons award more Multi. Spend Prestige on Power buttons.</td><td>Each Prestige button's listed gain is multiplied by <code>Power + 1</code>, then by Prestige relic and potion bonuses.</td></tr>
-				<tr><td><span style="color:#ffe24d">Power</span><img src="images/modern/button-3.png" class="helpSampleButton" alt="Power button"></td><td>Power makes Prestige buttons award more Prestige. Spend Power on Super Prestige buttons in World 2.</td><td>Each Power button's listed gain is multiplied by <code>Super Prestige + 1</code>, then by Power relic and potion bonuses.</td></tr>
-				<tr><td><span style="color:#59dcff">Super Prestige</span><img src="images/modern/button-4.png" class="helpSampleButton" alt="Super Prestige button"></td><td>Super Prestige makes Power buttons award more Power. Spend it on Ascension buttons in World 2.</td><td>Each Super Prestige button's listed gain is multiplied by <code>Ascension + 1</code>, then by Super Prestige potion bonuses.</td></tr>
-				<tr><td>Ascension<img src="images/modern/button-5.png" class="helpSampleButton" alt="Ascension button"></td><td>Ascension makes Super Prestige buttons award more Super Prestige. Spend it on Infernal buttons in World 3.</td><td>Each Ascension button's listed gain is multiplied by <code>Infernal + 1</code>.</td></tr>
-				<tr><td><span style="color:#ff764d">Infernal</span><img src="images/modern/button-6.png" class="helpSampleButton" alt="Infernal button"></td><td>Infernal makes Ascension buttons award more Ascension. It is currently the highest resource tier.</td><td>Infernal buttons award their listed amount; there is currently no higher resource multiplying their gain.</td></tr>
+				<tr><td><span style="color:#ff4567">Multi</span><img src="images/modern/fantasy/button-1.png" class="helpSampleButton" alt="Multi button"></td><td>Every point of Multi adds directly to your base Money per second. Spend Multi on Prestige buttons.</td><td>Each Multi button's listed gain is multiplied by <code>Prestige + 1</code>, then by Multi relic and potion bonuses.</td></tr>
+				<tr><td><span style="color:#b36aff">Prestige</span><img src="images/modern/fantasy/button-2.png" class="helpSampleButton" alt="Prestige button"></td><td>Prestige makes Multi buttons award more Multi. Spend Prestige on Power buttons.</td><td>Each Prestige button's listed gain is multiplied by <code>Power + 1</code>, then by Prestige relic and potion bonuses.</td></tr>
+				<tr><td><span style="color:#ffe24d">Power</span><img src="images/modern/fantasy/button-3.png" class="helpSampleButton" alt="Power button"></td><td>Power makes Prestige buttons award more Prestige. Spend Power on Super Prestige buttons in World 2.</td><td>Each Power button's listed gain is multiplied by <code>Super Prestige + 1</code>, then by Power relic and potion bonuses.</td></tr>
+				<tr><td><span style="color:#59dcff">Super Prestige</span><img src="images/modern/fantasy/button-4.png" class="helpSampleButton" alt="Super Prestige button"></td><td>Super Prestige makes Power buttons award more Power. Spend it on Ascension buttons in World 2.</td><td>Each Super Prestige button's listed gain is multiplied by <code>Ascension + 1</code>, then by Super Prestige potion bonuses.</td></tr>
+				<tr><td>Ascension<img src="images/modern/fantasy/button-5.png" class="helpSampleButton" alt="Ascension button"></td><td>Ascension makes Super Prestige buttons award more Super Prestige. Spend it on Infernal buttons in World 3.</td><td>Each Ascension button's listed gain is multiplied by <code>Infernal + 1</code>.</td></tr>
+				<tr><td><span style="color:#ff764d">Infernal</span><img src="images/modern/fantasy/button-6.png" class="helpSampleButton" alt="Infernal button"></td><td>Infernal makes Ascension buttons award more Ascension. It is currently the highest resource tier.</td><td>Infernal buttons award their listed amount; there is currently no higher resource multiplying their gain.</td></tr>
 			</tbody>
 		</table>
 		<p><strong>Money income:</strong> each second you gain approximately <code>Multi x Money bonuses x (sqrt(Stone) + 1)</code>. For example, 100 Multi with no other bonuses produces about $100 per second. A 2x Money potion raises that to $200 per second. If you also have 9 Stone, the Stone multiplier is 4x, raising it to $800 per second.</p>
 		<p><strong>Example of the resource chain:</strong> if a Multi button normally gives +80 Multi and you own 4 Prestige, it gives <code>80 x (4 + 1) = 400 Multi</code> before relics or potions. That new Multi then increases your Money income by 400 per second.</p>
+
+		<h2>Auto Helper <img src="images/modern/fantasy/auto-pet-1.png" class="helpIcon" alt="Pet helper"></h2>
+		<p>Your pet helper starts active immediately and presses one affordable button every 10 seconds. Buy Agility upgrades with Money to shorten the timer, and Wisdom upgrades to make it choose stronger buttons, wait when a better Money button is nearly affordable, and later navigate between worlds.</p>
 
 		<h2>Purchases and Resets</h2>
 		<p>Multi purchases only spend Money and do not reset anything. Buying Prestige or a higher resource resets all lower resources, but you keep the resource you bought and every resource above it.</p>
@@ -287,43 +329,43 @@
 		</table>
 		<p>Each eligible purchase grants XP once, regardless of which button in that tier you buy. The debug multiplier also multiplies XP when it is enabled. The total XP needed for level <em>L</em> is <code>ceil(5 x (L - 1)<sup>5/3</sup>)</code>. For example, levels 2, 3, 4, 5, and 10 require 5, 16, 32, 51, and 195 total XP.</p>
 
-		<h2>Crates <img src="images/modern/crate-1.png" class="helpIcon" alt="Crate"></h2>
+		<h2>Crates <img src="images/modern/fantasy/crate-1.png" class="helpIcon" alt="Crate"></h2>
 		<p>You receive one Basic crate for each level gained from level 2 through level 99. Advanced crates are awarded when you unlock World 2 and World 3. Open a crate from the Crates screen to receive one item.</p>
 		<p>In the modern UI, every crate contains either a <strong>Relic (62.5%)</strong> or a <strong>Potion (37.5%)</strong>. Items within a category use weighted chances, so items near the start of each list are more common.</p>
 		<table class="helpTable">
 			<thead><tr><th>Crate</th><th>Possible contents</th></tr></thead>
 			<tbody>
-				<tr><td>Basic<img src="images/modern/crate-1.png" class="helpSampleButton" alt="Basic crate"></td><td><strong>Relics:</strong> Magic dice, Ruby crown, Tome of finances, Tome of multi<br><strong>Potions:</strong> Money, Multi, Prestige, Power</td></tr>
-				<tr><td>Advanced<img src="images/modern/crate-2.png" class="helpSampleButton" alt="Advanced crate"></td><td><strong>Relics:</strong> Shiny screw, Golden key, Tome of prestige, Tome of power<br><strong>Potions:</strong> Prestige, Power, Super Prestige</td></tr>
+				<tr><td>Basic<img src="images/modern/fantasy/crate-1.png" class="helpSampleButton" alt="Basic crate"></td><td><strong>Relics:</strong> Magic dice, Ruby crown, Tome of finances, Tome of multi<br><strong>Potions:</strong> Money, Multi, Prestige, Power</td></tr>
+				<tr><td>Advanced<img src="images/modern/fantasy/crate-2.png" class="helpSampleButton" alt="Advanced crate"></td><td><strong>Relics:</strong> Shiny screw, Golden key, Tome of prestige, Tome of power<br><strong>Potions:</strong> Prestige, Power, Super Prestige</td></tr>
 			</tbody>
 		</table>
 
-		<h2>Relics <img src="images/modern/relic-1.png" class="helpIcon" alt="Relic"></h2>
+		<h2>Relics <img src="images/modern/fantasy/relic-1.png" class="helpIcon" alt="Relic"></h2>
 		<p>Relics are permanent and work automatically. Duplicate copies increase that relic's bonus. Relics affecting the same resource combine multiplicatively.</p>
 		<table class="helpTable">
 			<thead><tr><th>Relic</th><th>Permanent effect per copy</th><th>Found in</th></tr></thead>
 			<tbody>
-				<tr><td>Magic dice<img src="images/modern/relic-1.png" class="helpSampleButton" alt="Magic dice relic"></td><td>Affects Money: +20% Money gain</td><td>Basic</td></tr>
-				<tr><td>Ruby crown<img src="images/modern/relic-2.png" class="helpSampleButton" alt="Ruby crown relic"></td><td>Affects Multi: +30% Multi gain</td><td>Basic</td></tr>
-				<tr><td>Tome of finances<img src="images/modern/relic-3.png" class="helpSampleButton" alt="Tome of finances relic"></td><td>Affects Money: +75% Money gain</td><td>Basic</td></tr>
-				<tr><td>Tome of multi<img src="images/modern/relic-4.png" class="helpSampleButton" alt="Tome of multi relic"></td><td>Affects Multi: +75% Multi gain</td><td>Basic</td></tr>
-				<tr><td>Shiny screw<img src="images/modern/relic-5.png" class="helpSampleButton" alt="Shiny screw relic"></td><td>Affects Multi: +60% Multi gain</td><td>Advanced</td></tr>
-				<tr><td>Golden key<img src="images/modern/relic-6.png" class="helpSampleButton" alt="Golden key relic"></td><td>Affects Money: +100% Money gain</td><td>Advanced</td></tr>
-				<tr><td>Tome of prestige<img src="images/modern/relic-7.png" class="helpSampleButton" alt="Tome of prestige relic"></td><td>Affects Prestige: +75% Prestige gain</td><td>Advanced</td></tr>
-				<tr><td>Tome of power<img src="images/modern/relic-8.png" class="helpSampleButton" alt="Tome of power relic"></td><td>Affects Power: +75% Power gain</td><td>Advanced</td></tr>
+				<tr><td>Magic dice<img src="images/modern/fantasy/relic-1.png" class="helpSampleButton" alt="Magic dice relic"></td><td>Affects Money: +20% Money gain</td><td>Basic</td></tr>
+				<tr><td>Ruby crown<img src="images/modern/fantasy/relic-2.png" class="helpSampleButton" alt="Ruby crown relic"></td><td>Affects Multi: +30% Multi gain</td><td>Basic</td></tr>
+				<tr><td>Tome of finances<img src="images/modern/fantasy/relic-3.png" class="helpSampleButton" alt="Tome of finances relic"></td><td>Affects Money: +75% Money gain</td><td>Basic</td></tr>
+				<tr><td>Tome of multi<img src="images/modern/fantasy/relic-4.png" class="helpSampleButton" alt="Tome of multi relic"></td><td>Affects Multi: +75% Multi gain</td><td>Basic</td></tr>
+				<tr><td>Shiny screw<img src="images/modern/fantasy/relic-5.png" class="helpSampleButton" alt="Shiny screw relic"></td><td>Affects Multi: +60% Multi gain</td><td>Advanced</td></tr>
+				<tr><td>Golden key<img src="images/modern/fantasy/relic-6.png" class="helpSampleButton" alt="Golden key relic"></td><td>Affects Money: +100% Money gain</td><td>Advanced</td></tr>
+				<tr><td>Tome of prestige<img src="images/modern/fantasy/relic-7.png" class="helpSampleButton" alt="Tome of prestige relic"></td><td>Affects Prestige: +75% Prestige gain</td><td>Advanced</td></tr>
+				<tr><td>Tome of power<img src="images/modern/fantasy/relic-8.png" class="helpSampleButton" alt="Tome of power relic"></td><td>Affects Power: +75% Power gain</td><td>Advanced</td></tr>
 			</tbody>
 		</table>
 
-		<h2>Potions <img src="images/modern/potion-1.png" class="helpIcon" alt="Potion"></h2>
+		<h2>Potions <img src="images/modern/fantasy/potion-1.png" class="helpIcon" alt="Potion"></h2>
 		<p>Potions are consumed when activated and double one type of gain for 5 minutes. The active potion icons and their countdown timers appear beside the resource list. Using another potion of the same type while it is active resets its timer to 5 minutes; it does not stack above 2x.</p>
 		<table class="helpTable">
 			<thead><tr><th>Potion</th><th>Effect for 5 minutes</th><th>Found in</th></tr></thead>
 			<tbody>
-				<tr><td>Money potion<img src="images/modern/potion-1.png" class="helpSampleButton" alt="Money potion"></td><td>Affects Money: 2x Money gain</td><td>Basic</td></tr>
-				<tr><td>Multi potion<img src="images/modern/potion-2.png" class="helpSampleButton" alt="Multi potion"></td><td>Affects Multi: 2x Multi gain</td><td>Basic</td></tr>
-				<tr><td>Prestige potion<img src="images/modern/potion-3.png" class="helpSampleButton" alt="Prestige potion"></td><td>Affects Prestige: 2x Prestige gain</td><td>Basic and Advanced</td></tr>
-				<tr><td>Power potion<img src="images/modern/potion-4.png" class="helpSampleButton" alt="Power potion"></td><td>Affects Power: 2x Power gain</td><td>Basic and Advanced</td></tr>
-				<tr><td>Super Prestige potion<img src="images/modern/potion-5.png" class="helpSampleButton" alt="Super Prestige potion"></td><td>Affects Super Prestige: 2x Super Prestige gain</td><td>Advanced</td></tr>
+				<tr><td>Money potion<img src="images/modern/fantasy/potion-1.png" class="helpSampleButton" alt="Money potion"></td><td>Affects Money: 2x Money gain</td><td>Basic</td></tr>
+				<tr><td>Multi potion<img src="images/modern/fantasy/potion-2.png" class="helpSampleButton" alt="Multi potion"></td><td>Affects Multi: 2x Multi gain</td><td>Basic</td></tr>
+				<tr><td>Prestige potion<img src="images/modern/fantasy/potion-3.png" class="helpSampleButton" alt="Prestige potion"></td><td>Affects Prestige: 2x Prestige gain</td><td>Basic and Advanced</td></tr>
+				<tr><td>Power potion<img src="images/modern/fantasy/potion-4.png" class="helpSampleButton" alt="Power potion"></td><td>Affects Power: 2x Power gain</td><td>Basic and Advanced</td></tr>
+				<tr><td>Super Prestige potion<img src="images/modern/fantasy/potion-5.png" class="helpSampleButton" alt="Super Prestige potion"></td><td>Affects Super Prestige: 2x Super Prestige gain</td><td>Advanced</td></tr>
 			</tbody>
 		</table>
 
@@ -333,13 +375,13 @@
 		<table class="helpTable">
 			<thead><tr><th>Ore rolled</th><th>Chance per roll</th><th>Amount gained</th></tr></thead>
 			<tbody>
-				<tr><td>Stone<img src="images/modern/ore-stone.png" class="helpSampleButton" alt="Stone ore"></td><td>50%</td><td>Iron + 1</td></tr>
-				<tr><td>Iron<img src="images/modern/ore-iron.png" class="helpSampleButton" alt="Iron ore"></td><td>25%</td><td>Gold + 1</td></tr>
-				<tr><td>Gold<img src="images/modern/ore-gold.png" class="helpSampleButton" alt="Gold ore"></td><td>12.5%</td><td>Sapphire + 1</td></tr>
-				<tr><td>Sapphire<img src="images/modern/ore-sapphire.png" class="helpSampleButton" alt="Sapphire ore"></td><td>6.25%</td><td>Emerald + 1</td></tr>
-				<tr><td>Emerald<img src="images/modern/ore-emerald.png" class="helpSampleButton" alt="Emerald ore"></td><td>3.125%</td><td>Ruby + 1</td></tr>
-				<tr><td>Ruby<img src="images/modern/ore-ruby.png" class="helpSampleButton" alt="Ruby ore"></td><td>1.5625%</td><td>Diamond + 1</td></tr>
-				<tr><td>Diamond<img src="images/modern/ore-diamond.png" class="helpSampleButton" alt="Diamond ore"></td><td>1.5625%</td><td>1</td></tr>
+				<tr><td>Stone<img src="images/modern/fantasy/ore-stone.png" class="helpSampleButton" alt="Stone ore"></td><td>50%</td><td>Iron + 1</td></tr>
+				<tr><td>Iron<img src="images/modern/fantasy/ore-iron.png" class="helpSampleButton" alt="Iron ore"></td><td>25%</td><td>Gold + 1</td></tr>
+				<tr><td>Gold<img src="images/modern/fantasy/ore-gold.png" class="helpSampleButton" alt="Gold ore"></td><td>12.5%</td><td>Sapphire + 1</td></tr>
+				<tr><td>Sapphire<img src="images/modern/fantasy/ore-sapphire.png" class="helpSampleButton" alt="Sapphire ore"></td><td>6.25%</td><td>Emerald + 1</td></tr>
+				<tr><td>Emerald<img src="images/modern/fantasy/ore-emerald.png" class="helpSampleButton" alt="Emerald ore"></td><td>3.125%</td><td>Ruby + 1</td></tr>
+				<tr><td>Ruby<img src="images/modern/fantasy/ore-ruby.png" class="helpSampleButton" alt="Ruby ore"></td><td>1.5625%</td><td>Diamond + 1</td></tr>
+				<tr><td>Diamond<img src="images/modern/fantasy/ore-diamond.png" class="helpSampleButton" alt="Diamond ore"></td><td>1.5625%</td><td>1</td></tr>
 			</tbody>
 		</table>
 			<p>Higher ores increase how much of the ore immediately below them you receive. For example, each Stone roll gives your current Iron amount plus 1 Stone, while each Ruby roll gives your current Diamond amount plus 1 Ruby. Stone boosts passive Money gain by <code>sqrt(Stone) + 1</code>; 9 Stone gives a 4x Money multiplier and 100 Stone gives an 11x multiplier.</p>
@@ -372,6 +414,9 @@
 
 			<h2>Credits Formula</h2>
 			<p><code>Nano-bots x Credit bonuses x (sqrt(Deuterium) + 1)</code>. Relics are permanent, power-ups last five minutes, and Deuterium comes from Fusion mining.</p>
+
+			<h2>COT Bot <img src="images/modern/tech/auto-bot-1.png" class="helpIcon" alt="COT bot"></h2>
+			<p>COT-7 starts active immediately and performs one button action every 10 seconds. Servo Speed upgrades reduce the timer. Planning Core upgrades make it compare stronger actions, wait briefly for better purchases, and eventually navigate between unlocked worlds.</p>
 
 			<h2>Resets</h2>
 			<p>Buying Nano-machines or any higher system resets the lower systems in the same way the default theme does. XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>

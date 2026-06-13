@@ -4,7 +4,8 @@ const DATA_FILES = {
 	patterns: "data/patterns.json",
 	relics: "data/relics.json",
 	potions: "data/potions.json",
-	mining: "data/mining.json"
+	mining: "data/mining.json",
+	autoClicker: "data/autoclicker.json"
 };
 
 async function loadJson(path) {

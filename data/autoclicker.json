@@ -1,0 +1,48 @@
+{
+  "baseIntervalSeconds": 10,
+  "minimumIntervalSeconds": 1.25,
+  "speed": {
+    "maxLevel": 30,
+    "baseCost": "500",
+    "growth": "2.45",
+    "intervalMultiplier": 0.9
+  },
+  "intelligence": {
+    "maxLevel": 30,
+    "baseCost": "2500",
+    "growth": "2.85",
+    "worldNavigationLevel": 8,
+    "waitPlanningLevel": 4,
+    "waitWindowPerLevelSeconds": 1.6
+  },
+  "themes": {
+    "fantasy": {
+      "name": "Pip",
+      "title": "Arcane helper pet",
+      "navTooltip": "Pet helper",
+      "description": "Pip is a cheerful little familiar who teleports between buttons and presses them for you. Upgrade speed to act more often, and intelligence to choose stronger buttons and eventually hop between worlds.",
+      "speedName": "Agility",
+      "intelligenceName": "Wisdom",
+      "images": [
+        "images/modern/fantasy/auto-pet-1.png",
+        "images/modern/fantasy/auto-pet-2.png",
+        "images/modern/fantasy/auto-pet-3.png",
+        "images/modern/fantasy/auto-pet-4.png"
+      ]
+    },
+    "tech": {
+      "name": "COT-7",
+      "title": "Cute operations bot",
+      "navTooltip": "COT bot",
+      "description": "COT-7 is a tiny operations bot built to optimize your AI society. Upgrade speed to reduce the action timer, and intelligence to compare gains, wait for better purchases, and navigate between unlocked worlds.",
+      "speedName": "Servo speed",
+      "intelligenceName": "Planning core",
+      "images": [
+        "images/modern/tech/auto-bot-1.png",
+        "images/modern/tech/auto-bot-2.png",
+        "images/modern/tech/auto-bot-3.png",
+        "images/modern/tech/auto-bot-4.png"
+      ]
+    }
+  }
+}

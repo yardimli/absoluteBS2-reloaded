@@ -31,7 +31,7 @@ export function applyModernTheme() {
 	}
 	const miningHeading = document.getElementById("miningHeadingIcon");
 	if (miningHeading) {
-		miningHeading.src = theme === TECH_THEME ? "images/modern/tech/nav-mining.png" : "images/modern/nav-mining.png";
+		miningHeading.src = theme === TECH_THEME ? "images/modern/tech/nav-mining.png" : "images/modern/fantasy/nav-mining.png";
 		miningHeading.alt = labels.navMining;
 	}
 }
@@ -78,10 +78,10 @@ export function themedHeadingIcon(type) {
 			potions: "images/modern/tech/potion-1.png"
 		}
 		: {
-			crates: "images/modern/nav-crates.png",
-			patterns: "images/modern/pattern-1.png",
-			relics: "images/modern/nav-relics.png",
-			potions: "images/modern/nav-potions.png"
+			crates: "images/modern/fantasy/nav-crates.png",
+			patterns: "images/modern/fantasy/world-1.png",
+			relics: "images/modern/fantasy/nav-relics.png",
+			potions: "images/modern/fantasy/nav-potions.png"
 		};
 	return icons[type];
 }

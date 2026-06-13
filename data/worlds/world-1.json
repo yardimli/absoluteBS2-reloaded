@@ -4,9 +4,9 @@
   "techName": "Neon Data Habitat",
   "background": "#ca9",
   "modernBackgrounds": [
-    "images/modern/world-1.png",
-    "images/modern/world-1-2.png",
-    "images/modern/world-1-3.png"
+    "images/modern/fantasy/world-1.png",
+    "images/modern/fantasy/world-1-2.png",
+    "images/modern/fantasy/world-1-3.png"
   ],
   "techBackgrounds": [
     "images/modern/tech/world-1.jpg"
@@ -17,7 +17,7 @@
   "sections": [
     {
       "tier": "multi",
-      "modernImage": "images/modern/button-1.png",
+      "modernImage": "images/modern/fantasy/button-1.png",
       "techImage": "images/modern/tech/button-1.png",
       "buttons": [
         {
@@ -72,7 +72,7 @@
     },
     {
       "tier": "prestige",
-      "modernImage": "images/modern/button-2.png",
+      "modernImage": "images/modern/fantasy/button-2.png",
       "techImage": "images/modern/tech/button-2.png",
       "buttons": [
         {
@@ -119,7 +119,7 @@
     },
     {
       "tier": "power",
-      "modernImage": "images/modern/button-3.png",
+      "modernImage": "images/modern/fantasy/button-3.png",
       "techImage": "images/modern/tech/button-3.png",
       "buttons": [
         {

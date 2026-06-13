@@ -6,17 +6,16 @@ import {
 	loadState,
 	resetState,
 	saveState,
-	setDebugMultiplier
+	setDebugMultiplier,
+	ensureAutoClickerState
 } from "./state.js";
-import {buyButton, xpToLevel} from "./progression.js";
+import {xpToLevel} from "./progression.js";
 import {
-	claimWorldFreeButton,
-	findWorldButton,
+	activateWorldButton,
 	nextWorld,
 	previousWorld,
 	purchaseWorld,
 	renderWorld,
-	updateAffectedButtons,
 	updateButtonGridVisibility,
 	updatePassiveIncomeButtons,
 	updateWorldButtons
@@ -60,10 +59,18 @@ import {
 	updateVisuals
 } from "./ui.js";
 import {applyModernTheme, toggleModernTheme} from "./themes.js";
+import {
+	closeAutoClicker,
+	runAutoClicker,
+	showAutoClicker,
+	updateAutoClickerView,
+	upgradeAutoClicker
+} from "./autoClicker.js";
 
 window.isDevVersion = false;
 const config = await loadConfig();
 loadState(config);
+ensureAutoClickerState(config);
 applyModernTheme();
 initializeStaticViews(config);
 initializeMiningView(config);
@@ -71,6 +78,7 @@ initializeDialog();
 calculateItemMultipliers(config);
 setPattern(config, game.currentPattern[0], game.currentPattern[1]);
 renderWorld(config);
+updateAutoClickerView(config);
 
 if (!game.hasSeenHelp) {
 	showHelp();
@@ -113,24 +121,16 @@ async function importGame() {
 function activateButton(element) {
 	const action = element.dataset.action;
 	if (action === "buy-button") {
-		const button = findWorldButton(config, element.dataset.tier, Number(element.dataset.buttonIndex));
-		if (button && buyButton(config, element.dataset.tier, button)) {
-			element.classList.remove("clicked");
-			void element.offsetWidth;
-			element.classList.add("clicked");
-			updateAffectedButtons(config, element.dataset.tier);
-		}
+		activateWorldButton(config, element);
 	} else if (action === "free-resource") {
-		if (claimWorldFreeButton(config, element.dataset.tier)) {
-			element.classList.remove("clicked");
-			void element.offsetWidth;
-			element.classList.add("clicked");
-			updateAffectedButtons(config, element.dataset.tier);
-		}
+		activateWorldButton(config, element);
 	} else if (action === "show-items") {
 		if (element.dataset.itemType === "crates") clearCrateNotificationBlink();
 		showItems(config, element.dataset.itemType);
 	} else if (action === "close-items") closeItems();
+	else if (action === "show-auto-clicker") showAutoClicker(config);
+	else if (action === "close-auto-clicker") closeAutoClicker();
+	else if (action === "upgrade-auto-clicker") upgradeAutoClicker(config, element.dataset.upgrade);
 	else if (action === "show-mining") showMining(config);
 	else if (action === "close-mining") closeMining();
 	else if (action === "purchase-miner") purchaseMiner(config);
@@ -155,6 +155,7 @@ function activateButton(element) {
 		initializeStaticViews(config);
 		initializeMiningView(config);
 		renderWorld(config);
+		updateAutoClickerView(config);
 		if (game.currentItemScreen) {
 			const itemScreen = game.currentItemScreen;
 			game.currentItemScreen = "";
@@ -170,6 +171,7 @@ function activateButton(element) {
 
 function closeBackdropModal(element) {
 	if (element.id === "itemScreen") closeItems();
+	else if (element.id === "autoClickerScreen") closeAutoClicker();
 	else if (element.id === "miningScreen") closeMining();
 	else if (element.id === "resourceBreakdownScreen") closeResourceBreakdown();
 	else if (element.id === "sectionLoreScreen") closeSectionLore();
@@ -275,6 +277,7 @@ function updateSimulation() {
 		}
 	}
 	game.level = xpToLevel(config, game.XP);
+	runAutoClicker(config);
 	game.timeOfLastUpdate = Date.now();
 }
 
@@ -282,6 +285,7 @@ function visualLoop() {
 	updateVisuals(config);
 	updatePassiveIncomeButtons(config);
 	updateMiningView(config);
+	updateAutoClickerView(config);
 	requestAnimationFrame(visualLoop);
 }
 

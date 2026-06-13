@@ -14,7 +14,7 @@
       "key": "basic",
       "name": "Basic crate",
       "techName": "Basic data cache",
-      "modernImage": "images/modern/crate-1.png",
+      "modernImage": "images/modern/fantasy/crate-1.png",
       "techImage": "images/modern/tech/crate-1.png",
       "contents": {
         "pattern": [
@@ -86,7 +86,7 @@
       "key": "advanced",
       "name": "Advanced crate",
       "techName": "Advanced quantum vault",
-      "modernImage": "images/modern/crate-2.png",
+      "modernImage": "images/modern/fantasy/crate-2.png",
       "techImage": "images/modern/tech/crate-2.png",
       "contents": {
         "pattern": [

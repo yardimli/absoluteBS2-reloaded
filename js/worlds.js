@@ -1,5 +1,5 @@
 import {currentWorld, game, setCurrentWorld} from "./state.js";
-import {calculateButtonGain, canBuyButton, claimFreeResource} from "./progression.js";
+import {buyButton, calculateButtonGain, canBuyButton, claimFreeResource} from "./progression.js";
 import {format} from "./format.js";
 import {showMessage} from "./ui.js";
 import {getModernTheme, themedBackgrounds, themedIcon, themedImage, themedName, themedShortName} from "./themes.js";
@@ -269,6 +269,30 @@ export function findWorldButton(config, tierId, buttonIndex) {
 export function claimWorldFreeButton(config, tierId) {
 	const section = config.worldById[currentWorld].sections.find(item => item.tier === tierId);
 	return section?.freeButton ? claimFreeResource(section.freeButton) : false;
+}
+
+function playButtonClickEffect(element) {
+	element.classList.remove("clicked");
+	void element.offsetWidth;
+	element.classList.add("clicked");
+}
+
+export function activateWorldButton(config, element) {
+	if (!element) return false;
+	if (element.dataset.action === "buy-button") {
+		const button = findWorldButton(config, element.dataset.tier, Number(element.dataset.buttonIndex));
+		if (!button || !buyButton(config, element.dataset.tier, button)) return false;
+		playButtonClickEffect(element);
+		updateAffectedButtons(config, element.dataset.tier);
+		return true;
+	}
+	if (element.dataset.action === "free-resource") {
+		if (!claimWorldFreeButton(config, element.dataset.tier)) return false;
+		playButtonClickEffect(element);
+		updateAffectedButtons(config, element.dataset.tier);
+		return true;
+	}
+	return false;
 }
 
 export function nextWorld(config) {
