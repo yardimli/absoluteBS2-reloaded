@@ -271,7 +271,7 @@ export function updateVisuals(config) {
 		if (value) value.textContent = format(game[resource.id]);
 		const row = document.querySelector(`[data-resource-id="${resource.id}"]`);
 		if (row) {
-			const visibleDisplay = "flex";
+			const visibleDisplay = ""; // maybe will need to set to "flex" or "grid" for some themes in the future, so leaving blank for now
 			row.style.display = !resource.unlockWorld || game.worldsUnlocked >= resource.unlockWorld ? visibleDisplay : "none";
 		}
 	}

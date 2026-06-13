@@ -1214,6 +1214,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 		margin-top: 8px;
 		border-radius: 23px;
 		grid-template-columns: 1fr;
+		gap: 4px;
 	}
 
 	.topShell .brandBlock {
@@ -1223,6 +1224,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	.primaryNav {
 		justify-content: flex-start;
 		overflow-x: auto;
+		overflow-y: hidden;
 		flex-wrap: nowrap;
 		padding-bottom: 2px;
 	}
@@ -1242,7 +1244,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	}
 
 	.resourceList {
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr;
 	}
 
 	.railActions {
