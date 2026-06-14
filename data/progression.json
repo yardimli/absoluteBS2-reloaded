@@ -74,7 +74,7 @@
         "tech": {
           "origin": "Processors are prediction engines, running impossible build orders before the machines commit matter to them.",
           "createdBy": "Factories are reset into Processors.",
-          "effects": "Processors multiply Factory gains and pay for Neural uplinks."
+          "effects": "Processors multiply Factory gains and pay for Uplinks."
         },
         "fantasy": {
           "origin": "Power is sunlight hammered into a golden sigil, the first force strong enough to bend Prestige into machinery.",
@@ -88,7 +88,7 @@
       "name": "Super prestige",
       "shortName": "S-prestige",
       "modernIcon": "images/modern/fantasy/super-prestige.png",
-      "techName": "Neural uplinks",
+      "techName": "Uplinks",
       "techShortName": "Uplinks",
       "techIcon": "images/modern/tech/neural-uplinks.png",
       "color": "#0bf",
@@ -96,9 +96,9 @@
       "unlockWorld": 2,
       "lore": {
         "tech": {
-          "origin": "Neural uplinks connect distant machine colonies, letting one world's solution become another world's instinct.",
-          "createdBy": "Processors build Neural uplinks in World 2.",
-          "effects": "Neural uplinks multiply Processor gains and fund the Council."
+          "origin": "Uplinks connect distant machine colonies, letting one world's solution become another world's instinct.",
+          "createdBy": "Processors build Uplinks in World 2.",
+          "effects": "Uplinks multiply Processor gains and fund the Council."
         },
         "fantasy": {
           "origin": "Super Prestige is moonlit status, a blue-white crest granted only after Power proves it can survive a reset.",
@@ -120,8 +120,8 @@
       "lore": {
         "tech": {
           "origin": "The Council is the governance layer: clustered minds voting in light, assigning purpose to the growing society.",
-          "createdBy": "Neural uplinks form the council in World 2.",
-          "effects": "The council multiplies Neural uplink gains and spends its authority to approach Singularity."
+          "createdBy": "Uplinks form the council in World 2.",
+          "effects": "The council multiplies Uplink gains and spends its authority to approach Singularity."
         },
         "fantasy": {
           "origin": "Ascension is the white gate above the glass citadels, where ordinary progress becomes a ritual of leaving gravity behind.",
