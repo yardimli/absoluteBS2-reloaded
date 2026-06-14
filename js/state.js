@@ -47,7 +47,9 @@ export function resetState(config) {
 				priority: "simple",
 				waitSeconds: 0,
 				rowDepth: 1,
-				worldMode: "current"
+				worldMode: "current",
+				rowEvery: {},
+				rowClicks: {}
 			}
 		},
 		hasSeenHelp: false
@@ -81,6 +83,20 @@ export function ensureAutoClickerState(config) {
 	if (behavior.priority === "best" && intelligence < BEST_VALUE_LEVEL) behavior.priority = "simple";
 	behavior.waitSeconds = Math.max(0, Math.min(maxWaitSeconds, Number(behavior.waitSeconds) || 0));
 	behavior.rowDepth = Math.max(1, Math.min(maxRowDepth, Math.floor(Number(behavior.rowDepth) || 1)));
+	if (!behavior.rowEvery || typeof behavior.rowEvery !== "object") behavior.rowEvery = {};
+	if (!behavior.rowClicks || typeof behavior.rowClicks !== "object") behavior.rowClicks = {};
+	if (behavior.row2Every && !behavior.rowEvery[1]) behavior.rowEvery[1] = behavior.row2Every;
+	if (behavior.row3Every && !behavior.rowEvery[2]) behavior.rowEvery[2] = behavior.row3Every;
+	if (behavior.row1Clicks && !behavior.rowClicks[0]) behavior.rowClicks[0] = behavior.row1Clicks;
+	if (behavior.row2Clicks && !behavior.rowClicks[1]) behavior.rowClicks[1] = behavior.row2Clicks;
+	const maxTargetRow = Math.max(0, Math.min(behavior.rowDepth - 1, config.progression.tiers.length - 2));
+	for (let rowIndex = 0; rowIndex < config.progression.tiers.length; rowIndex += 1) {
+		behavior.rowClicks[rowIndex] = Math.max(0, Math.floor(Number(behavior.rowClicks[rowIndex]) || 0));
+	}
+	for (let targetRow = 1; targetRow <= maxTargetRow; targetRow += 1) {
+		const fallback = targetRow === 1 ? 5 : targetRow === 2 ? 4 : 3;
+		behavior.rowEvery[targetRow] = Math.max(1, Math.min(20, Math.floor(Number(behavior.rowEvery[targetRow]) || fallback)));
+	}
 	if (!["current", "all"].includes(behavior.worldMode)) behavior.worldMode = "current";
 	if (behavior.worldMode === "all" && intelligence < WORLD_TRAVEL_LEVEL) {
 		behavior.worldMode = "current";

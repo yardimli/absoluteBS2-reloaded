@@ -1213,6 +1213,10 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	background: rgba(255, 255, 255, 0.06);
 }
 
+.autoClickerFrequencyControls {
+	display: contents;
+}
+
 .autoClickerControlGroup {
 	display: flex;
 	flex-wrap: wrap;

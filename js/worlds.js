@@ -200,7 +200,6 @@ function affectedTiers(config, purchasedTier) {
 		if (tier.parentResource === purchasedTier.gainResource) affected.add(tier.id);
 		if (tier.costResource === purchasedTier.costResource) affected.add(tier.id);
 		if (tier.costResource === purchasedTier.gainResource) affected.add(tier.id);
-		if (purchasedTier.resets.includes(tier.costResource)) affected.add(tier.id);
 	}
 	return affected;
 }
@@ -216,8 +215,7 @@ export function updateAffectedButtons(config, purchasedTierId) {
 		const resourceId = element.dataset.resourceHeader;
 		if (
 			resourceId === purchasedTier.costResource ||
-			resourceId === purchasedTier.gainResource ||
-			purchasedTier.resets.includes(resourceId)
+			resourceId === purchasedTier.gainResource
 		) {
 			element.textContent = `${resourceLabel(config, resourceId)}: ${format(game[resourceId])}`;
 		}
@@ -290,8 +288,6 @@ export function activateWorldButton(config, element) {
 	if (element.dataset.action === "buy-button") {
 		const button = findWorldButton(config, element.dataset.tier, Number(element.dataset.buttonIndex));
 		if (!button || !buyButton(config, element.dataset.tier, button)) return false;
-		const tier = config.tierById[element.dataset.tier];
-		if (tier?.resets?.length) game.autoClicker.manualWorldId = 0;
 		playButtonClickEffect(element);
 		updateAffectedButtons(config, element.dataset.tier);
 		return true;

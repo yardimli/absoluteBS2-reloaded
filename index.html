@@ -151,6 +151,7 @@
 						<span><span>Rows to scan downward</span><strong id="autoClickerRowDepthValue">1 row</strong></span>
 						<input id="autoClickerRowDepthSlider" type="range" min="1" max="1" value="1" step="1" data-action="update-auto-clicker-behavior" data-setting="rowDepth">
 					</label>
+					<div id="autoClickerFrequencyControls" class="autoClickerFrequencyControls"></div>
 					<div class="autoClickerControlGroup autoClickerBehaviorCell">
 						<span class="autoClickerControlLabel">World travel</span>
 						<label><input type="radio" name="autoClickerWorldMode" value="current" data-action="update-auto-clicker-behavior" data-setting="worldMode"> Stay here</label>
@@ -291,7 +292,7 @@
 			<h2>Money income</h2>
 			<p><code>Multi × Money bonuses × (sqrt(Stone) + 1)</code>. Relics are permanent, potions last five minutes, and Stone comes from Mining.</p>
 			<h2>Resets</h2>
-			<p>Buying Prestige or any higher tier resets every resource below the purchased tier. XP, levels, worlds, miners, ores, crates, relics, and potions remain.</p>
+			<p>Buying Prestige or any higher tier now spends only the listed cost. Lower resources are not reset, and XP, levels, worlds, miners, ores, crates, relics, and potions remain.</p>
 			<h2>Collections</h2>
 			<p>Leveling awards Basic crates through level 99. Unlocking Worlds 2 and 3 awards Advanced crates. Modern crates contain permanent relics or temporary potions.</p>
 			<h2>Auto Helper</h2>
@@ -342,20 +343,20 @@
 		<h2>Auto Helper <img src="images/modern/fantasy/auto-pet-1.png" class="helpIcon" alt="Pet helper"></h2>
 			<p>Your pet helper starts active immediately and presses one affordable button every 10 seconds. Buy Agility upgrades with Money to shorten the timer. Wisdom upgrades unlock behavior controls so you can choose button priority, how long Pip waits for better Money buttons, how many resource rows it scans, and whether it may hop between unlocked worlds.</p>
 
-		<h2>Purchases and Resets</h2>
-		<p>Multi purchases only spend Money and do not reset anything. Buying Prestige or a higher resource resets all lower resources, but you keep the resource you bought and every resource above it.</p>
+		<h2>Purchases</h2>
+		<p>Every button spends only the listed cost resource and awards the next resource. Higher resource purchases no longer reset lower resources.</p>
 		<table class="helpTable">
-			<thead><tr><th>Button purchased</th><th>Cost</th><th>Resources reset</th></tr></thead>
+			<thead><tr><th>Button purchased</th><th>Cost</th><th>What happens</th></tr></thead>
 			<tbody>
-				<tr><td>Multi</td><td>Money</td><td>None</td></tr>
-				<tr><td>Prestige</td><td>Multi</td><td>Money returns to 0 and Multi returns to 1.</td></tr>
-				<tr><td>Power</td><td>Prestige</td><td>Money, Multi, and Prestige.</td></tr>
-				<tr><td>Super Prestige</td><td>Power</td><td>Money through Power.</td></tr>
-				<tr><td>Ascension</td><td>Super Prestige</td><td>Money through Super Prestige.</td></tr>
-				<tr><td>Infernal</td><td>Ascension</td><td>Money through Ascension.</td></tr>
+				<tr><td>Multi</td><td>Money</td><td>Spend Money, gain Multi.</td></tr>
+				<tr><td>Prestige</td><td>Multi</td><td>Spend Multi, gain Prestige.</td></tr>
+				<tr><td>Power</td><td>Prestige</td><td>Spend Prestige, gain Power.</td></tr>
+				<tr><td>Super Prestige</td><td>Power</td><td>Spend Power, gain Super Prestige.</td></tr>
+				<tr><td>Ascension</td><td>Super Prestige</td><td>Spend Super Prestige, gain Ascension.</td></tr>
+				<tr><td>Infernal</td><td>Ascension</td><td>Spend Ascension, gain Infernal.</td></tr>
 			</tbody>
 		</table>
-		<p>Relics, potions, ores, miners, XP, levels, crates, and unlocked worlds are not removed by these resource resets.</p>
+		<p>Relics, potions, ores, miners, XP, levels, crates, and unlocked worlds are also kept.</p>
 
 		<h2>Worlds and Backgrounds</h2>
 		<p>Unlock new worlds to access higher tier buttons and new features. Each world has three modern background scenes. A random scene for the active world is chosen whenever the page opens or you navigate into that world.</p>
@@ -366,7 +367,7 @@
 		</ul>
 
 		<h2>Levels and XP</h2>
-		<p>The header bar shows your progress toward the next level. Levels do not directly multiply your resource gains; they track your XP and award Basic crates. Higher-tier reset purchases give four times as much XP as the tier before them.</p>
+		<p>The header bar shows your progress toward the next level. Levels do not directly multiply your resource gains; they track your XP and award Basic crates. Higher-tier purchases give four times as much XP as the tier before them.</p>
 		<table class="helpTable">
 			<thead><tr><th>Reset purchase</th><th>XP gained</th></tr></thead>
 			<tbody>
@@ -481,7 +482,7 @@
 			<p>COT-7 starts active immediately and performs one button action every 10 seconds. Servo Speed upgrades reduce the timer. Planning Core upgrades unlock behavior controls so you can choose button priority, how long COT-7 waits for better Credit buttons, how many system rows it scans, and whether it may travel between unlocked worlds.</p>
 
 			<h2>Resets</h2>
-			<p>Buying Factories or any higher system resets the lower systems in the same way the fantasy theme does. XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>
+			<p>Buying Factories or any higher system now spends only the listed cost resource. Lower systems are not reset, and XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>
 
 			<h2>Worlds</h2>
 			<ul>

@@ -12,6 +12,7 @@ const WORLD_TRAVEL_LEVEL = 8;
 const ROW_UNLOCK_LEVELS = [0, 2, 5, 8, 11, 14];
 let autoClickerViewKey = "";
 let autoClickerStatusText = "";
+let autoClickerFrequencyKey = "";
 
 function themeConfig(config) {
 	return config.autoClicker.themes[getModernTheme()] || config.autoClicker.themes.tech;
@@ -35,6 +36,16 @@ function behaviorCaps(config) {
 	};
 }
 
+function defaultRowFrequency(rowIndex) {
+	if (rowIndex === 1) return 5;
+	if (rowIndex === 2) return 4;
+	return 3;
+}
+
+function maxFrequencyTargetRow(config, behavior) {
+	return Math.max(0, Math.min(behavior.rowDepth - 1, config.progression.tiers.length - 2));
+}
+
 function behaviorSettings(config) {
 	const caps = behaviorCaps(config);
 	const behavior = game.autoClicker.behavior || {};
@@ -43,6 +54,21 @@ function behaviorSettings(config) {
 	if (behavior.priority === "best" && !caps.canChooseBest) behavior.priority = "simple";
 	behavior.waitSeconds = Math.max(0, Math.min(caps.maxWaitSeconds, Number(behavior.waitSeconds) || 0));
 	behavior.rowDepth = Math.max(1, Math.min(caps.maxRowDepth, Math.floor(Number(behavior.rowDepth) || 1)));
+	if (!behavior.rowEvery || typeof behavior.rowEvery !== "object") behavior.rowEvery = {};
+	if (!behavior.rowClicks || typeof behavior.rowClicks !== "object") behavior.rowClicks = {};
+	if (behavior.row2Every && !behavior.rowEvery[1]) behavior.rowEvery[1] = behavior.row2Every;
+	if (behavior.row3Every && !behavior.rowEvery[2]) behavior.rowEvery[2] = behavior.row3Every;
+	if (behavior.row1Clicks && !behavior.rowClicks[0]) behavior.rowClicks[0] = behavior.row1Clicks;
+	if (behavior.row2Clicks && !behavior.rowClicks[1]) behavior.rowClicks[1] = behavior.row2Clicks;
+	for (let rowIndex = 0; rowIndex < config.progression.tiers.length; rowIndex += 1) {
+		behavior.rowClicks[rowIndex] = Math.max(0, Math.floor(Number(behavior.rowClicks[rowIndex]) || 0));
+	}
+	for (let targetRow = 1; targetRow <= maxFrequencyTargetRow(config, behavior); targetRow += 1) {
+		behavior.rowEvery[targetRow] = Math.max(
+			1,
+			Math.min(20, Math.floor(Number(behavior.rowEvery[targetRow]) || defaultRowFrequency(targetRow)))
+		);
+	}
 	if (!["current", "all"].includes(behavior.worldMode)) behavior.worldMode = "current";
 	if (behavior.worldMode === "all" && !caps.canUseWorlds) behavior.worldMode = "current";
 	return behavior;
@@ -169,20 +195,25 @@ function collectCandidates(config, worldId) {
 }
 
 function allowedWorldIds(config) {
+	const behavior = behaviorSettings(config);
+	if (behavior.worldMode === "all") {
+		return config.worlds
+			.filter(world => world.id <= game.worldsUnlocked)
+			.map(world => world.id);
+	}
 	const manualWorldId = game.autoClicker.manualWorldId;
 	if (manualWorldId > 0 && manualWorldId <= game.worldsUnlocked && config.worldById[manualWorldId]) {
 		return [manualWorldId];
 	}
-	const behavior = behaviorSettings(config);
-	if (behavior.worldMode !== "all") return [currentWorld];
-	return config.worlds
-		.filter(world => world.id <= game.worldsUnlocked)
-		.map(world => world.id);
+	return [currentWorld];
 }
 
 function chooseAvailableCandidate(config, available) {
 	const behavior = behaviorSettings(config);
 	available = available.filter(candidate => tierOrder(config, candidate.tierId) < behavior.rowDepth);
+	const scheduledRow = scheduledRowIndex(config, behavior);
+	const scheduled = chooseFromRow(config, available, scheduledRow, behavior.priority);
+	if (scheduled) return scheduled;
 	if (behavior.priority !== "best") {
 		return available
 			.slice()
@@ -193,13 +224,39 @@ function chooseAvailableCandidate(config, available) {
 		.sort((a, b) => b.score - a.score)[0];
 }
 
+function scheduledRowIndex(config, behavior) {
+	for (let targetRow = maxFrequencyTargetRow(config, behavior); targetRow >= 1; targetRow -= 1) {
+		if ((behavior.rowClicks[targetRow - 1] || 0) >= behavior.rowEvery[targetRow]) return targetRow;
+	}
+	return 0;
+}
+
+function chooseFromRow(config, available, rowIndex, priority) {
+	const row = available.filter(candidate => tierOrder(config, candidate.tierId) === rowIndex);
+	if (!row.length) return null;
+	if (priority === "best") return row.slice().sort((a, b) => b.score - a.score)[0];
+	return row
+		.slice()
+		.sort((a, b) => a.worldId - b.worldId || (a.buttonIndex ?? -1) - (b.buttonIndex ?? -1))[0];
+}
+
+function recordAutoClickerRow(config, candidate) {
+	const behavior = behaviorSettings(config);
+	const row = tierOrder(config, candidate.tierId);
+	behavior.rowClicks[row] = (behavior.rowClicks[row] || 0) + 1;
+	if (row > 0) behavior.rowClicks[row - 1] = 0;
+}
+
 function shouldWaitForBetter(config, chosen, allCandidates) {
 	const behavior = behaviorSettings(config);
 	if (!chosen || behavior.waitSeconds <= 0) return false;
 	const income = currentMoneyPerSecond();
 	if (income.lte(0)) return false;
+	const scheduledRow = scheduledRowIndex(config, behavior);
 	for (const candidate of allCandidates) {
 		if (candidate.available || candidate.type !== "button") continue;
+		const candidateRow = tierOrder(config, candidate.tierId);
+		if (candidateRow >= behavior.rowDepth || candidateRow !== scheduledRow) continue;
 		const tier = config.tierById[candidate.tierId];
 		if (tier.costResource !== "money") continue;
 		const missing = E(candidate.button.cost).sub(game.money);
@@ -256,6 +313,7 @@ export function runAutoClicker(config) {
 	const element = document.querySelector(selectorForCandidate(chosen));
 	animateAutoClicker(config, element);
 	if (activateWorldButton(config, element)) {
+		recordAutoClickerRow(config, chosen);
 		game.autoClicker.lastActionAt = now;
 		updateAutoClickerView(config);
 	}
@@ -275,7 +333,15 @@ export function updateAutoClickerBehavior(config, setting, value) {
 	const behavior = behaviorSettings(config);
 	if (setting === "priority") behavior.priority = value === "best" ? "best" : "simple";
 	if (setting === "waitSeconds") behavior.waitSeconds = Number(value) || 0;
-	if (setting === "rowDepth") behavior.rowDepth = Number(value) || 1;
+	if (setting === "rowDepth") {
+		behavior.rowDepth = Number(value) || 1;
+		autoClickerFrequencyKey = "";
+	}
+	if (setting?.startsWith("rowEvery:")) {
+		const targetRow = Number(setting.split(":")[1]);
+		if (!behavior.rowEvery) behavior.rowEvery = {};
+		behavior.rowEvery[targetRow] = Number(value) || defaultRowFrequency(targetRow);
+	}
 	if (setting === "worldMode") behavior.worldMode = value === "all" ? "all" : "current";
 	autoClickerViewKey = "";
 	behaviorSettings(config);
@@ -321,6 +387,14 @@ function autoClickerStateKey(config, themed, image, sleeping) {
 	const manualWorld = game.autoClicker.manualWorldId > 0 ? config.worldById[game.autoClicker.manualWorldId] : null;
 	const speedCost = autoClickerUpgradeCost(config, "speed").toString();
 	const intelligenceCost = autoClickerUpgradeCost(config, "intelligence").toString();
+	const behavior = behaviorSettings(config);
+	const behaviorViewKey = JSON.stringify({
+		priority: behavior.priority,
+		waitSeconds: behavior.waitSeconds,
+		rowDepth: behavior.rowDepth,
+		worldMode: behavior.worldMode,
+		rowEvery: behavior.rowEvery
+	});
 	return [
 		getModernTheme(),
 		themed.name,
@@ -333,7 +407,7 @@ function autoClickerStateKey(config, themed, image, sleeping) {
 		game.autoClicker.speedLevel,
 		game.autoClicker.intelligenceLevel,
 		game.autoClicker.manualWorldId,
-		JSON.stringify(behaviorSettings(config)),
+		behaviorViewKey,
 		manualWorld ? themedName(manualWorld) : "",
 		sleeping,
 		game.autoClicker.sleepUntil,
@@ -372,7 +446,7 @@ export function updateAutoClickerView(config) {
 	if (status) {
 		const manualWorld = game.autoClicker.manualWorldId > 0 ? config.worldById[game.autoClicker.manualWorldId] : null;
 		const navigationText = manualWorld
-			? ` Staying on ${themedName(manualWorld)} until the next reset purchase.`
+			? ` Staying on ${themedName(manualWorld)} until world travel is enabled.`
 			: "";
 		const sleepSeconds = Math.ceil(remaining);
 		const nextStatusText = sleeping
@@ -407,6 +481,48 @@ function setInputDisabled(input, disabled) {
 	if (input && input.disabled !== disabled) input.disabled = disabled;
 }
 
+function rowLabel(config, rowIndex) {
+	const tier = config.progression.tiers[rowIndex];
+	const resource = tier ? config.resourceById[tier.gainResource] : null;
+	return resource ? themedName(resource) : `row ${rowIndex + 1}`;
+}
+
+function renderFrequencyControls(config, behavior) {
+	const root = document.getElementById("autoClickerFrequencyControls");
+	if (!root) return;
+	const maxTargetRow = maxFrequencyTargetRow(config, behavior);
+	const key = [
+		getModernTheme(),
+		maxTargetRow,
+		Array.from({length: maxTargetRow}, (_, index) => behavior.rowEvery[index + 1] || defaultRowFrequency(index + 1)).join(",")
+	].join("|");
+	if (key === autoClickerFrequencyKey) return;
+	root.replaceChildren();
+	root.style.display = maxTargetRow >= 1 ? "" : "none";
+	for (let targetRow = 1; targetRow <= maxTargetRow; targetRow += 1) {
+		const value = behavior.rowEvery[targetRow] || defaultRowFrequency(targetRow);
+		const label = document.createElement("label");
+		label.className = "autoClickerSlider autoClickerBehaviorCell";
+		const heading = document.createElement("span");
+		const text = document.createElement("span");
+		text.textContent = `${rowLabel(config, targetRow)} frequency`;
+		const strong = document.createElement("strong");
+		strong.textContent = `Every ${value} ${rowLabel(config, targetRow - 1)}`;
+		heading.append(text, strong);
+		const input = document.createElement("input");
+		input.type = "range";
+		input.min = "1";
+		input.max = "20";
+		input.step = "1";
+		input.value = String(value);
+		input.dataset.action = "update-auto-clicker-behavior";
+		input.dataset.setting = `rowEvery:${targetRow}`;
+		label.append(heading, input);
+		root.append(label);
+	}
+	autoClickerFrequencyKey = key;
+}
+
 function updateBehaviorControls(config) {
 	const themed = themeConfig(config);
 	const caps = behaviorCaps(config);
@@ -435,6 +551,7 @@ function updateBehaviorControls(config) {
 		setInputDisabled(rowDepth, caps.maxRowDepth <= 1);
 	}
 	setText("autoClickerRowDepthValue", `${behavior.rowDepth} ${behavior.rowDepth === 1 ? "row" : "rows"}`);
+	renderFrequencyControls(config, behavior);
 	document.querySelectorAll('input[name="autoClickerWorldMode"]').forEach(input => {
 		input.checked = input.value === behavior.worldMode;
 		setInputDisabled(input, input.value === "all" && !caps.canUseWorlds);

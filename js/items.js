@@ -182,7 +182,7 @@ function emptyCollectionText(type) {
 		? {
 			crates: {
 				title: "No data caches yet.",
-				body: "Level up through reset purchases or unlock new worlds to receive caches full of relics and power-ups."
+				body: "Level up through higher-tier purchases or unlock new worlds to receive caches full of relics and power-ups."
 			},
 			relics: {
 				title: "No relics recovered.",
