@@ -1,4 +1,4 @@
-import {currentWorld, game, setCurrentWorld} from "./state.js";
+import {currentWorld, game, saveState, setCurrentWorld} from "./state.js";
 import {calculateButtonGain, canBuyButton} from "./progression.js";
 import {format, formatTime} from "./format.js";
 import {getModernTheme, themedName} from "./themes.js";
@@ -11,8 +11,12 @@ const WAIT_PLANNING_LEVEL = 4;
 const WORLD_TRAVEL_LEVEL = 8;
 const ROW_UNLOCK_LEVELS = [0, 2, 5, 8, 11, 14];
 let autoClickerViewKey = "";
-let autoClickerStatusText = "";
 let autoClickerFrequencyKey = "";
+let autoClickerDescriptionExpanded = true;
+const autoClickerTextExpanded = {
+	behaviorSummary: true,
+	hint: true
+};
 
 function themeConfig(config) {
 	return config.autoClicker.themes[getModernTheme()] || config.autoClicker.themes.tech;
@@ -247,7 +251,52 @@ function recordAutoClickerRow(config, candidate) {
 	if (row > 0) behavior.rowClicks[row - 1] = 0;
 }
 
-function shouldWaitForBetter(config, chosen, allCandidates) {
+function resourceAfterCandidate(config, resourceId, candidate) {
+	if (!candidate || candidate.type !== "button") return game[resourceId];
+	const tier = config.tierById[candidate.tierId];
+	if (tier.gainResource !== resourceId) return game[resourceId];
+	const gain = calculateButtonGain(config, tier, candidate.button);
+	return tier.resets.includes(resourceId) ? gain : game[resourceId].add(gain);
+}
+
+function waitDecision(config, chosen, allCandidates) {
+	const behavior = behaviorSettings(config);
+	if (!chosen || behavior.waitSeconds <= 0) return null;
+	const interval = autoClickerInterval(config);
+	const allowedCandidates = allCandidates.filter(candidate => tierOrder(config, candidate.tierId) < behavior.rowDepth);
+	const betterTargets = allowedCandidates
+		.filter(candidate => !candidate.available && candidate.type === "button" && candidate.score > chosen.score)
+		.sort((a, b) => b.score - a.score);
+	for (const candidate of betterTargets) {
+		const tier = config.tierById[candidate.tierId];
+		const costResource = tier.costResource;
+		const missing = E(candidate.button.cost).sub(game[costResource]);
+		if (missing.lte(0)) continue;
+		if (costResource === "money") {
+			const income = currentMoneyPerSecond();
+			if (income.lte(0)) continue;
+			const seconds = missing.div(income).toNumber();
+			if (Number.isFinite(seconds) && seconds <= behavior.waitSeconds) return {wait: true};
+			continue;
+		}
+		const producers = allowedCandidates
+			.filter(producer => producer.available && config.tierById[producer.tierId].gainResource === costResource)
+			.sort((a, b) => resourceAfterCandidate(config, costResource, b).cmp(resourceAfterCandidate(config, costResource, a)));
+		const producer = producers[0];
+		if (!producer) continue;
+		const tierResetsResource = config.tierById[producer.tierId].resets.includes(costResource);
+		const gain = calculateButtonGain(config, config.tierById[producer.tierId], producer.button);
+		const actions = tierResetsResource
+			? (gain.gte(candidate.button.cost) ? 1 : Infinity)
+			: Math.ceil(missing.div(gain).toNumber());
+		if (Number.isFinite(actions) && actions * interval <= behavior.waitSeconds) {
+			return {candidate: producer};
+		}
+	}
+	return null;
+}
+
+function legacyMoneyWaitForBetter(config, chosen, allCandidates) {
 	const behavior = behaviorSettings(config);
 	if (!chosen || behavior.waitSeconds <= 0) return false;
 	const income = currentMoneyPerSecond();
@@ -273,16 +322,49 @@ function selectorForCandidate(candidate) {
 	return `[data-action="buy-button"][data-tier="${candidate.tierId}"][data-button-index="${candidate.buttonIndex}"]`;
 }
 
-function animateAutoClicker(config, element) {
-	if (!element) return;
+function interfaceOverlayOpen() {
+	if (document.body.classList.contains("resourcesOpen")) return true;
+	const selectors = [
+		".modalShell",
+		".messageDialogShell",
+		"#helpScreen",
+		"#helpScreenOverlay"
+	];
+	return selectors.some(selector => Array.from(document.querySelectorAll(selector)).some(element => {
+		const style = window.getComputedStyle(element);
+		return style.display !== "none" && style.visibility !== "hidden";
+	}));
+}
+
+function targetCoordinates(element) {
+	if (!element?.isConnected || element.disabled) return null;
+	const style = window.getComputedStyle(element);
+	if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0) return null;
+	const rect = element.getBoundingClientRect();
+	if (
+		!Number.isFinite(rect.left) ||
+		!Number.isFinite(rect.top) ||
+		!Number.isFinite(rect.width) ||
+		!Number.isFinite(rect.height) ||
+		rect.width <= 0 ||
+		rect.height <= 0
+	) return null;
+	const x = rect.left + rect.width / 2;
+	const y = rect.top + rect.height / 2;
+	if (x <= 0 || y <= 0 || x >= window.innerWidth || y >= window.innerHeight) return null;
+	const hit = document.elementFromPoint(x, y);
+	if (!hit || (hit !== element && !element.contains(hit))) return null;
+	return {x, y};
+}
+
+function animateAutoClicker(config, coordinates) {
+	if (!coordinates) return;
 	const avatar = document.getElementById("autoClickerAvatar");
 	const burst = document.getElementById("autoClickerBurst");
 	if (!avatar || !burst) return;
 	const image = autoClickerImage(config);
 	avatar.src = image;
-	const rect = element.getBoundingClientRect();
-	const x = rect.left + rect.width / 2;
-	const y = rect.top + rect.height / 2;
+	const {x, y} = coordinates;
 	avatar.style.setProperty("--pet-x", `${x}px`);
 	avatar.style.setProperty("--pet-y", `${y}px`);
 	avatar.classList.remove("isClicking");
@@ -296,23 +378,27 @@ function animateAutoClicker(config, element) {
 }
 
 export function runAutoClicker(config) {
-	if (isAutoClickerSleeping()) return;
+	if (isAutoClickerSleeping() || interfaceOverlayOpen()) return;
 	const now = Date.now();
 	const intervalMs = autoClickerInterval(config) * 1000;
 	if (now - game.autoClicker.lastActionAt < intervalMs) return;
 	const worldIds = allowedWorldIds(config);
 	const allCandidates = worldIds.flatMap(worldId => collectCandidates(config, worldId));
 	const available = allCandidates.filter(candidate => candidate.available);
-	const chosen = chooseAvailableCandidate(config, available);
+	let chosen = chooseAvailableCandidate(config, available);
 	if (!chosen) return;
-	if (shouldWaitForBetter(config, chosen, allCandidates)) return;
+	const decision = waitDecision(config, chosen, allCandidates);
+	if (decision?.wait) return;
+	if (decision?.candidate) chosen = decision.candidate;
 	if (chosen.worldId !== currentWorld) {
 		setCurrentWorld(chosen.worldId);
 		renderWorld(config);
 	}
 	const element = document.querySelector(selectorForCandidate(chosen));
-	animateAutoClicker(config, element);
+	const coordinates = targetCoordinates(element);
+	if (!coordinates || interfaceOverlayOpen()) return;
 	if (activateWorldButton(config, element)) {
+		animateAutoClicker(config, coordinates);
 		recordAutoClickerRow(config, chosen);
 		game.autoClicker.lastActionAt = now;
 		updateAutoClickerView(config);
@@ -383,6 +469,54 @@ function setButtonTextAndDisabled(id, text, disabled) {
 	if (button.disabled !== disabled) button.disabled = disabled;
 }
 
+function isMobileAutoClickerView() {
+	return window.matchMedia("(max-width: 700px)").matches;
+}
+
+function updateAutoClickerDescription(config) {
+	const description = document.getElementById("autoClickerDescription");
+	if (!description) return;
+	setText("autoClickerDescription", themeConfig(config).description);
+	const mobile = isMobileAutoClickerView();
+	const expanded = !mobile || autoClickerDescriptionExpanded;
+	description.classList.toggle("isCollapsed", !expanded);
+	if (mobile) {
+		description.setAttribute("role", "button");
+		description.tabIndex = 0;
+		description.setAttribute("aria-expanded", expanded ? "true" : "false");
+		description.setAttribute("aria-label", expanded ? "Collapse description" : "Show full description");
+	} else {
+		description.removeAttribute("role");
+		description.removeAttribute("tabindex");
+		description.removeAttribute("aria-expanded");
+		description.removeAttribute("aria-label");
+	}
+}
+
+function updateCollapsibleText(id, key) {
+	const element = document.getElementById(id);
+	if (!element) return;
+	const mobile = isMobileAutoClickerView();
+	const expanded = !mobile || autoClickerTextExpanded[key];
+	element.classList.toggle("isCollapsed", !expanded);
+	if (mobile) {
+		element.setAttribute("role", "button");
+		element.tabIndex = 0;
+		element.setAttribute("aria-expanded", expanded ? "true" : "false");
+		element.setAttribute("aria-label", expanded ? "Collapse text" : "Show full text");
+	} else {
+		element.removeAttribute("role");
+		element.removeAttribute("tabindex");
+		element.removeAttribute("aria-expanded");
+		element.removeAttribute("aria-label");
+	}
+}
+
+function updateAutoClickerCollapsibleTexts() {
+	updateCollapsibleText("autoClickerBehaviorSummary", "behaviorSummary");
+	updateCollapsibleText("autoClickerHint", "hint");
+}
+
 function autoClickerStateKey(config, themed, image, sleeping) {
 	const manualWorld = game.autoClicker.manualWorldId > 0 ? config.worldById[game.autoClicker.manualWorldId] : null;
 	const speedCost = autoClickerUpgradeCost(config, "speed").toString();
@@ -440,30 +574,13 @@ export function updateAutoClickerView(config) {
 		setImage(document.getElementById("autoClickerModalIcon"), image, themed.name);
 		setText("autoClickerTitle", `${themed.name} upgrades`);
 		setText("autoClickerEyebrow", themed.title);
-		setText("autoClickerDescription", themed.description);
+		updateAutoClickerDescription(config);
 	}
-	const status = document.getElementById("autoClickerStatus");
-	if (status) {
-		const manualWorld = game.autoClicker.manualWorldId > 0 ? config.worldById[game.autoClicker.manualWorldId] : null;
-		const navigationText = manualWorld
-			? ` Staying on ${themedName(manualWorld)} until world travel is enabled.`
-			: "";
-		const sleepSeconds = Math.ceil(remaining);
-		const nextStatusText = sleeping
-			? `${themed.name} is ${getModernTheme() === "tech" ? "recharging" : "sleeping"} for ${formatTime(sleepSeconds)}.`
-			: `${themed.name} acts every ${formatTime(autoClickerInterval(config))}. ${themed.intelligenceName} ${game.autoClicker.intelligenceLevel} unlocks behavior controls.${navigationText}`;
-		if (nextStatusText !== autoClickerStatusText || status.textContent !== nextStatusText) {
-			status.textContent = nextStatusText;
-			autoClickerStatusText = nextStatusText;
-		}
-	}
+	const sleepButtonText = sleeping
+		? `${getModernTheme() === "tech" ? `Power on ${themed.name}` : `Wake up ${themed.name}`} ${formatTime(Math.ceil(remaining))}`
+		: (getModernTheme() === "tech" ? `Make ${themed.name} recharge for 6 hours` : `Make ${themed.name} sleep for 6 hours`);
+	setText("autoClickerSleepButton", sleepButtonText);
 	if (staticChanged) {
-		setText(
-			"autoClickerSleepButton",
-			sleeping
-			? (getModernTheme() === "tech" ? `Power on ${themed.name}` : `Wake up ${themed.name}`)
-			: (getModernTheme() === "tech" ? `Make ${themed.name} recharge for 6 hours` : `Make ${themed.name} sleep for 6 hours`)
-		);
 		for (const type of ["speed", "intelligence"]) {
 			const text = upgradeText(config, type);
 			const prefix = type === "speed" ? "autoClickerSpeed" : "autoClickerIntelligence";
@@ -472,8 +589,9 @@ export function updateAutoClickerView(config) {
 			setText(`${prefix}Effect`, text.effect);
 			setButtonTextAndDisabled(`${prefix}Button`, text.cost, !canUpgradeAutoClicker(config, type));
 		}
-		updateBehaviorControls(config);
-		autoClickerViewKey = viewKey;
+			updateBehaviorControls(config);
+			updateAutoClickerCollapsibleTexts();
+			autoClickerViewKey = viewKey;
 	}
 }
 
@@ -559,8 +677,34 @@ function updateBehaviorControls(config) {
 }
 
 export function showAutoClicker(config) {
+	const mobile = isMobileAutoClickerView();
+	autoClickerDescriptionExpanded = !mobile || !game.autoClicker.hasSeenDescription;
+	autoClickerTextExpanded.behaviorSummary = !mobile || !game.autoClicker.hasSeenBehaviorText;
+	autoClickerTextExpanded.hint = !mobile || !game.autoClicker.hasSeenBehaviorText;
+	if (mobile && !game.autoClicker.hasSeenDescription) {
+		game.autoClicker.hasSeenDescription = true;
+		saveState();
+	}
+	if (mobile && !game.autoClicker.hasSeenBehaviorText) {
+		game.autoClicker.hasSeenBehaviorText = true;
+		saveState();
+	}
+	updateAutoClickerDescription(config);
+	updateAutoClickerCollapsibleTexts();
 	updateAutoClickerView(config);
 	document.getElementById("autoClickerScreen").style.display = "block";
+}
+
+export function toggleAutoClickerDescription(config) {
+	if (!isMobileAutoClickerView()) return;
+	autoClickerDescriptionExpanded = !autoClickerDescriptionExpanded;
+	updateAutoClickerDescription(config);
+}
+
+export function toggleAutoClickerText(config, key) {
+	if (!isMobileAutoClickerView() || !Object.hasOwn(autoClickerTextExpanded, key)) return;
+	autoClickerTextExpanded[key] = !autoClickerTextExpanded[key];
+	updateAutoClickerCollapsibleTexts(config);
 }
 
 export function closeAutoClicker() {

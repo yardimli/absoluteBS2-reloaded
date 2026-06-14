@@ -56,22 +56,36 @@ function potionRow(config, resourceId) {
 }
 
 function buttonTierRows(config, resourceId) {
+	const tech = getModernTheme() === "tech";
 	return config.progression.tiers
 		.filter(tier => tier.gainResource === resourceId || tier.costResource === resourceId || tier.parentResource === resourceId)
 		.map(tier => {
 			const effects = [];
-			if (tier.gainResource === resourceId) effects.push(`Gained from ${resourceLabel(config, tier.costResource)} buttons`);
-			if (tier.costResource === resourceId) effects.push(`Spent to buy ${resourceLabel(config, tier.gainResource)} buttons`);
-			if (tier.parentResource === resourceId) effects.push(`Multiplies ${resourceLabel(config, tier.gainResource)} button gains by ${format(game[resourceId].add(1))}x`);
+			if (tier.gainResource === resourceId) effects.push(tech
+				? `Deployed by spending ${resourceLabel(config, tier.costResource)}`
+				: `Gained from ${resourceLabel(config, tier.costResource)} buttons`);
+			if (tier.costResource === resourceId) effects.push(tech
+				? `Spent to deploy ${resourceLabel(config, tier.gainResource)}`
+				: `Spent to buy ${resourceLabel(config, tier.gainResource)} buttons`);
+			if (tier.parentResource === resourceId) effects.push(tech
+				? `Multiplies ${resourceLabel(config, tier.gainResource)} deployment gains by ${format(game[resourceId].add(1))}x`
+				: `Multiplies ${resourceLabel(config, tier.gainResource)} button gains by ${format(game[resourceId].add(1))}x`);
 			return `<tr><td>${resourceLabel(config, tier.gainResource)}</td><td>${effects.join("<br>")}</td></tr>`;
 		});
 }
 
 function resourceBreakdownHtml(config, resourceId) {
 	const resource = config.resourceById[resourceId];
+	const tech = getModernTheme() === "tech";
 	const resourceIndex = config.progression.resources.findIndex(item => item.id === resourceId);
 	const tier = config.progression.tiers.find(item => item.gainResource === resourceId);
 	const parent = tier?.parentResource;
+	const baseResource = resourceLabel(config, "money");
+	const passiveResource = resourceLabel(config, "multi");
+	const boostResource = themedName(config.mining.ores[config.oreIndexById[config.mining.moneyBoostOre]]);
+	const bonusItemLabel = tech ? "module" : "relic";
+	const temporaryBonusLabel = tech ? "power-up" : "potion";
+	const baseResourceVerb = tech ? "are" : "is";
 	const parentMultiplier = parent ? game[parent].add(1) : new Decimal(1);
 	const relicPotionMultiplier = game.relicPotionMultipliers[resourceIndex] || new Decimal(1);
 	const miningMultiplier = resourceId === "money"
@@ -83,28 +97,28 @@ function resourceBreakdownHtml(config, resourceId) {
 	const rows = [
 		`<tr><td>Current ${themedName(resource)}</td><td>${format(game[resourceId])}</td></tr>`,
 		parent ? `<tr><td>${resourceLabel(config, parent)} chain multiplier</td><td>${format(parentMultiplier)}x</td></tr>` : "",
-		`<tr><td>Relic and potion multiplier</td><td>${format(relicPotionMultiplier, 2)}x</td></tr>`,
-		resourceId === "money" ? `<tr><td>Stone mining multiplier</td><td>${format(miningMultiplier, 2)}x</td></tr>` : "",
-		resourceId === "money" ? `<tr><td>Estimated money per second</td><td>$${format(moneyPerSecond)}/s</td></tr>` : `<tr><td>Money translation</td><td>More ${themedName(resource)} improves the chain shown below; Money itself is produced by Multi.</td></tr>`
+		`<tr><td>${tech ? "Module" : "Relic"} and ${temporaryBonusLabel} multiplier</td><td>${format(relicPotionMultiplier, 2)}x</td></tr>`,
+		resourceId === "money" ? `<tr><td>${boostResource} mining multiplier</td><td>${format(miningMultiplier, 2)}x</td></tr>` : "",
+		resourceId === "money" ? `<tr><td>Estimated ${baseResource.toLowerCase()} per second</td><td>$${format(moneyPerSecond)}/s</td></tr>` : `<tr><td>${baseResource} production</td><td>More ${themedName(resource)} improves the chain shown below; ${baseResource} ${baseResourceVerb} produced by ${passiveResource}.</td></tr>`
 	].filter(Boolean).join("");
 	const relics = relicRows(config, resourceId);
 	const potion = potionRow(config, resourceId);
 	const tiers = buttonTierRows(config, resourceId);
 	return `
-		<p>${themedName(resource)} is part of the resource chain. Only ${resourceLabel(config, "money")} increases passively; higher resources multiply button gains for the tier below them.</p>
+		<p>${tech ? `The ${themedName(resource)} system` : themedName(resource)} sits in the resource chain. Only ${resourceLabel(config, "money")} increases passively; higher resources multiply ${tech ? "deployment" : "button"} gains for the tier below them.</p>
 		<table class="breakdownTable"><tbody>${rows}</tbody></table>
-		<h2>Bonus Items</h2>
+			<h2>Bonus ${tech ? "Modules" : "Items"}</h2>
 		<table class="breakdownTable">
-			<thead><tr><th>Item</th><th>Bonus</th><th>Total multiplier</th></tr></thead>
-			<tbody>${relics.length ? relics.join("") : `<tr><td colspan="3">No relic bonuses for ${themedName(resource)}.</td></tr>`}${potion}</tbody>
+			<thead><tr><th>${tech ? "Upgrade" : "Item"}</th><th>Bonus</th><th>Total multiplier</th></tr></thead>
+			<tbody>${relics.length ? relics.join("") : `<tr><td colspan="3">No ${bonusItemLabel} bonuses for ${themedName(resource)}.</td></tr>`}${potion}</tbody>
 		</table>
 		<h2>Chain Effects</h2>
 		<table class="breakdownTable">
 			<thead><tr><th>Tier</th><th>Effect</th></tr></thead>
 			<tbody>${tiers.length ? tiers.join("") : `<tr><td colspan="2">No button tier currently depends directly on ${themedName(resource)}.</td></tr>`}</tbody>
 		</table>
-		${resourceId === "money" ? `<h2>Money Formula</h2><p><code>Multi (${format(game.multi)}) x money bonuses (${format(game.relicPotionMultipliers[0], 2)}x) x Stone (${format(miningMultiplier, 2)}x) = $${format(moneyPerSecond)}/s</code></p>` : ""}
-	`;
+			${resourceId === "money" ? `<h2>${baseResource} Formula</h2><p><code>${passiveResource} (${format(game.multi)}) x ${baseResource.toLowerCase()} bonuses (${format(game.relicPotionMultipliers[0], 2)}x) x ${boostResource} (${format(miningMultiplier, 2)}x) = $${format(moneyPerSecond)}/s</code></p>` : ""}
+		`;
 }
 
 export function showDialog({
@@ -255,15 +269,18 @@ export function initializeStaticViews(config) {
 export function updateVisuals(config) {
 	for (const resource of config.progression.resources) {
 		const value = document.getElementById(resource.id);
-		if (value) value.textContent = format(game[resource.id]);
+		const formattedValue = format(game[resource.id]);
+		if (value && value.textContent !== formattedValue) value.textContent = formattedValue;
 		const row = document.querySelector(`[data-resource-id="${resource.id}"]`);
 		if (row) {
 			const visibleDisplay = ""; // maybe will need to set to "flex" or "grid" for some themes in the future, so leaving blank for now
-			row.style.display = !resource.unlockWorld || game.worldsUnlocked >= resource.unlockWorld ? visibleDisplay : "none";
+			const display = !resource.unlockWorld || game.worldsUnlocked >= resource.unlockWorld ? visibleDisplay : "none";
+			if (row.style.display !== display) row.style.display = display;
 		}
 	}
-	document.getElementById("miningNavButton").style.display =
-		game.worldsUnlocked >= config.mining.unlockWorld ? "inline-block" : "none";
+	const miningNavButton = document.getElementById("miningNavButton");
+	const miningDisplay = game.worldsUnlocked >= config.mining.unlockWorld ? "inline-block" : "none";
+	if (miningNavButton.style.display !== miningDisplay) miningNavButton.style.display = miningDisplay;
 	const notification = document.getElementById("crateNotification");
 	const crateTotal = totalUnopenedCrates();
 	if (lastCrateTotal === null) {
@@ -282,21 +299,29 @@ export function updateVisuals(config) {
 	}
 	config.potions.items.forEach(potion => {
 		const icon = document.querySelector(`[data-potion-id="${potion.id}"]`);
-		icon.style.display = game.potionCooldowns[potion.id] > 0 ? "block" : "none";
+		const display = game.potionCooldowns[potion.id] > 0 ? "block" : "none";
+		if (icon.style.display !== display) icon.style.display = display;
 	});
 	if (currentPotionTooltip) {
 		const potion = config.potionById[currentPotionTooltip - 1];
 		document.getElementById("potionTooltip").textContent =
 			`${themedName(potion)} affects ${resourceLabel(config, potion.resource)}: ${formatTime(game.potionCooldowns[potion.id])}`;
 	}
-	document.getElementById("level").textContent = format(game.level);
-	document.getElementById("bottomBar").style.backgroundColor = levelToColour(game.level.toNumber());
+	const level = document.getElementById("level");
+	const formattedLevel = format(game.level);
+	if (level.textContent !== formattedLevel) level.textContent = formattedLevel;
+	const bottomBar = document.getElementById("bottomBar");
+	const levelColour = levelToColour(game.level.toNumber());
+	if (bottomBar.style.backgroundColor !== levelColour) bottomBar.style.backgroundColor = levelColour;
 	const xpForLevel = levelToXp(config, game.level);
 	const xpForNext = levelToXp(config, game.level.add(1));
 	const progress = game.XP.sub(xpForLevel).div(xpForNext.sub(xpForLevel)).mul(100);
-	document.getElementById("XPBar").style.width = `${format(progress)}%`;
+	const xpBar = document.getElementById("XPBar");
+	const progressWidth = `${format(progress)}%`;
+	if (xpBar.style.width !== progressWidth) xpBar.style.width = progressWidth;
 	document.querySelectorAll('[data-action="debug-multiplier"]').forEach(button => {
-		button.style.fontWeight = Number(button.dataset.value) === debugMultiplier ? "bold" : "normal";
+		const fontWeight = Number(button.dataset.value) === debugMultiplier ? "bold" : "normal";
+		if (button.style.fontWeight !== fontWeight) button.style.fontWeight = fontWeight;
 	});
 }
 

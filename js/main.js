@@ -18,6 +18,7 @@ import {
 	renderWorld,
 	updateButtonGridVisibility,
 	updatePassiveIncomeButtons,
+	updateWorldPurchaseView,
 	updateWorldButtons
 } from "./worlds.js";
 import {
@@ -64,6 +65,8 @@ import {
 	isAutoClickerSleeping,
 	runAutoClicker,
 	showAutoClicker,
+	toggleAutoClickerDescription,
+	toggleAutoClickerText,
 	toggleAutoClickerSleep,
 	updateAutoClickerBehavior,
 	updateAutoClickerView,
@@ -71,6 +74,8 @@ import {
 } from "./autoClicker.js";
 
 window.isDevVersion = false;
+const SIMULATION_INTERVAL_MS = 100;
+const VISUAL_INTERVAL_MS = 200;
 const config = await loadConfig();
 loadState(config);
 ensureAutoClickerState(config);
@@ -136,6 +141,8 @@ function activateButton(element) {
 		else showAutoClicker(config);
 	}
 	else if (action === "close-auto-clicker") closeAutoClicker();
+	else if (action === "toggle-auto-clicker-description") toggleAutoClickerDescription(config);
+	else if (action === "toggle-auto-clicker-text") toggleAutoClickerText(config, element.dataset.textKey);
 	else if (action === "upgrade-auto-clicker") upgradeAutoClicker(config, element.dataset.upgrade);
 	else if (action === "update-auto-clicker-behavior") updateAutoClickerBehavior(config, element.dataset.setting, element.value);
 	else if (action === "toggle-auto-clicker-sleep") toggleAutoClickerSleep(config);
@@ -274,7 +281,8 @@ window.addEventListener("resize", () => {
 });
 
 function updateSimulation() {
-	const elapsedSeconds = Math.max((Date.now() - game.timeOfLastUpdate) / 1000, 0);
+	const now = Date.now();
+	const elapsedSeconds = Math.max((now - game.timeOfLastUpdate) / 1000, 0);
 	game.money = game.money.add(
 		game.multi
 			.mul(game.relicPotionMultipliers[0])
@@ -302,17 +310,24 @@ function updateSimulation() {
 	}
 	game.level = xpToLevel(config, game.XP);
 	runAutoClicker(config);
-	game.timeOfLastUpdate = Date.now();
+	game.timeOfLastUpdate = now;
 }
 
 function visualLoop() {
+	if (document.hidden) return;
 	updateVisuals(config);
 	updatePassiveIncomeButtons(config);
 	updateMiningView(config);
 	updateAutoClickerView(config);
-	requestAnimationFrame(visualLoop);
+	updateWorldPurchaseView(config);
 }
 
-setInterval(updateSimulation, 16);
+setInterval(updateSimulation, SIMULATION_INTERVAL_MS);
 if (!window.isDevVersion) setInterval(saveState, 5000);
-requestAnimationFrame(visualLoop);
+setInterval(visualLoop, VISUAL_INTERVAL_MS);
+document.addEventListener("visibilitychange", () => {
+	if (!document.hidden) {
+		updateSimulation();
+		visualLoop();
+	}
+});

@@ -1115,6 +1115,12 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	z-index: 3;
 }
 
+.worldPurchaseAffordability {
+	margin: 10px 0 0;
+	color: #ffb3bd;
+	font-weight: 800;
+}
+
 .worldPurchaseModal h1,
 .worldPurchaseModal .eyebrow {
 	padding-inline: 0;
@@ -1137,16 +1143,6 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	line-height: 1.55;
 }
 
-.autoClickerStatus {
-	margin: 16px 0;
-	padding: 14px 16px;
-	border: 1px solid rgba(255, 255, 255, 0.14);
-	border-radius: 20px;
-	background: rgba(255, 255, 255, 0.08);
-	color: var(--text);
-	font-weight: 800;
-}
-
 .autoClickerUpgradeGrid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1158,6 +1154,10 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	border: 1px solid rgba(255, 255, 255, 0.14);
 	border-radius: 24px;
 	background: rgba(255, 255, 255, 0.08);
+}
+
+.autoClickerUpgradeHeading {
+	display: block;
 }
 
 .autoClickerUpgradeCard h2 {
@@ -2033,20 +2033,51 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 
 	.miningMetrics > div,
 	.oreCard,
-	.autoClickerStatus,
 	.autoClickerUpgradeCard {
 		padding: 9px;
 		border-radius: 15px;
-	}
-
-	.autoClickerStatus {
-		margin: 8px 0;
 	}
 
 	.autoClickerUpgradeCard h2 {
 		margin-bottom: 4px;
 		font-size: 1rem;
 		line-height: 1.1;
+	}
+
+	.autoClickerUpgradeHeading {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 8px;
+	}
+
+	.autoClickerUpgradeHeading h2 {
+		margin: 0;
+	}
+
+	.autoClickerUpgradeHeading strong {
+		display: inline;
+		flex: 0 0 auto;
+		font-size: 0.82rem;
+	}
+
+	.autoClickerContent p {
+		margin: 3px 0;
+	}
+
+	.autoClickerDescription,
+	.autoClickerCollapsibleText {
+		cursor: pointer;
+	}
+
+	.autoClickerDescription.isCollapsed,
+	.autoClickerCollapsibleText.isCollapsed {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+		white-space: normal;
+		text-overflow: ellipsis;
 	}
 
 	.autoClickerHint {

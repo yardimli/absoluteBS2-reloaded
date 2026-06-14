@@ -43,6 +43,8 @@ export function resetState(config) {
 			lastActionAt: Date.now(),
 			sleepUntil: 0,
 			manualWorldId: 0,
+			hasSeenDescription: false,
+			hasSeenBehaviorText: false,
 			behavior: {
 				priority: "simple",
 				waitSeconds: 0,
@@ -66,6 +68,8 @@ export function ensureAutoClickerState(config) {
 	if (!Number.isFinite(Number(game.autoClicker.lastActionAt))) game.autoClicker.lastActionAt = Date.now();
 	if (!Number.isFinite(Number(game.autoClicker.sleepUntil))) game.autoClicker.sleepUntil = 0;
 	if (!Number.isFinite(Number(game.autoClicker.manualWorldId))) game.autoClicker.manualWorldId = 0;
+	game.autoClicker.hasSeenDescription = game.autoClicker.hasSeenDescription === true;
+	game.autoClicker.hasSeenBehaviorText = game.autoClicker.hasSeenBehaviorText === true;
 	if (!game.autoClicker.behavior || typeof game.autoClicker.behavior !== "object") game.autoClicker.behavior = {};
 	game.autoClicker.speedLevel = Math.max(0, Math.min(config.autoClicker.speed.maxLevel, Math.floor(Number(game.autoClicker.speedLevel))));
 	game.autoClicker.intelligenceLevel = Math.max(0, Math.min(config.autoClicker.intelligence.maxLevel, Math.floor(Number(game.autoClicker.intelligenceLevel))));

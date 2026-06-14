@@ -119,17 +119,21 @@
 				<button class="circleButton" data-action="close-auto-clicker" aria-label="Close"></button>
 			</div>
 			<div class="modalContent autoClickerContent">
-				<p id="autoClickerDescription">COT-7 is a tiny operations bot built to optimize your AI society.</p>
+				<p id="autoClickerDescription" class="autoClickerDescription" data-action="toggle-auto-clicker-description">COT-7 is a tiny operations bot built to optimize your AI society.</p>
 				<div class="autoClickerUpgradeGrid">
 					<section class="autoClickerUpgradeCard">
-						<h2 id="autoClickerSpeedName">Servo speed</h2>
-						<strong id="autoClickerSpeedLevel">Level 0/30</strong>
+						<div class="autoClickerUpgradeHeading">
+							<h2 id="autoClickerSpeedName">Servo speed</h2>
+							<strong id="autoClickerSpeedLevel">Level 0/30</strong>
+						</div>
 						<button id="autoClickerSpeedButton" class="primaryAction" data-action="upgrade-auto-clicker" data-upgrade="speed">Upgrade: $500</button>
 						<p id="autoClickerSpeedEffect">Action timer: 00:10.00</p>
 					</section>
 					<section class="autoClickerUpgradeCard">
-						<h2 id="autoClickerIntelligenceName">Planning core</h2>
-						<strong id="autoClickerIntelligenceLevel">Level 0/30</strong>
+						<div class="autoClickerUpgradeHeading">
+							<h2 id="autoClickerIntelligenceName">Planning core</h2>
+							<strong id="autoClickerIntelligenceLevel">Level 0/30</strong>
+						</div>
 						<button id="autoClickerIntelligenceButton" class="primaryAction" data-action="upgrade-auto-clicker" data-upgrade="intelligence">Upgrade: $2,500</button>
 						<p id="autoClickerIntelligenceEffect">Chooses simple available buttons.</p>
 					</section>
@@ -144,7 +148,7 @@
 						<label><input type="radio" name="autoClickerPriority" value="best" data-action="update-auto-clicker-behavior" data-setting="priority"> Best value</label>
 					</div>
 					<label class="autoClickerSlider autoClickerBehaviorCell">
-						<span><span>Wait for better money button</span><strong id="autoClickerWaitValue">0s</strong></span>
+						<span><span>Wait for better</span><strong id="autoClickerWaitValue">0s</strong></span>
 						<input id="autoClickerWaitSlider" type="range" min="0" max="0" value="0" step="1" data-action="update-auto-clicker-behavior" data-setting="waitSeconds">
 					</label>
 					<label class="autoClickerSlider autoClickerBehaviorCell">
@@ -157,11 +161,10 @@
 						<label><input type="radio" name="autoClickerWorldMode" value="current" data-action="update-auto-clicker-behavior" data-setting="worldMode"> Stay here</label>
 						<label><input type="radio" name="autoClickerWorldMode" value="all" data-action="update-auto-clicker-behavior" data-setting="worldMode"> Use unlocked worlds</label>
 					</div>
-					<p id="autoClickerBehaviorSummary" class="autoClickerBehaviorSummary">Unlocks arrive every few Core/Wisdom levels.</p>
+					<p id="autoClickerBehaviorSummary" class="autoClickerBehaviorSummary autoClickerCollapsibleText" data-action="toggle-auto-clicker-text" data-text-key="behaviorSummary">Unlocks arrive every few Core/Wisdom levels.</p>
 				</section>
-				<div class="autoClickerStatus" id="autoClickerStatus">COT-7 acts every 00:10.00.</div>
 				<button id="autoClickerSleepButton" class="secondaryAction autoClickerSleepButton" data-action="toggle-auto-clicker-sleep">Make COT-7 recharge</button>
-				<p class="autoClickerHint">Use these controls to decide how cautious the helper should be. Higher Wisdom/Core levels unlock stronger priority choices, longer wait windows, deeper row scanning, and world travel.</p>
+				<p id="autoClickerHint" class="autoClickerHint autoClickerCollapsibleText" data-action="toggle-auto-clicker-text" data-text-key="hint">Use these controls to decide how cautious the helper should be. Higher Wisdom/Core levels unlock stronger priority choices, longer wait windows, deeper row scanning, and world travel.</p>
 			</div>
 		</div>
 	</div>
@@ -178,13 +181,14 @@
 				</div>
 				<button class="circleButton modalClose" data-action="close-world-purchase" aria-label="Close"></button>
 			</div>
-			<div class="modalContent worldPurchaseContent">
-				<p>Open a new environment, new resource tiers, and new systems.</p>
-				<button id="worldPurchaseButton" class="primaryAction" data-action="purchase-world">
-					<span id="worldPurchaseButtonLabel">Purchase world 2</span>
-					<small id="worldPurchaseButtonCost">Costs $1.00e20</small>
-				</button>
-			</div>
+				<div class="modalContent worldPurchaseContent">
+					<p>Open a new environment, new resource tiers, and new systems.</p>
+					<button id="worldPurchaseButton" class="primaryAction" data-action="purchase-world">
+						<span id="worldPurchaseButtonLabel">Purchase world 2</span>
+						<small id="worldPurchaseButtonCost">Costs $1.00e20</small>
+					</button>
+					<p id="worldPurchaseAffordability" class="worldPurchaseAffordability">You need more money.</p>
+				</div>
 		</div>
 	</div>
 
@@ -201,11 +205,11 @@
 				<button class="circleButton" data-action="close-mining" aria-label="Close"></button>
 			</div>
 			<div class="modalContent miningModalContent">
-				<p>Miners automatically discover ores. Higher ores increase the amount of the ore beneath them, while Stone multiplies Money gain.</p>
+				<p id="miningDescription">Miners automatically discover ores. Higher ores increase the amount of the ore beneath them, while Stone multiplies Money gain.</p>
 				<div class="miningMetrics">
-					<div><span>Money boost</span><strong>×<span id="miningBoost">1.00</span></strong></div>
+					<div><span id="miningBoostLabel">Money boost</span><strong>×<span id="miningBoost">1.00</span></strong></div>
 					<div><span>Miners</span><strong id="miners">0</strong></div>
-					<div><span>Next ore</span><strong id="miningCooldown">00:00.00</strong></div>
+					<div><span id="miningCooldownLabel">Next ore</span><strong id="miningCooldown">00:00.00</strong></div>
 				</div>
 				<button id="minerPurchaseButton" class="primaryAction" data-action="purchase-miner">
 					Buy a miner
@@ -292,7 +296,7 @@
 			<h2>Money income</h2>
 			<p><code>Multi × Money bonuses × (sqrt(Stone) + 1)</code>. Relics are permanent, potions last five minutes, and Stone comes from Mining.</p>
 			<h2>Resets</h2>
-			<p>Buying Prestige or any higher tier now spends only the listed cost. Lower resources are not reset, and XP, levels, worlds, miners, ores, crates, relics, and potions remain.</p>
+			<p>Buying Prestige or any higher tier resets every resource above that row. Money returns to 0, Multi returns to 1, and other reset resources return to 0. XP, levels, worlds, miners, ores, crates, relics, and potions remain.</p>
 			<h2>Collections</h2>
 			<p>Leveling awards Basic crates through level 99. Unlocking Worlds 2 and 3 awards Advanced crates. Modern crates contain permanent relics or temporary potions.</p>
 			<h2>Auto Helper</h2>
@@ -343,20 +347,20 @@
 		<h2>Auto Helper <img src="images/modern/fantasy/auto-pet-1.png" class="helpIcon" alt="Pet helper"></h2>
 			<p>Your pet helper starts active immediately and presses one affordable button every 10 seconds. Buy Agility upgrades with Money to shorten the timer. Wisdom upgrades unlock behavior controls so you can choose button priority, how long Pip waits for better Money buttons, how many resource rows it scans, and whether it may hop between unlocked worlds.</p>
 
-		<h2>Purchases</h2>
-		<p>Every button spends only the listed cost resource and awards the next resource. Higher resource purchases no longer reset lower resources.</p>
-		<table class="helpTable">
-			<thead><tr><th>Button purchased</th><th>Cost</th><th>What happens</th></tr></thead>
-			<tbody>
-				<tr><td>Multi</td><td>Money</td><td>Spend Money, gain Multi.</td></tr>
-				<tr><td>Prestige</td><td>Multi</td><td>Spend Multi, gain Prestige.</td></tr>
-				<tr><td>Power</td><td>Prestige</td><td>Spend Prestige, gain Power.</td></tr>
-				<tr><td>Super Prestige</td><td>Power</td><td>Spend Power, gain Super Prestige.</td></tr>
-				<tr><td>Ascension</td><td>Super Prestige</td><td>Spend Super Prestige, gain Ascension.</td></tr>
-				<tr><td>Infernal</td><td>Ascension</td><td>Spend Ascension, gain Infernal.</td></tr>
-			</tbody>
-		</table>
-		<p>Relics, potions, ores, miners, XP, levels, crates, and unlocked worlds are also kept.</p>
+			<h2>Purchases and Resets</h2>
+			<p>Multi purchases spend Money without resetting anything. Buying Prestige or a higher resource resets every resource above that row, while keeping the resource you bought and every tier below it.</p>
+			<table class="helpTable">
+				<thead><tr><th>Button purchased</th><th>Cost</th><th>Resources reset</th></tr></thead>
+				<tbody>
+					<tr><td>Multi</td><td>Money</td><td>None.</td></tr>
+					<tr><td>Prestige</td><td>Multi</td><td>Money returns to 0 and Multi returns to 1.</td></tr>
+					<tr><td>Power</td><td>Prestige</td><td>Money, Multi, and Prestige.</td></tr>
+					<tr><td>Super Prestige</td><td>Power</td><td>Money through Power.</td></tr>
+					<tr><td>Ascension</td><td>Super Prestige</td><td>Money through Super Prestige.</td></tr>
+					<tr><td>Infernal</td><td>Ascension</td><td>Money through Ascension.</td></tr>
+				</tbody>
+			</table>
+			<p>Relics, potions, ores, miners, XP, levels, crates, and unlocked worlds are not removed by resource resets.</p>
 
 		<h2>Worlds and Backgrounds</h2>
 		<p>Unlock new worlds to access higher tier buttons and new features. Each world has three modern background scenes. A random scene for the active world is chosen whenever the page opens or you navigate into that world.</p>
@@ -465,26 +469,26 @@
 			<table class="helpTable">
 				<thead><tr><th>System</th><th>Role in the society</th><th>What boosts it</th></tr></thead>
 				<tbody>
-					<tr><td>Credits</td><td>The economy layer. Credits are generated automatically from your Bots and are spent to deploy more Bots.</td><td>Bots, Credit relics, Credit power-ups, and Deuterium.</td></tr>
-					<tr><td>Bots<img src="images/modern/tech/nano-bots.png" class="helpSampleButton" alt="Bots"></td><td>Autonomous worker units. Every Bot increases passive Credits per second.</td><td>Bot buttons are multiplied by <code>Factories + 1</code>, then by relics and power-ups.</td></tr>
+					<tr><td>Credits</td><td>The economy layer. Credits are generated automatically from your Bots and are spent to deploy more Bots.</td><td>Bots, Credit modules, Credit power-ups, and Deuterium.</td></tr>
+					<tr><td>Bots<img src="images/modern/tech/nano-bots.png" class="helpSampleButton" alt="Bots"></td><td>Autonomous worker units. Every Bot increases passive Credits per second.</td><td>Bot buttons are multiplied by <code>Factories + 1</code>, then by modules and power-ups.</td></tr>
 					<tr><td>Factories<img src="images/modern/tech/nano-machines.png" class="helpSampleButton" alt="Factories"></td><td>Fabrication towers that coordinate the workforce and make Bot deployment scale harder.</td><td>Processors multiply Factory button rewards.</td></tr>
 					<tr><td>Processors<img src="images/modern/tech/quantum-processors.png" class="helpSampleButton" alt="Processors"></td><td>Compute clusters that plan larger automation loops.</td><td>Uplinks multiply Processor button rewards.</td></tr>
-					<tr><td>Uplinks<img src="images/modern/tech/neural-uplinks.png" class="helpSampleButton" alt="Uplinks"></td><td>Network bridges that connect machine colonies across worlds.</td><td>Council multiplies Uplink rewards.</td></tr>
+					<tr><td>Uplinks<img src="images/modern/tech/neural-uplinks.png" class="helpSampleButton" alt="Uplinks"></td><td>Network bridges that connect machine colonies across habitats.</td><td>Council multiplies Uplink rewards.</td></tr>
 					<tr><td>Council<img src="images/modern/tech/synthetic-council.png" class="helpSampleButton" alt="Council"></td><td>The governance layer that directs high-tier expansion.</td><td>Singularity multiplies Council rewards.</td></tr>
 					<tr><td>Singularity<img src="images/modern/tech/ai-singularity.png" class="helpSampleButton" alt="Singularity"></td><td>The highest current system, representing the society becoming self-improving.</td><td>Singularity buttons award their listed amount; there is no higher multiplier yet.</td></tr>
 				</tbody>
 			</table>
 
 			<h2>Credits Formula</h2>
-			<p><code>Bots x Credit bonuses x (sqrt(Deuterium) + 1)</code>. Relics are permanent, power-ups last five minutes, and Deuterium comes from Fusion mining.</p>
+			<p><code>Bots x Credit bonuses x (sqrt(Deuterium) + 1)</code>. System modules are permanent, power-ups last five minutes, and Deuterium comes from Fusion mining.</p>
 
 			<h2>COT Bot <img src="images/modern/tech/auto-bot-1.png" class="helpIcon" alt="COT bot"></h2>
-			<p>COT-7 starts active immediately and performs one button action every 10 seconds. Servo Speed upgrades reduce the timer. Planning Core upgrades unlock behavior controls so you can choose button priority, how long COT-7 waits for better Credit buttons, how many system rows it scans, and whether it may travel between unlocked worlds.</p>
+			<p>COT-7 starts active immediately and performs one button action every 10 seconds. Servo Speed upgrades reduce the timer. Planning Core upgrades unlock behavior controls so you can choose button priority, how long COT-7 waits for better Credit buttons, how many system rows it scans, and whether it may travel between connected habitats.</p>
 
-			<h2>Resets</h2>
-			<p>Buying Factories or any higher system now spends only the listed cost resource. Lower systems are not reset, and XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>
+			<h2>Deployments and Reboots</h2>
+			<p>Deploying Factories or any higher system reboots every system above that row. Credits return to 0, Bots return to 1, and other rebooted systems return to 0. The system deployed by the purchase and every system below it stay online. XP, levels, habitats, fusion miners, fusion resources, data caches, modules, and power-ups remain.</p>
 
-			<h2>Worlds</h2>
+			<h2>Network Habitats</h2>
 			<ul>
 				<li><strong>Neon Data Habitat:</strong> the starting layer for Credits, Bots, Factories, and Processors.</li>
 				<li><strong>Fusion Foundry Grid:</strong> unlocks Uplinks, Council, and Fusion mining.</li>
@@ -492,19 +496,19 @@
 			</ul>
 
 			<h2>Data Caches <img src="images/modern/tech/crate-1.png" class="helpIcon" alt="Data cache"></h2>
-			<p>Leveling awards Basic data caches through level 99. Unlocking later worlds awards Advanced quantum vaults. In Tech mode, caches contain permanent relics or temporary power-ups.</p>
+			<p>Leveling awards Basic data caches through level 99. Connecting later habitats awards Advanced quantum vaults. Each cache contains a permanent system module or a temporary power-up.</p>
 			<table class="helpTable">
 				<thead><tr><th>Cache</th><th>Possible contents</th></tr></thead>
 				<tbody>
-					<tr><td>Basic data cache<img src="images/modern/tech/crate-1.png" class="helpSampleButton" alt="Basic data cache"></td><td><strong>Relics:</strong> Alien data prism, Nanite command crown, Encrypted credit archive, Swarm replication codex<br><strong>Power-ups:</strong> Credit overclock, Bot surge, Factory uplink, Processor boost</td></tr>
-					<tr><td>Advanced quantum vault<img src="images/modern/tech/crate-2.png" class="helpSampleButton" alt="Advanced quantum vault"></td><td><strong>Relics:</strong> Cybernetic servo core, Plasma access key, Factory matrix, Quantum reactor relic<br><strong>Power-ups:</strong> Factory uplink, Processor boost, Neural network charge</td></tr>
+					<tr><td>Basic data cache<img src="images/modern/tech/crate-1.png" class="helpSampleButton" alt="Basic data cache"></td><td><strong>Modules:</strong> Alien data prism, Nanite command crown, Encrypted credit archive, Swarm replication codex<br><strong>Power-ups:</strong> Credit overclock, Bot surge, Factory uplink, Processor boost</td></tr>
+					<tr><td>Advanced quantum vault<img src="images/modern/tech/crate-2.png" class="helpSampleButton" alt="Advanced quantum vault"></td><td><strong>Modules:</strong> Cybernetic servo core, Plasma access key, Factory matrix, Quantum reactor relic<br><strong>Power-ups:</strong> Factory uplink, Processor boost, Neural network charge</td></tr>
 				</tbody>
 			</table>
 
-			<h2>Relics <img src="images/modern/tech/relic-1.png" class="helpIcon" alt="Relic"></h2>
-			<p>Relics are permanent artifacts recovered from the machine civilization. Duplicate copies increase that relic's bonus, and relics affecting the same system combine multiplicatively.</p>
+			<h2>System Modules <img src="images/modern/tech/relic-1.png" class="helpIcon" alt="System module"></h2>
+			<p>System modules are permanent hardware and data upgrades recovered from caches. Duplicate copies increase that module's bonus, and modules affecting the same system combine multiplicatively.</p>
 			<table class="helpTable">
-				<thead><tr><th>Relic</th><th>Permanent effect per copy</th></tr></thead>
+				<thead><tr><th>Module</th><th>Permanent effect per copy</th></tr></thead>
 				<tbody>
 					<tr><td>Alien data prism<img src="images/modern/tech/relic-1.png" class="helpSampleButton" alt="Alien data prism"></td><td>Affects Credits: +20% Credit gain</td></tr>
 					<tr><td>Nanite command crown<img src="images/modern/tech/relic-2.png" class="helpSampleButton" alt="Nanite command crown"></td><td>Affects Bots: +30% Bot gain</td></tr>
@@ -531,7 +535,7 @@
 			</table>
 
 			<h2>Fusion Mining <img src="images/modern/tech/nav-mining.png" class="helpIcon" alt="Fusion mining"></h2>
-			<p>Fusion mining unlocks in World 2. The timer runs at <code>60 / miners</code> seconds, capped at 120 effective miners. Deuterium boosts passive Credits with <code>sqrt(Deuterium) + 1</code>.</p>
+			<p>Fusion mining comes online with the Fusion Foundry Grid. The first fusion miner costs $1.00e30 Credits, and each additional miner costs 100,000 times more. The scan timer runs at <code>60 / miners</code> seconds, capped at 120 effective miners. Deuterium boosts passive Credits with <code>sqrt(Deuterium) + 1</code>.</p>
 			<table class="helpTable">
 				<thead><tr><th>Resource</th><th>Chance per roll</th><th>Amount gained</th></tr></thead>
 				<tbody>

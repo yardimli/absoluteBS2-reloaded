@@ -9,20 +9,22 @@ let renderedWorldId = null;
 const MANUAL_WORLD_CHANGE_SLEEP_MS = 10 * 1000;
 
 function setField(root, field, value) {
-	root.querySelector(`[data-field="${field}"]`).textContent = value;
+	const element = root.querySelector(`[data-field="${field}"]`);
+	if (element.textContent !== value) element.textContent = value;
 }
 
 function setOptionalField(root, field, value) {
 	const element = root.querySelector(`[data-field="${field}"]`);
-	if (element) element.textContent = value;
+	if (element && element.textContent !== value) element.textContent = value;
 }
 
 function setButtonAvailability(element, available) {
 	const changed = element.disabled === available;
+	if (!changed) return false;
 	element.disabled = !available;
 	element.setAttribute("aria-disabled", available ? "false" : "true");
 	element.style.filter = available ? "none" : "brightness(70%)";
-	return changed;
+	return true;
 }
 
 function restAutoClickerAfterManualWorldChange() {
@@ -200,6 +202,7 @@ function affectedTiers(config, purchasedTier) {
 		if (tier.parentResource === purchasedTier.gainResource) affected.add(tier.id);
 		if (tier.costResource === purchasedTier.costResource) affected.add(tier.id);
 		if (tier.costResource === purchasedTier.gainResource) affected.add(tier.id);
+		if (purchasedTier.resets.includes(tier.costResource)) affected.add(tier.id);
 	}
 	return affected;
 }
@@ -215,7 +218,8 @@ export function updateAffectedButtons(config, purchasedTierId) {
 		const resourceId = element.dataset.resourceHeader;
 		if (
 			resourceId === purchasedTier.costResource ||
-			resourceId === purchasedTier.gainResource
+			resourceId === purchasedTier.gainResource ||
+			purchasedTier.resets.includes(resourceId)
 		) {
 			element.textContent = `${resourceLabel(config, resourceId)}: ${format(game[resourceId])}`;
 		}
@@ -243,7 +247,8 @@ export function updateAffectedButtons(config, purchasedTierId) {
 export function updatePassiveIncomeButtons(config) {
 	let visibilityChanged = false;
 	document.querySelectorAll('[data-resource-header="money"]').forEach(element => {
-		element.textContent = `${resourceLabel(config, "money")}: ${format(game.money)}`;
+		const text = `${resourceLabel(config, "money")}: ${format(game.money)}`;
+		if (element.textContent !== text) element.textContent = text;
 	});
 	document.querySelectorAll('[data-action="buy-button"]').forEach(element => {
 		const world = config.worldById[currentWorld];
@@ -254,7 +259,6 @@ export function updatePassiveIncomeButtons(config) {
 		const button = tierSection.buttons[Number(element.dataset.buttonIndex)];
 		const changed = setButtonAvailability(element, canBuyButton(tier, button));
 		visibilityChanged = visibilityChanged || changed;
-		setField(element, "gain-value", format(calculateButtonGain(config, tier, button)));
 	});
 	document.querySelectorAll('[data-action="free-resource"]').forEach(element => {
 		const section = config.worldById[currentWorld].sections.find(item => item.tier === element.dataset.tier);
@@ -340,6 +344,20 @@ export function showWorldPurchase(config, worldId) {
 	document.getElementById("worldPurchaseButtonLabel").textContent = `Purchase ${worldName}`;
 	document.getElementById("worldPurchaseButtonCost").textContent = `Costs $${format(world.unlockCost)}`;
 	document.getElementById("worldPurchaseScreen").style.display = "block";
+	updateWorldPurchaseView(config);
+}
+
+export function updateWorldPurchaseView(config) {
+	const screen = document.getElementById("worldPurchaseScreen");
+	if (!screen || screen.style.display !== "block") return;
+	const world = config.worldById[game.worldsUnlocked + 1];
+	const button = document.getElementById("worldPurchaseButton");
+	const message = document.getElementById("worldPurchaseAffordability");
+	if (!world || !button || !message) return;
+	const affordable = game.money.gte(world.unlockCost);
+	if (button.disabled === affordable) button.disabled = !affordable;
+	button.setAttribute("aria-disabled", affordable ? "false" : "true");
+	message.style.display = affordable ? "none" : "block";
 }
 
 export function purchaseWorld(config, addItem) {

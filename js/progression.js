@@ -33,10 +33,17 @@ export function canBuyButton(tier, button) {
 	return game[tier.costResource].gte(button.cost);
 }
 
+function resetResources(config, resourceIds) {
+	for (const resourceId of resourceIds) {
+		game[resourceId] = new Decimal(config.resourceById[resourceId].initial);
+	}
+}
+
 export function buyButton(config, tierId, button) {
 	const tier = config.tierById[tierId];
 	if (!tier || !canBuyButton(tier, button)) return false;
 	game[tier.costResource] = game[tier.costResource].sub(button.cost);
+	resetResources(config, tier.resets);
 	game[tier.gainResource] = game[tier.gainResource].add(calculateButtonGain(config, tier, button));
 	if (tier.xp) {
 		game.XP = game.XP.add(tier.xp * debugMultiplier);

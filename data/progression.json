@@ -52,12 +52,12 @@
       "lore": {
         "tech": {
           "origin": "Factories are fabrication towers that give the bot workforce memory, repeatability, and industrial rhythm.",
-          "createdBy": "Bots assemble Factories by spending the listed Bot cost.",
+          "createdBy": "Bots assemble Factories, rebooting Credits and Bots to their baseline values.",
           "effects": "Factories multiply Bot button gains and become the cost of Processors."
         },
         "fantasy": {
           "origin": "Prestige is a violet seal of recognition, earned when the kingdom forgets its small fortune to remember a greater one.",
-          "createdBy": "Multi buys Prestige by spending the listed Multi cost.",
+          "createdBy": "Multi buys Prestige, resetting Money and Multi to their starting values.",
           "effects": "Prestige multiplies Multi button gains and is spent to gather Power."
         }
       }
@@ -73,12 +73,12 @@
       "lore": {
         "tech": {
           "origin": "Processors are prediction engines, running impossible build orders before the machines commit matter to them.",
-          "createdBy": "Factories are spent to build Processors.",
+          "createdBy": "Factories are spent to build Processors, rebooting Credits through Factories.",
           "effects": "Processors multiply Factory gains and pay for Uplinks."
         },
         "fantasy": {
           "origin": "Power is sunlight hammered into a golden sigil, the first force strong enough to bend Prestige into machinery.",
-          "createdBy": "Prestige buys Power by spending the listed Prestige cost.",
+          "createdBy": "Prestige buys Power, resetting Money through Prestige.",
           "effects": "Power multiplies Prestige button gains and is spent on Super Prestige."
         }
       }
@@ -101,7 +101,7 @@
           "effects": "Uplinks multiply Processor gains and fund the Council."
         },
         "fantasy": {
-          "origin": "Super Prestige is moonlit status, a blue-white crest granted once Power can support the next tier.",
+          "origin": "Super Prestige is moonlit status, a blue-white crest granted only after Power proves it can survive a reset.",
           "createdBy": "Power purchases Super Prestige in World 2.",
           "effects": "Super Prestige multiplies Power button gains and opens the path to Ascension."
         }
@@ -173,7 +173,10 @@
       "parentResource": "power",
       "relicIndex": 2,
       "xp": 1,
-      "resets": []
+      "resets": [
+        "money",
+        "multi"
+      ]
     },
     {
       "id": "power",
@@ -183,7 +186,11 @@
       "parentResource": "superPrestige",
       "relicIndex": 3,
       "xp": 4,
-      "resets": []
+      "resets": [
+        "money",
+        "multi",
+        "prestige"
+      ]
     },
     {
       "id": "superPrestige",
@@ -193,7 +200,12 @@
       "parentResource": "ascension",
       "relicIndex": 4,
       "xp": 16,
-      "resets": []
+      "resets": [
+        "money",
+        "multi",
+        "prestige",
+        "power"
+      ]
     },
     {
       "id": "ascension",
@@ -203,7 +215,13 @@
       "parentResource": "infernal",
       "relicIndex": 5,
       "xp": 64,
-      "resets": []
+      "resets": [
+        "money",
+        "multi",
+        "prestige",
+        "power",
+        "superPrestige"
+      ]
     },
     {
       "id": "infernal",
@@ -213,7 +231,14 @@
       "parentResource": null,
       "relicIndex": 6,
       "xp": 256,
-      "resets": []
+      "resets": [
+        "money",
+        "multi",
+        "prestige",
+        "power",
+        "superPrestige",
+        "ascension"
+      ]
     }
   ],
   "leveling": {

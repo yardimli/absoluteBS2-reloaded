@@ -34,6 +34,23 @@ export function applyModernTheme() {
 		miningHeading.src = theme === TECH_THEME ? "images/modern/tech/nav-mining.png" : "images/modern/fantasy/nav-mining.png";
 		miningHeading.alt = labels.navMining;
 	}
+	const miningCopy = theme === TECH_THEME
+		? {
+			description: "Fusion miners automatically scan for reactor resources. Higher-energy resources increase the yield of the resource beneath them, while Deuterium multiplies Credit generation.",
+			boost: "Credit boost",
+			cooldown: "Next scan"
+		}
+		: {
+			description: "Miners automatically discover ores. Higher ores increase the amount of the ore beneath them, while Stone multiplies Money gain.",
+			boost: "Money boost",
+			cooldown: "Next ore"
+		};
+	const miningDescription = document.getElementById("miningDescription");
+	if (miningDescription) miningDescription.textContent = miningCopy.description;
+	const miningBoostLabel = document.getElementById("miningBoostLabel");
+	if (miningBoostLabel) miningBoostLabel.textContent = miningCopy.boost;
+	const miningCooldownLabel = document.getElementById("miningCooldownLabel");
+	if (miningCooldownLabel) miningCooldownLabel.textContent = miningCopy.cooldown;
 }
 
 export function toggleModernTheme() {
