@@ -20,7 +20,7 @@
       "name": "Pip",
       "title": "Arcane helper pet",
       "navTooltip": "Pet helper",
-      "description": "Pip is a cheerful little familiar who teleports between buttons and presses them for you. Upgrade speed to act more often, and intelligence to choose stronger buttons and eventually hop between worlds.",
+      "description": "Pip is a cheerful little familiar who teleports between buttons and presses them for you. Upgrade agility to act more often, and wisdom to unlock behavior controls for priority, waiting, row scanning, and world hopping.",
       "speedName": "Agility",
       "intelligenceName": "Wisdom",
       "images": [
@@ -34,7 +34,7 @@
       "name": "COT-7",
       "title": "Cute operations bot",
       "navTooltip": "COT bot",
-      "description": "COT-7 is a tiny operations bot built to optimize your AI society. Upgrade speed to reduce the action timer, and intelligence to compare gains, wait for better purchases, and navigate between unlocked worlds.",
+      "description": "COT-7 is a tiny operations bot built to optimize your AI society. Upgrade servo speed to reduce the action timer, and planning core to unlock behavior controls for priority, waiting, row scanning, and world travel.",
       "speedName": "Servo speed",
       "intelligenceName": "Planning core",
       "images": [

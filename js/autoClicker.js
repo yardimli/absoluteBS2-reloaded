@@ -6,6 +6,10 @@ import {activateWorldButton, renderWorld, updateWorldButtons} from "./worlds.js"
 
 const E = value => new Decimal(value);
 const SLEEP_DURATION_MS = 6 * 60 * 60 * 1000;
+const BEST_VALUE_LEVEL = 2;
+const WAIT_PLANNING_LEVEL = 4;
+const WORLD_TRAVEL_LEVEL = 8;
+const ROW_UNLOCK_LEVELS = [0, 2, 5, 8, 11, 14];
 let autoClickerViewKey = "";
 let autoClickerStatusText = "";
 
@@ -15,6 +19,47 @@ function themeConfig(config) {
 
 function upgradeCost(upgrade, level) {
 	return E(upgrade.baseCost).mul(E(upgrade.growth).pow(level));
+}
+
+function behaviorCaps(config) {
+	const intelligence = game.autoClicker.intelligenceLevel;
+	const rowUnlocks = ROW_UNLOCK_LEVELS.filter(level => intelligence >= level).length;
+	const waitBand = intelligence >= WAIT_PLANNING_LEVEL ? Math.floor((intelligence - WAIT_PLANNING_LEVEL) / 2) + 1 : 0;
+	return {
+		canChooseBest: intelligence >= BEST_VALUE_LEVEL,
+		maxWaitSeconds: waitBand > 0
+			? Math.min(60, waitBand * 5)
+			: 0,
+		maxRowDepth: Math.max(1, Math.min(config.progression.tiers.length, rowUnlocks)),
+		canUseWorlds: intelligence >= WORLD_TRAVEL_LEVEL
+	};
+}
+
+function behaviorSettings(config) {
+	const caps = behaviorCaps(config);
+	const behavior = game.autoClicker.behavior || {};
+	if (!game.autoClicker.behavior) game.autoClicker.behavior = behavior;
+	if (!["simple", "best"].includes(behavior.priority)) behavior.priority = "simple";
+	if (behavior.priority === "best" && !caps.canChooseBest) behavior.priority = "simple";
+	behavior.waitSeconds = Math.max(0, Math.min(caps.maxWaitSeconds, Number(behavior.waitSeconds) || 0));
+	behavior.rowDepth = Math.max(1, Math.min(caps.maxRowDepth, Math.floor(Number(behavior.rowDepth) || 1)));
+	if (!["current", "all"].includes(behavior.worldMode)) behavior.worldMode = "current";
+	if (behavior.worldMode === "all" && !caps.canUseWorlds) behavior.worldMode = "current";
+	return behavior;
+}
+
+function unlockSummary(config) {
+	const caps = behaviorCaps(config);
+	const rowLevels = ROW_UNLOCK_LEVELS
+		.slice(1, config.progression.tiers.length)
+		.map((level, index) => `row ${index + 2} at ${level}`)
+		.join(", ");
+	return [
+		`Best value unlocks at ${BEST_VALUE_LEVEL}.`,
+		`Waiting unlocks at ${WAIT_PLANNING_LEVEL} and grows by 5s every 2 levels, now ${caps.maxWaitSeconds}s.`,
+		`Rows unlock as ${rowLevels}; now ${caps.maxRowDepth} ${caps.maxRowDepth === 1 ? "row" : "rows"}.`,
+		`World travel unlocks at ${WORLD_TRAVEL_LEVEL}.`
+	].join(" ");
 }
 
 export function autoClickerInterval(config) {
@@ -67,6 +112,7 @@ export function upgradeAutoClicker(config, type) {
 	if (!canUpgradeAutoClicker(config, type)) return false;
 	game.money = game.money.sub(autoClickerUpgradeCost(config, type));
 	game.autoClicker[`${type}Level`] += 1;
+	if (type === "intelligence") behaviorSettings(config);
 	updateAutoClickerView(config);
 	updateWorldButtons(config);
 	return true;
@@ -127,17 +173,17 @@ function allowedWorldIds(config) {
 	if (manualWorldId > 0 && manualWorldId <= game.worldsUnlocked && config.worldById[manualWorldId]) {
 		return [manualWorldId];
 	}
-	const intelligence = game.autoClicker.intelligenceLevel;
-	const canNavigate = intelligence >= config.autoClicker.intelligence.worldNavigationLevel;
-	if (!canNavigate) return [currentWorld];
+	const behavior = behaviorSettings(config);
+	if (behavior.worldMode !== "all") return [currentWorld];
 	return config.worlds
 		.filter(world => world.id <= game.worldsUnlocked)
 		.map(world => world.id);
 }
 
 function chooseAvailableCandidate(config, available) {
-	const intelligence = game.autoClicker.intelligenceLevel;
-	if (intelligence < 3) {
+	const behavior = behaviorSettings(config);
+	available = available.filter(candidate => tierOrder(config, candidate.tierId) < behavior.rowDepth);
+	if (behavior.priority !== "best") {
 		return available
 			.slice()
 			.sort((a, b) => a.worldId - b.worldId || tierOrder(config, a.tierId) - tierOrder(config, b.tierId) || (a.buttonIndex ?? -1) - (b.buttonIndex ?? -1))[0];
@@ -148,12 +194,10 @@ function chooseAvailableCandidate(config, available) {
 }
 
 function shouldWaitForBetter(config, chosen, allCandidates) {
-	const intelligence = game.autoClicker.intelligenceLevel;
-	const settings = config.autoClicker.intelligence;
-	if (!chosen || intelligence < settings.waitPlanningLevel) return false;
+	const behavior = behaviorSettings(config);
+	if (!chosen || behavior.waitSeconds <= 0) return false;
 	const income = currentMoneyPerSecond();
 	if (income.lte(0)) return false;
-	const waitWindow = intelligence * settings.waitWindowPerLevelSeconds;
 	for (const candidate of allCandidates) {
 		if (candidate.available || candidate.type !== "button") continue;
 		const tier = config.tierById[candidate.tierId];
@@ -161,8 +205,8 @@ function shouldWaitForBetter(config, chosen, allCandidates) {
 		const missing = E(candidate.button.cost).sub(game.money);
 		if (missing.lte(0)) continue;
 		const seconds = missing.div(income).toNumber();
-		if (!Number.isFinite(seconds) || seconds > waitWindow) continue;
-		if (candidate.score > chosen.score * 1.22) return true;
+		if (!Number.isFinite(seconds) || seconds > behavior.waitSeconds) continue;
+		if (candidate.score > chosen.score) return true;
 	}
 	return false;
 }
@@ -227,6 +271,17 @@ export function toggleAutoClickerSleep(config) {
 	updateAutoClickerView(config);
 }
 
+export function updateAutoClickerBehavior(config, setting, value) {
+	const behavior = behaviorSettings(config);
+	if (setting === "priority") behavior.priority = value === "best" ? "best" : "simple";
+	if (setting === "waitSeconds") behavior.waitSeconds = Number(value) || 0;
+	if (setting === "rowDepth") behavior.rowDepth = Number(value) || 1;
+	if (setting === "worldMode") behavior.worldMode = value === "all" ? "all" : "current";
+	autoClickerViewKey = "";
+	behaviorSettings(config);
+	updateAutoClickerView(config);
+}
+
 function upgradeText(config, type) {
 	const themed = themeConfig(config);
 	const settings = type === "speed" ? config.autoClicker.speed : config.autoClicker.intelligence;
@@ -235,11 +290,7 @@ function upgradeText(config, type) {
 	const label = type === "speed" ? themed.speedName : themed.intelligenceName;
 	const effect = type === "speed"
 		? `Action timer: ${formatTime(autoClickerInterval(config))}`
-		: level >= config.autoClicker.intelligence.worldNavigationLevel
-			? "Can compare buttons across unlocked worlds."
-			: level >= config.autoClicker.intelligence.waitPlanningLevel
-				? "Can wait briefly for stronger money buttons."
-				: "Chooses simple available buttons.";
+		: `Unlocks: ${behaviorCaps(config).maxRowDepth} ${behaviorCaps(config).maxRowDepth === 1 ? "row" : "rows"}, ${behaviorCaps(config).maxWaitSeconds}s wait cap${behaviorCaps(config).canUseWorlds ? ", world travel" : ""}.`;
 	return {
 		label,
 		level: `Level ${level}/${settings.maxLevel}`,
@@ -282,6 +333,7 @@ function autoClickerStateKey(config, themed, image, sleeping) {
 		game.autoClicker.speedLevel,
 		game.autoClicker.intelligenceLevel,
 		game.autoClicker.manualWorldId,
+		JSON.stringify(behaviorSettings(config)),
 		manualWorld ? themedName(manualWorld) : "",
 		sleeping,
 		game.autoClicker.sleepUntil,
@@ -325,7 +377,7 @@ export function updateAutoClickerView(config) {
 		const sleepSeconds = Math.ceil(remaining);
 		const nextStatusText = sleeping
 			? `${themed.name} is ${getModernTheme() === "tech" ? "recharging" : "sleeping"} for ${formatTime(sleepSeconds)}.`
-			: `${themed.name} acts every ${formatTime(autoClickerInterval(config))}. Intelligence ${game.autoClicker.intelligenceLevel} controls planning depth.${navigationText}`;
+			: `${themed.name} acts every ${formatTime(autoClickerInterval(config))}. ${themed.intelligenceName} ${game.autoClicker.intelligenceLevel} unlocks behavior controls.${navigationText}`;
 		if (nextStatusText !== autoClickerStatusText || status.textContent !== nextStatusText) {
 			status.textContent = nextStatusText;
 			autoClickerStatusText = nextStatusText;
@@ -346,8 +398,47 @@ export function updateAutoClickerView(config) {
 			setText(`${prefix}Effect`, text.effect);
 			setButtonTextAndDisabled(`${prefix}Button`, text.cost, !canUpgradeAutoClicker(config, type));
 		}
+		updateBehaviorControls(config);
 		autoClickerViewKey = viewKey;
 	}
+}
+
+function setInputDisabled(input, disabled) {
+	if (input && input.disabled !== disabled) input.disabled = disabled;
+}
+
+function updateBehaviorControls(config) {
+	const themed = themeConfig(config);
+	const caps = behaviorCaps(config);
+	const behavior = behaviorSettings(config);
+	const intelligenceLabel = themed.intelligenceName;
+	setText("autoClickerBehaviorTitle", `${intelligenceLabel} behavior`);
+	setText(
+		"autoClickerBehaviorSummary",
+		unlockSummary(config)
+	);
+	document.querySelectorAll('input[name="autoClickerPriority"]').forEach(input => {
+		input.checked = input.value === behavior.priority;
+		setInputDisabled(input, input.value === "best" && !caps.canChooseBest);
+	});
+	const wait = document.getElementById("autoClickerWaitSlider");
+	if (wait) {
+		wait.max = String(caps.maxWaitSeconds);
+		wait.value = String(behavior.waitSeconds);
+		setInputDisabled(wait, caps.maxWaitSeconds <= 0);
+	}
+	setText("autoClickerWaitValue", `${behavior.waitSeconds}s`);
+	const rowDepth = document.getElementById("autoClickerRowDepthSlider");
+	if (rowDepth) {
+		rowDepth.max = String(caps.maxRowDepth);
+		rowDepth.value = String(behavior.rowDepth);
+		setInputDisabled(rowDepth, caps.maxRowDepth <= 1);
+	}
+	setText("autoClickerRowDepthValue", `${behavior.rowDepth} ${behavior.rowDepth === 1 ? "row" : "rows"}`);
+	document.querySelectorAll('input[name="autoClickerWorldMode"]').forEach(input => {
+		input.checked = input.value === behavior.worldMode;
+		setInputDisabled(input, input.value === "all" && !caps.canUseWorlds);
+	});
 }
 
 export function showAutoClicker(config) {

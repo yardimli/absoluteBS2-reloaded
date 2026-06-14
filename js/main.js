@@ -61,9 +61,11 @@ import {
 import {applyModernTheme, toggleModernTheme} from "./themes.js";
 import {
 	closeAutoClicker,
+	isAutoClickerSleeping,
 	runAutoClicker,
 	showAutoClicker,
 	toggleAutoClickerSleep,
+	updateAutoClickerBehavior,
 	updateAutoClickerView,
 	upgradeAutoClicker
 } from "./autoClicker.js";
@@ -129,9 +131,13 @@ function activateButton(element) {
 		if (element.dataset.itemType === "crates") clearCrateNotificationBlink();
 		showItems(config, element.dataset.itemType);
 	} else if (action === "close-items") closeItems();
-	else if (action === "show-auto-clicker") showAutoClicker(config);
+	else if (action === "show-auto-clicker") {
+		if (isAutoClickerSleeping()) toggleAutoClickerSleep(config);
+		else showAutoClicker(config);
+	}
 	else if (action === "close-auto-clicker") closeAutoClicker();
 	else if (action === "upgrade-auto-clicker") upgradeAutoClicker(config, element.dataset.upgrade);
+	else if (action === "update-auto-clicker-behavior") updateAutoClickerBehavior(config, element.dataset.setting, element.value);
 	else if (action === "toggle-auto-clicker-sleep") toggleAutoClickerSleep(config);
 	else if (action === "show-mining") showMining(config);
 	else if (action === "close-mining") closeMining();
@@ -212,6 +218,16 @@ document.addEventListener("click", event => {
 	}
 	const actionable = event.target.closest("[data-action]");
 	if (actionable) activateButton(actionable);
+});
+
+document.addEventListener("input", event => {
+	const element = event.target.closest('[data-action="update-auto-clicker-behavior"]');
+	if (element) updateAutoClickerBehavior(config, element.dataset.setting, element.value);
+});
+
+document.addEventListener("change", event => {
+	const element = event.target.closest('[data-action="update-auto-clicker-behavior"]');
+	if (element) updateAutoClickerBehavior(config, element.dataset.setting, element.value);
 });
 
 document.addEventListener("keydown", event => {

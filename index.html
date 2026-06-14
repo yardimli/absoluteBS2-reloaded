@@ -75,15 +75,6 @@
 				<button class="dangerAction" data-action="hard-reset">Hard reset</button>
 			</div>
 
-			<details class="debugPanel">
-				<summary>Debug multiplier</summary>
-				<div>
-					<button class="debug-btn" data-action="debug-multiplier" data-value="1">1x</button>
-					<button class="debug-btn" data-action="debug-multiplier" data-value="10">10x</button>
-					<button class="debug-btn" data-action="debug-multiplier" data-value="100">100x</button>
-					<button class="debug-btn" data-action="debug-multiplier" data-value="1000">1000x</button>
-				</div>
-			</details>
 		</aside>
 	</main>
 
@@ -143,9 +134,33 @@
 						<p id="autoClickerIntelligenceEffect">Chooses simple available buttons.</p>
 					</section>
 				</div>
+				<section class="autoClickerBehaviorPanel">
+					<div class="autoClickerBehaviorHeading">
+						<h2 id="autoClickerBehaviorTitle">Behavior tuning</h2>
+					</div>
+					<div class="autoClickerControlGroup autoClickerBehaviorCell">
+						<span class="autoClickerControlLabel">Button priority</span>
+						<label><input type="radio" name="autoClickerPriority" value="simple" data-action="update-auto-clicker-behavior" data-setting="priority"> First available</label>
+						<label><input type="radio" name="autoClickerPriority" value="best" data-action="update-auto-clicker-behavior" data-setting="priority"> Best value</label>
+					</div>
+					<label class="autoClickerSlider autoClickerBehaviorCell">
+						<span><span>Wait for better money button</span><strong id="autoClickerWaitValue">0s</strong></span>
+						<input id="autoClickerWaitSlider" type="range" min="0" max="0" value="0" step="1" data-action="update-auto-clicker-behavior" data-setting="waitSeconds">
+					</label>
+					<label class="autoClickerSlider autoClickerBehaviorCell">
+						<span><span>Rows to scan downward</span><strong id="autoClickerRowDepthValue">1 row</strong></span>
+						<input id="autoClickerRowDepthSlider" type="range" min="1" max="1" value="1" step="1" data-action="update-auto-clicker-behavior" data-setting="rowDepth">
+					</label>
+					<div class="autoClickerControlGroup autoClickerBehaviorCell">
+						<span class="autoClickerControlLabel">World travel</span>
+						<label><input type="radio" name="autoClickerWorldMode" value="current" data-action="update-auto-clicker-behavior" data-setting="worldMode"> Stay here</label>
+						<label><input type="radio" name="autoClickerWorldMode" value="all" data-action="update-auto-clicker-behavior" data-setting="worldMode"> Use unlocked worlds</label>
+					</div>
+					<p id="autoClickerBehaviorSummary" class="autoClickerBehaviorSummary">Unlocks arrive every few Core/Wisdom levels.</p>
+				</section>
 				<div class="autoClickerStatus" id="autoClickerStatus">COT-7 acts every 00:10.00.</div>
 				<button id="autoClickerSleepButton" class="secondaryAction autoClickerSleepButton" data-action="toggle-auto-clicker-sleep">Make COT-7 recharge</button>
-				<p class="autoClickerHint">Higher intelligence lets the helper compare stronger purchases, wait briefly when a better money button is close, and eventually navigate between unlocked worlds before clicking.</p>
+				<p class="autoClickerHint">Use these controls to decide how cautious the helper should be. Higher Wisdom/Core levels unlock stronger priority choices, longer wait windows, deeper row scanning, and world travel.</p>
 			</div>
 		</div>
 	</div>
@@ -283,6 +298,15 @@
 			<p>Your helper is available from the start and presses one affordable button every 10 seconds. Upgrade Speed to shorten the timer. Upgrade Intelligence so it picks stronger buttons, waits briefly for better purchases, and eventually navigates between unlocked worlds.</p>
 			<h2>Mining</h2>
 			<p>Mining unlocks in World 2. The timer runs at <code>60 ÷ miners</code> seconds, capped at 120 effective miners. Ores progress from Stone through Diamond.</p>
+			<details class="debugPanel helpDebugPanel">
+				<summary>Debug multiplier</summary>
+				<div>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="1">1x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="10">10x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="100">100x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="1000">1000x</button>
+				</div>
+			</details>
 		</div>
 	</div>
 
@@ -316,7 +340,7 @@
 		<p><strong>Example of the resource chain:</strong> if a Multi button normally gives +80 Multi and you own 4 Prestige, it gives <code>80 x (4 + 1) = 400 Multi</code> before relics or potions. That new Multi then increases your Money income by 400 per second.</p>
 
 		<h2>Auto Helper <img src="images/modern/fantasy/auto-pet-1.png" class="helpIcon" alt="Pet helper"></h2>
-		<p>Your pet helper starts active immediately and presses one affordable button every 10 seconds. Buy Agility upgrades with Money to shorten the timer, and Wisdom upgrades to make it choose stronger buttons, wait when a better Money button is nearly affordable, and later navigate between worlds.</p>
+			<p>Your pet helper starts active immediately and presses one affordable button every 10 seconds. Buy Agility upgrades with Money to shorten the timer. Wisdom upgrades unlock behavior controls so you can choose button priority, how long Pip waits for better Money buttons, how many resource rows it scans, and whether it may hop between unlocked worlds.</p>
 
 		<h2>Purchases and Resets</h2>
 		<p>Multi purchases only spend Money and do not reset anything. Buying Prestige or a higher resource resets all lower resources, but you keep the resource you bought and every resource above it.</p>
@@ -411,6 +435,15 @@
 			</tbody>
 		</table>
 			<p>Higher ores increase how much of the ore immediately below them you receive. For example, each Stone roll gives your current Iron amount plus 1 Stone, while each Ruby roll gives your current Diamond amount plus 1 Ruby. Stone boosts passive Money gain by <code>sqrt(Stone) + 1</code>; 9 Stone gives a 4x Money multiplier and 100 Stone gives an 11x multiplier.</p>
+			<details class="debugPanel helpDebugPanel">
+				<summary>Debug multiplier</summary>
+				<div>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="1">1x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="10">10x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="100">100x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="1000">1000x</button>
+				</div>
+			</details>
 		</div>
 	</template>
 
@@ -445,7 +478,7 @@
 			<p><code>Bots x Credit bonuses x (sqrt(Deuterium) + 1)</code>. Relics are permanent, power-ups last five minutes, and Deuterium comes from Fusion mining.</p>
 
 			<h2>COT Bot <img src="images/modern/tech/auto-bot-1.png" class="helpIcon" alt="COT bot"></h2>
-			<p>COT-7 starts active immediately and performs one button action every 10 seconds. Servo Speed upgrades reduce the timer. Planning Core upgrades make it compare stronger actions, wait briefly for better purchases, and eventually navigate between unlocked worlds.</p>
+			<p>COT-7 starts active immediately and performs one button action every 10 seconds. Servo Speed upgrades reduce the timer. Planning Core upgrades unlock behavior controls so you can choose button priority, how long COT-7 waits for better Credit buttons, how many system rows it scans, and whether it may travel between unlocked worlds.</p>
 
 			<h2>Resets</h2>
 			<p>Buying Factories or any higher system resets the lower systems in the same way the fantasy theme does. XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>
@@ -510,6 +543,15 @@
 					<tr><td>Neutronium<img src="images/modern/tech/ore-neutronium.png" class="helpSampleButton" alt="Neutronium"></td><td>1.5625%</td><td>1</td></tr>
 				</tbody>
 			</table>
+			<details class="debugPanel helpDebugPanel">
+				<summary>Debug multiplier</summary>
+				<div>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="1">1x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="10">10x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="100">100x</button>
+					<button class="debug-btn" data-action="debug-multiplier" data-value="1000">1000x</button>
+				</div>
+			</details>
 		</div>
 	</template>
 
