@@ -79,7 +79,7 @@ export function themedHeadingIcon(type) {
 		}
 		: {
 			crates: "images/modern/fantasy/nav-crates.png",
-			patterns: "images/modern/fantasy/world-1.png",
+			patterns: "images/modern/fantasy/world-1.jpg",
 			relics: "images/modern/fantasy/nav-relics.png",
 			potions: "images/modern/fantasy/nav-potions.png"
 		};

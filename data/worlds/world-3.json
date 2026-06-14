@@ -4,9 +4,9 @@
   "techName": "Singularity Sky Arcology",
   "background": "#9ce",
   "modernBackgrounds": [
-    "images/modern/fantasy/world-3.png",
-    "images/modern/fantasy/world-3-2.png",
-    "images/modern/fantasy/world-3-3.png"
+    "images/modern/fantasy/world-3.jpg",
+    "images/modern/fantasy/world-3-2.jpg",
+    "images/modern/fantasy/world-3-3.jpg"
   ],
   "techBackgrounds": [
     "images/modern/tech/world-3.jpg"

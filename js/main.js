@@ -63,6 +63,7 @@ import {
 	closeAutoClicker,
 	runAutoClicker,
 	showAutoClicker,
+	toggleAutoClickerSleep,
 	updateAutoClickerView,
 	upgradeAutoClicker
 } from "./autoClicker.js";
@@ -131,6 +132,7 @@ function activateButton(element) {
 	else if (action === "show-auto-clicker") showAutoClicker(config);
 	else if (action === "close-auto-clicker") closeAutoClicker();
 	else if (action === "upgrade-auto-clicker") upgradeAutoClicker(config, element.dataset.upgrade);
+	else if (action === "toggle-auto-clicker-sleep") toggleAutoClickerSleep(config);
 	else if (action === "show-mining") showMining(config);
 	else if (action === "close-mining") closeMining();
 	else if (action === "purchase-miner") purchaseMiner(config);

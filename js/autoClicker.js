@@ -5,6 +5,7 @@ import {getModernTheme} from "./themes.js";
 import {activateWorldButton, renderWorld, updateWorldButtons} from "./worlds.js";
 
 const E = value => new Decimal(value);
+const SLEEP_DURATION_MS = 6 * 60 * 60 * 1000;
 
 function themeConfig(config) {
 	return config.autoClicker.themes[getModernTheme()] || config.autoClicker.themes.tech;
@@ -39,6 +40,14 @@ export function autoClickerImage(config) {
 
 export function autoClickerName(config) {
 	return themeConfig(config).name;
+}
+
+export function autoClickerSleepRemaining() {
+	return Math.max(game.autoClicker.sleepUntil - Date.now(), 0) / 1000;
+}
+
+export function isAutoClickerSleeping() {
+	return autoClickerSleepRemaining() > 0;
 }
 
 export function autoClickerUpgradeCost(config, type) {
@@ -180,6 +189,7 @@ function animateAutoClicker(config, element) {
 }
 
 export function runAutoClicker(config) {
+	if (isAutoClickerSleeping()) return;
 	const now = Date.now();
 	const intervalMs = autoClickerInterval(config) * 1000;
 	if (now - game.autoClicker.lastActionAt < intervalMs) return;
@@ -199,6 +209,16 @@ export function runAutoClicker(config) {
 		game.autoClicker.lastActionAt = now;
 		updateAutoClickerView(config);
 	}
+}
+
+export function toggleAutoClickerSleep(config) {
+	if (isAutoClickerSleeping()) {
+		game.autoClicker.sleepUntil = 0;
+		game.autoClicker.lastActionAt = Date.now();
+	} else {
+		game.autoClicker.sleepUntil = Date.now() + SLEEP_DURATION_MS;
+	}
+	updateAutoClickerView(config);
 }
 
 function upgradeText(config, type) {
@@ -225,11 +245,15 @@ function upgradeText(config, type) {
 export function updateAutoClickerView(config) {
 	const themed = themeConfig(config);
 	const image = autoClickerImage(config);
+	const sleeping = isAutoClickerSleeping();
+	const remaining = autoClickerSleepRemaining();
 	const nav = document.getElementById("autoClickerNavButton");
 	if (nav) {
 		nav.style.backgroundImage = `url("${image}")`;
 		nav.dataset.tooltip = themed.navTooltip;
 		nav.setAttribute("aria-label", themed.navTooltip);
+		nav.classList.toggle("isSleeping", sleeping);
+		nav.dataset.sleepLabel = getModernTheme() === "tech" ? "RECHARGE" : "SLEEP";
 	}
 	const avatar = document.getElementById("autoClickerAvatar");
 	if (avatar) {
@@ -249,7 +273,15 @@ export function updateAutoClickerView(config) {
 	if (description) description.textContent = themed.description;
 	const status = document.getElementById("autoClickerStatus");
 	if (status) {
-		status.textContent = `${themed.name} acts every ${formatTime(autoClickerInterval(config))}. Intelligence ${game.autoClicker.intelligenceLevel} controls planning depth.`;
+		status.textContent = sleeping
+			? `${themed.name} is ${getModernTheme() === "tech" ? "recharging" : "sleeping"} for ${formatTime(remaining)}.`
+			: `${themed.name} acts every ${formatTime(autoClickerInterval(config))}. Intelligence ${game.autoClicker.intelligenceLevel} controls planning depth.`;
+	}
+	const sleepButton = document.getElementById("autoClickerSleepButton");
+	if (sleepButton) {
+		sleepButton.textContent = sleeping
+			? (getModernTheme() === "tech" ? `Power on ${themed.name}` : `Wake up ${themed.name}`)
+			: (getModernTheme() === "tech" ? `Make ${themed.name} recharge for 6 hours` : `Make ${themed.name} sleep for 6 hours`);
 	}
 	for (const type of ["speed", "intelligence"]) {
 		const text = upgradeText(config, type);
