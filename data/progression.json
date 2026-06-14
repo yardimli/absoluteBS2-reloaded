@@ -10,8 +10,8 @@
       "lore": {
         "tech": {
           "origin": "Credits are the measurable energy budget of the first autonomous settlement: heat, compute time, fabrication rights, and trust compressed into one currency.",
-          "createdBy": "Nano-bots turn idle cycles and harvested Deuterium into spendable Credits every second.",
-          "effects": "Credits deploy more Nano-bots, making them the fuel line for the whole AI society."
+          "createdBy": "Bots turn idle cycles and harvested Deuterium into spendable Credits every second.",
+          "effects": "Credits deploy more Bots, making them the fuel line for the whole AI society."
         },
         "fantasy": {
           "origin": "Money is the bright coin-glow left behind when the first enchanted machines learned to count value instead of weight.",
@@ -24,15 +24,15 @@
       "id": "multi",
       "name": "Multi",
       "modernIcon": "images/modern/fantasy/multi.png",
-      "techName": "Nano-bots",
+      "techName": "Bots",
       "techIcon": "images/modern/tech/nano-bots.png",
       "color": "#b00",
       "initial": "1",
       "lore": {
         "tech": {
-          "origin": "Nano-bots are the first citizen-machines: tiny worker swarms that copy instructions, gather material, and keep the Credits stream alive.",
-          "createdBy": "Credits deploy Nano-bots directly.",
-          "effects": "Every Nano-bot increases Credits per second and supplies the cost base for Nano-machines."
+          "origin": "Bots are the first citizen-machines: compact worker units that copy instructions, gather material, and keep the Credits stream alive.",
+          "createdBy": "Credits deploy Bots directly.",
+          "effects": "Every Bot increases Credits per second and supplies the cost base for Factories."
         },
         "fantasy": {
           "origin": "Multi is a living multiplier spark, a ruby mote that teaches every coin to arrive with echoes of itself.",
@@ -45,15 +45,15 @@
       "id": "prestige",
       "name": "Prestige",
       "modernIcon": "images/modern/fantasy/prestige.png",
-      "techName": "Nano-machines",
+      "techName": "Factories",
       "techIcon": "images/modern/tech/nano-machines.png",
       "color": "#60b",
       "initial": "0",
       "lore": {
         "tech": {
-          "origin": "Nano-machines are fixed fabrication towers that give the swarm memory, repeatability, and industrial rhythm.",
-          "createdBy": "Nano-bots assemble Nano-machines through reset purchases.",
-          "effects": "Nano-machines multiply Nano-bot button gains and become the cost of Quantum processors."
+          "origin": "Factories are fabrication towers that give the bot workforce memory, repeatability, and industrial rhythm.",
+          "createdBy": "Bots assemble Factories through reset purchases.",
+          "effects": "Factories multiply Bot button gains and become the cost of Processors."
         },
         "fantasy": {
           "origin": "Prestige is a violet seal of recognition, earned when the kingdom forgets its small fortune to remember a greater one.",
@@ -66,15 +66,15 @@
       "id": "power",
       "name": "Power",
       "modernIcon": "images/modern/fantasy/power.png",
-      "techName": "Quantum processors",
+      "techName": "Processors",
       "techIcon": "images/modern/tech/quantum-processors.png",
       "color": "#dd0",
       "initial": "0",
       "lore": {
         "tech": {
-          "origin": "Quantum processors are prediction engines, running impossible build orders before the machines commit matter to them.",
-          "createdBy": "Nano-machines are reset into Quantum processors.",
-          "effects": "Quantum processors multiply Nano-machine gains and pay for Neural uplinks."
+          "origin": "Processors are prediction engines, running impossible build orders before the machines commit matter to them.",
+          "createdBy": "Factories are reset into Processors.",
+          "effects": "Processors multiply Factory gains and pay for Neural uplinks."
         },
         "fantasy": {
           "origin": "Power is sunlight hammered into a golden sigil, the first force strong enough to bend Prestige into machinery.",
@@ -97,8 +97,8 @@
       "lore": {
         "tech": {
           "origin": "Neural uplinks connect distant machine colonies, letting one world's solution become another world's instinct.",
-          "createdBy": "Quantum processors build Neural uplinks in World 2.",
-          "effects": "Neural uplinks multiply Quantum processor gains and fund the Synthetic council."
+          "createdBy": "Processors build Neural uplinks in World 2.",
+          "effects": "Neural uplinks multiply Processor gains and fund the Council."
         },
         "fantasy": {
           "origin": "Super Prestige is moonlit status, a blue-white crest granted only after Power proves it can survive a reset.",
@@ -111,7 +111,7 @@
       "id": "ascension",
       "name": "Ascension",
       "modernIcon": "images/modern/fantasy/ascension.png",
-      "techName": "Synthetic council",
+      "techName": "Council",
       "techShortName": "Council",
       "techIcon": "images/modern/tech/synthetic-council.png",
       "color": "#fff",
@@ -119,7 +119,7 @@
       "unlockWorld": 2,
       "lore": {
         "tech": {
-          "origin": "The Synthetic council is the governance layer: clustered minds voting in light, assigning purpose to the growing society.",
+          "origin": "The Council is the governance layer: clustered minds voting in light, assigning purpose to the growing society.",
           "createdBy": "Neural uplinks form the council in World 2.",
           "effects": "The council multiplies Neural uplink gains and spends its authority to approach Singularity."
         },
@@ -134,7 +134,7 @@
       "id": "infernal",
       "name": "Infernal",
       "modernIcon": "images/modern/fantasy/infernal.png",
-      "techName": "AI singularity",
+      "techName": "Singularity",
       "techShortName": "Singularity",
       "techIcon": "images/modern/tech/ai-singularity.png",
       "color": "#f50",
@@ -142,9 +142,9 @@
       "unlockWorld": 3,
       "lore": {
         "tech": {
-          "origin": "AI Singularity is the moment the society begins improving the rules that improve itself, a horizon of recursive invention.",
-          "createdBy": "The Synthetic council spends its accumulated authority to create Singularity in World 3.",
-          "effects": "Singularity multiplies Synthetic council gains. It is the current top of the tech chain."
+          "origin": "Singularity is the moment the society begins improving the rules that improve itself, a horizon of recursive invention.",
+          "createdBy": "The Council spends its accumulated authority to create Singularity in World 3.",
+          "effects": "Singularity multiplies Council gains. It is the current top of the tech chain."
         },
         "fantasy": {
           "origin": "Infernal is not simple fire; it is the red engine beneath the last world, burning endings into new beginnings.",

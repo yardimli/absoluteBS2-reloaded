@@ -6,6 +6,7 @@ import {getModernTheme, themedBackgrounds, themedIcon, themedImage, themedName, 
 
 const buttonsRoot = () => document.getElementById("buttons");
 let renderedWorldId = null;
+const MANUAL_WORLD_CHANGE_SLEEP_MS = 10 * 1000;
 
 function setField(root, field, value) {
 	root.querySelector(`[data-field="${field}"]`).textContent = value;
@@ -22,6 +23,10 @@ function setButtonAvailability(element, available) {
 	element.setAttribute("aria-disabled", available ? "false" : "true");
 	element.style.filter = available ? "none" : "brightness(70%)";
 	return changed;
+}
+
+function restAutoClickerAfterManualWorldChange() {
+	game.autoClicker.sleepUntil = Math.max(game.autoClicker.sleepUntil || 0, Date.now() + MANUAL_WORLD_CHANGE_SLEEP_MS);
 }
 
 function buttonGridCapacity(grid, buttons) {
@@ -159,7 +164,10 @@ export function renderWorld(config) {
 		sectionElement.dataset.tier = tier.id;
 		buttonsRoot().append(fragment);
 	}
-	document.getElementById("previousWorldButton").style.display = currentWorld === 1 ? "none" : "inline-block";
+	const previousButton = document.getElementById("previousWorldButton");
+	previousButton.style.display = "inline-block";
+	previousButton.disabled = currentWorld === 1;
+	previousButton.setAttribute("aria-disabled", currentWorld === 1 ? "true" : "false");
 	updateWorldButtons(config);
 	updateButtonGridVisibility();
 }
@@ -282,6 +290,8 @@ export function activateWorldButton(config, element) {
 	if (element.dataset.action === "buy-button") {
 		const button = findWorldButton(config, element.dataset.tier, Number(element.dataset.buttonIndex));
 		if (!button || !buyButton(config, element.dataset.tier, button)) return false;
+		const tier = config.tierById[element.dataset.tier];
+		if (tier?.resets?.length) game.autoClicker.manualWorldId = 0;
 		playButtonClickEffect(element);
 		updateAffectedButtons(config, element.dataset.tier);
 		return true;
@@ -295,18 +305,26 @@ export function activateWorldButton(config, element) {
 	return false;
 }
 
-export function nextWorld(config) {
+export function nextWorld(config, options = {}) {
 	if (currentWorld < game.worldsUnlocked) {
 		setCurrentWorld(currentWorld + 1);
+		if (options.manual) {
+			game.autoClicker.manualWorldId = currentWorld;
+			restAutoClickerAfterManualWorldChange();
+		}
 		renderWorld(config);
 		return;
 	}
 	showWorldPurchase(config, currentWorld + 1);
 }
 
-export function previousWorld(config) {
+export function previousWorld(config, options = {}) {
 	if (currentWorld <= 1) return;
 	setCurrentWorld(currentWorld - 1);
+	if (options.manual) {
+		game.autoClicker.manualWorldId = currentWorld;
+		restAutoClickerAfterManualWorldChange();
+	}
 	document.getElementById("worldPurchaseScreen").style.display = "none";
 	renderWorld(config);
 }
@@ -347,6 +365,8 @@ export function purchaseWorld(config, addItem) {
 		);
 	}
 	setCurrentWorld(nextId);
+	game.autoClicker.manualWorldId = nextId;
+	restAutoClickerAfterManualWorldChange();
 	renderWorld(config);
 	return true;
 }

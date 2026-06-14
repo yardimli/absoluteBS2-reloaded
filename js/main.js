@@ -136,8 +136,8 @@ function activateButton(element) {
 	else if (action === "show-mining") showMining(config);
 	else if (action === "close-mining") closeMining();
 	else if (action === "purchase-miner") purchaseMiner(config);
-	else if (action === "previous-world") previousWorld(config);
-	else if (action === "next-world") nextWorld(config);
+	else if (action === "previous-world") previousWorld(config, {manual: true});
+	else if (action === "next-world") nextWorld(config, {manual: true});
 	else if (action === "purchase-world") purchaseWorld(config, (type, id) => addItem(config, type, id));
 	else if (action === "close-world-purchase") closeWorldPurchase();
 	else if (action === "show-resource-breakdown") showResourceBreakdown(config, element.dataset.resourceId);
@@ -146,7 +146,10 @@ function activateButton(element) {
 	else if (action === "close-section-lore") closeSectionLore();
 	else if (action === "show-resources") document.body.classList.add("resourcesOpen");
 	else if (action === "hide-resources") document.body.classList.remove("resourcesOpen");
-	else if (action === "show-help") showHelp();
+	else if (action === "show-help") {
+		document.body.classList.remove("resourcesOpen");
+		showHelp();
+	}
 	else if (action === "hide-help") hideHelp();
 	else if (action === "save") saveState();
 	else if (action === "hard-reset") hardReset();
@@ -209,8 +212,8 @@ document.addEventListener("click", event => {
 });
 
 document.addEventListener("keydown", event => {
-	if (["ArrowRight", "d", "D"].includes(event.key)) nextWorld(config);
-	else if (["ArrowLeft", "a", "A"].includes(event.key)) previousWorld(config);
+	if (["ArrowRight", "d", "D"].includes(event.key)) nextWorld(config, {manual: true});
+	else if (["ArrowLeft", "a", "A"].includes(event.key)) previousWorld(config, {manual: true});
 	else if (event.key === "Enter" || event.key === " ") {
 		const actionable = event.target.closest("[data-action]");
 		if (actionable) {

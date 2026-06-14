@@ -37,7 +37,8 @@ export function resetState(config) {
 			speedLevel: 0,
 			intelligenceLevel: 0,
 			lastActionAt: Date.now(),
-			sleepUntil: 0
+			sleepUntil: 0,
+			manualWorldId: 0
 		},
 		hasSeenHelp: false
 	};
@@ -52,9 +53,14 @@ export function ensureAutoClickerState(config) {
 	if (!Number.isFinite(Number(game.autoClicker.intelligenceLevel))) game.autoClicker.intelligenceLevel = 0;
 	if (!Number.isFinite(Number(game.autoClicker.lastActionAt))) game.autoClicker.lastActionAt = Date.now();
 	if (!Number.isFinite(Number(game.autoClicker.sleepUntil))) game.autoClicker.sleepUntil = 0;
+	if (!Number.isFinite(Number(game.autoClicker.manualWorldId))) game.autoClicker.manualWorldId = 0;
 	game.autoClicker.speedLevel = Math.max(0, Math.min(config.autoClicker.speed.maxLevel, Math.floor(Number(game.autoClicker.speedLevel))));
 	game.autoClicker.intelligenceLevel = Math.max(0, Math.min(config.autoClicker.intelligence.maxLevel, Math.floor(Number(game.autoClicker.intelligenceLevel))));
 	game.autoClicker.sleepUntil = Math.max(0, Number(game.autoClicker.sleepUntil));
+	game.autoClicker.manualWorldId = Math.max(0, Math.floor(Number(game.autoClicker.manualWorldId)));
+	if (game.autoClicker.manualWorldId > game.worldsUnlocked || !config.worldById[game.autoClicker.manualWorldId]) {
+		game.autoClicker.manualWorldId = 0;
+	}
 }
 
 function hydrateValue(value) {

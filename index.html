@@ -98,13 +98,14 @@
 					<img id="itemScreenHeadingIcon" class="modalHeadingIcon" src="images/modern/fantasy/nav-crates.png" alt="">
 					<div>
 						<span class="eyebrow">Collection</span>
-						<h1 id="itemScreenTitle">Crates</h1>
+						<strong id="itemScreenTitle">Crates</strong>
 					</div>
 				</div>
 				<button class="circleButton" data-action="close-items" aria-label="Close"></button>
 			</div>
 			<div class="itemModalLayout">
 				<div id="itemScreenInner" class="itemGrid"></div>
+				<div id="itemScreenEmpty" class="itemEmptyState"></div>
 				<aside id="itemScreenInfo" class="itemDetail">
 					<div id="itemScreenIcon"></div>
 					<h2 id="itemScreenName"></h2>
@@ -121,7 +122,7 @@
 					<img id="autoClickerModalIcon" class="modalHeadingIcon" src="images/modern/tech/auto-bot-1.png" alt="">
 					<div>
 						<span id="autoClickerEyebrow" class="eyebrow">Cute operations bot</span>
-						<h1 id="autoClickerTitle">COT-7 upgrades</h1>
+						<strong id="autoClickerTitle">COT-7 upgrades</strong>
 					</div>
 				</div>
 				<button class="circleButton" data-action="close-auto-clicker" aria-label="Close"></button>
@@ -151,14 +152,23 @@
 
 	<div id="worldPurchaseScreen" class="modalShell">
 		<div class="glass modalPanel centeredModal worldPurchaseModal">
-			<button class="circleButton modalClose" data-action="close-world-purchase" aria-label="Close"></button>
-			<span class="eyebrow">New destination</span>
-			<h1 id="worldPurchaseText">Unlock world 2</h1>
-			<p>Open a new environment, new resource tiers, and new systems.</p>
-			<button id="worldPurchaseButton" class="primaryAction" data-action="purchase-world">
-				<span id="worldPurchaseButtonLabel">Purchase world 2</span>
-				<small id="worldPurchaseButtonCost">Costs $1.00e20</small>
-			</button>
+			<div class="modalHeading">
+				<div class="modalTitleGroup">
+					<img id="worldPurchaseIcon" class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
+					<div>
+						<span class="eyebrow">New destination</span>
+						<strong id="worldPurchaseText">Unlock world 2</strong>
+					</div>
+				</div>
+				<button class="circleButton modalClose" data-action="close-world-purchase" aria-label="Close"></button>
+			</div>
+			<div class="modalContent worldPurchaseContent">
+				<p>Open a new environment, new resource tiers, and new systems.</p>
+				<button id="worldPurchaseButton" class="primaryAction" data-action="purchase-world">
+					<span id="worldPurchaseButtonLabel">Purchase world 2</span>
+					<small id="worldPurchaseButtonCost">Costs $1.00e20</small>
+				</button>
+			</div>
 		</div>
 	</div>
 
@@ -169,7 +179,7 @@
 					<img id="miningHeadingIcon" class="modalHeadingIcon" src="images/modern/fantasy/nav-mining.png" alt="">
 					<div>
 						<span class="eyebrow">Automated extraction</span>
-						<h1>Mining</h1>
+						<strong>Mining</strong>
 					</div>
 				</div>
 				<button class="circleButton" data-action="close-mining" aria-label="Close"></button>
@@ -192,15 +202,24 @@
 
 	<div id="messageDialog" class="messageDialogShell" role="dialog" aria-modal="true" aria-labelledby="messageDialogTitle">
 		<div class="glass messageDialogPanel">
-			<button id="messageDialogClose" class="circleButton messageDialogClose" type="button" aria-label="Close"></button>
-			<img id="messageDialogImage" class="messageDialogImage" alt="">
-			<span class="eyebrow">Game message</span>
-			<h2 id="messageDialogTitle"></h2>
-			<p id="messageDialogText"></p>
-			<textarea id="messageDialogInput" class="messageDialogInput" rows="5"></textarea>
-			<div class="messageDialogActions">
-				<button id="messageDialogCancel" type="button">Cancel</button>
-				<button id="messageDialogConfirm" class="primaryAction" type="button">OK</button>
+			<div class="modalHeading messageDialogHeading">
+				<div class="modalTitleGroup">
+					<img class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
+					<div>
+						<span class="eyebrow">Game message</span>
+						<strong id="messageDialogTitle"></strong>
+					</div>
+				</div>
+				<button id="messageDialogClose" class="circleButton messageDialogClose" type="button" aria-label="Close"></button>
+			</div>
+			<div class="messageDialogContent">
+				<img id="messageDialogImage" class="messageDialogImage" alt="">
+				<p id="messageDialogText"></p>
+				<textarea id="messageDialogInput" class="messageDialogInput" rows="5"></textarea>
+				<div class="messageDialogActions">
+					<button id="messageDialogCancel" type="button">Cancel</button>
+					<button id="messageDialogConfirm" class="primaryAction" type="button">OK</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -212,7 +231,7 @@
 					<img class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
 					<div>
 						<span class="eyebrow">Resource breakdown</span>
-						<h1 id="resourceBreakdownTitle">Money</h1>
+						<strong id="resourceBreakdownTitle">Money</strong>
 					</div>
 				</div>
 				<button class="circleButton" data-action="close-resource-breakdown" aria-label="Close"></button>
@@ -228,7 +247,7 @@
 					<img id="sectionLoreIcon" class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
 					<div>
 						<span id="sectionLoreEyebrow" class="eyebrow">Section lore</span>
-						<h1 id="sectionLoreTitle">Section</h1>
+						<strong id="sectionLoreTitle">Section</strong>
 					</div>
 				</div>
 				<button class="circleButton" data-action="close-section-lore" aria-label="Close"></button>
@@ -240,9 +259,12 @@
 	<div id="helpScreenOverlay" class="modalBackdrop" data-action="hide-help"></div>
 	<div id="helpScreen" class="glass helpPanel">
 		<div class="helpHeader">
-			<div>
-				<span class="eyebrow">Game guide</span>
-				<h1>How the resource chain works</h1>
+			<div class="modalTitleGroup">
+				<img class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
+				<div>
+					<span class="eyebrow">Game guide</span>
+					<strong>How the resource chain works</strong>
+				</div>
 			</div>
 			<button class="circleButton" data-action="hide-help" aria-label="Close"></button>
 		</div>
@@ -266,9 +288,12 @@
 
 	<template id="modern-help-content-template">
 		<div class="helpHeader">
-			<div>
-				<span class="eyebrow">Game guide</span>
-				<h1>How to Play</h1>
+			<div class="modalTitleGroup">
+				<img class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
+				<div>
+					<span class="eyebrow">Game guide</span>
+					<strong>How to Play</strong>
+				</div>
 			</div>
 			<button class="circleButton" data-action="hide-help" aria-label="Close"></button>
 		</div>
@@ -391,42 +416,45 @@
 
 	<template id="tech-help-content-template">
 		<div class="helpHeader">
-			<div>
-				<span class="eyebrow">Tech guide</span>
-				<h1>Building the AI Society</h1>
+			<div class="modalTitleGroup">
+				<img class="modalHeadingIcon" src="images/brand-icon-256.png" alt="">
+				<div>
+					<span class="eyebrow">Tech guide</span>
+					<strong>Building the AI Society</strong>
+				</div>
 			</div>
 			<button class="circleButton" data-action="hide-help" aria-label="Close"></button>
 		</div>
 		<div class="helpBody">
-			<h2>Systems &amp; Multipliers <img src="images/modern/tech/nano-bots.png" class="helpIcon" alt="Nano-bots"></h2>
-			<p>The Tech theme keeps the same progression math, but reframes it as a growing machine civilization. Credits fund Nano-bots, Nano-bots assemble Nano-machines, and each higher system amplifies the one beneath it until the AI Singularity takes shape.</p>
+			<h2>Systems &amp; Multipliers <img src="images/modern/tech/nano-bots.png" class="helpIcon" alt="Bots"></h2>
+			<p>The Tech theme keeps the same progression math, but reframes it as a growing machine civilization. Credits fund Bots, Bots assemble Factories, and each higher system amplifies the one beneath it until the Singularity takes shape.</p>
 			<table class="helpTable">
 				<thead><tr><th>System</th><th>Role in the society</th><th>What boosts it</th></tr></thead>
 				<tbody>
-					<tr><td>Credits</td><td>The economy layer. Credits are generated automatically from your Nano-bots and are spent to deploy more Nano-bots.</td><td>Nano-bots, Credit relics, Credit power-ups, and Deuterium.</td></tr>
-					<tr><td>Nano-bots<img src="images/modern/tech/nano-bots.png" class="helpSampleButton" alt="Nano-bots"></td><td>Autonomous worker swarms. Every Nano-bot increases passive Credits per second.</td><td>Nano-bot buttons are multiplied by <code>Nano-machines + 1</code>, then by relics and power-ups.</td></tr>
-					<tr><td>Nano-machines<img src="images/modern/tech/nano-machines.png" class="helpSampleButton" alt="Nano-machines"></td><td>Factories that coordinate the swarm and make Nano-bot deployment scale harder.</td><td>Quantum processors multiply Nano-machine button rewards.</td></tr>
-					<tr><td>Quantum processors<img src="images/modern/tech/quantum-processors.png" class="helpSampleButton" alt="Quantum processors"></td><td>Compute clusters that plan larger automation loops.</td><td>Neural uplinks multiply Quantum processor button rewards.</td></tr>
-					<tr><td>Neural uplinks<img src="images/modern/tech/neural-uplinks.png" class="helpSampleButton" alt="Neural uplinks"></td><td>Network bridges that connect machine colonies across worlds.</td><td>Synthetic council multiplies Neural uplink rewards.</td></tr>
-					<tr><td>Synthetic council<img src="images/modern/tech/synthetic-council.png" class="helpSampleButton" alt="Synthetic council"></td><td>The governance layer that directs high-tier expansion.</td><td>AI Singularity multiplies Synthetic council rewards.</td></tr>
-					<tr><td>AI singularity<img src="images/modern/tech/ai-singularity.png" class="helpSampleButton" alt="AI singularity"></td><td>The highest current system, representing the society becoming self-improving.</td><td>Singularity buttons award their listed amount; there is no higher multiplier yet.</td></tr>
+					<tr><td>Credits</td><td>The economy layer. Credits are generated automatically from your Bots and are spent to deploy more Bots.</td><td>Bots, Credit relics, Credit power-ups, and Deuterium.</td></tr>
+					<tr><td>Bots<img src="images/modern/tech/nano-bots.png" class="helpSampleButton" alt="Bots"></td><td>Autonomous worker units. Every Bot increases passive Credits per second.</td><td>Bot buttons are multiplied by <code>Factories + 1</code>, then by relics and power-ups.</td></tr>
+					<tr><td>Factories<img src="images/modern/tech/nano-machines.png" class="helpSampleButton" alt="Factories"></td><td>Fabrication towers that coordinate the workforce and make Bot deployment scale harder.</td><td>Processors multiply Factory button rewards.</td></tr>
+					<tr><td>Processors<img src="images/modern/tech/quantum-processors.png" class="helpSampleButton" alt="Processors"></td><td>Compute clusters that plan larger automation loops.</td><td>Neural uplinks multiply Processor button rewards.</td></tr>
+					<tr><td>Neural uplinks<img src="images/modern/tech/neural-uplinks.png" class="helpSampleButton" alt="Neural uplinks"></td><td>Network bridges that connect machine colonies across worlds.</td><td>Council multiplies Neural uplink rewards.</td></tr>
+					<tr><td>Council<img src="images/modern/tech/synthetic-council.png" class="helpSampleButton" alt="Council"></td><td>The governance layer that directs high-tier expansion.</td><td>Singularity multiplies Council rewards.</td></tr>
+					<tr><td>Singularity<img src="images/modern/tech/ai-singularity.png" class="helpSampleButton" alt="Singularity"></td><td>The highest current system, representing the society becoming self-improving.</td><td>Singularity buttons award their listed amount; there is no higher multiplier yet.</td></tr>
 				</tbody>
 			</table>
 
 			<h2>Credits Formula</h2>
-			<p><code>Nano-bots x Credit bonuses x (sqrt(Deuterium) + 1)</code>. Relics are permanent, power-ups last five minutes, and Deuterium comes from Fusion mining.</p>
+			<p><code>Bots x Credit bonuses x (sqrt(Deuterium) + 1)</code>. Relics are permanent, power-ups last five minutes, and Deuterium comes from Fusion mining.</p>
 
 			<h2>COT Bot <img src="images/modern/tech/auto-bot-1.png" class="helpIcon" alt="COT bot"></h2>
 			<p>COT-7 starts active immediately and performs one button action every 10 seconds. Servo Speed upgrades reduce the timer. Planning Core upgrades make it compare stronger actions, wait briefly for better purchases, and eventually navigate between unlocked worlds.</p>
 
 			<h2>Resets</h2>
-			<p>Buying Nano-machines or any higher system resets the lower systems in the same way the default theme does. XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>
+			<p>Buying Factories or any higher system resets the lower systems in the same way the fantasy theme does. XP, levels, worlds, miners, sci-fi resources, data caches, relics, and power-ups remain.</p>
 
 			<h2>Worlds</h2>
 			<ul>
-				<li><strong>Neon Data Habitat:</strong> the starting layer for Credits, Nano-bots, Nano-machines, and Quantum processors.</li>
-				<li><strong>Fusion Foundry Grid:</strong> unlocks Neural uplinks, Synthetic council, and Fusion mining.</li>
-				<li><strong>Singularity Sky Arcology:</strong> unlocks AI Singularity production.</li>
+				<li><strong>Neon Data Habitat:</strong> the starting layer for Credits, Bots, Factories, and Processors.</li>
+				<li><strong>Fusion Foundry Grid:</strong> unlocks Neural uplinks, Council, and Fusion mining.</li>
+				<li><strong>Singularity Sky Arcology:</strong> unlocks Singularity production.</li>
 			</ul>
 
 			<h2>Data Caches <img src="images/modern/tech/crate-1.png" class="helpIcon" alt="Data cache"></h2>
@@ -434,8 +462,8 @@
 			<table class="helpTable">
 				<thead><tr><th>Cache</th><th>Possible contents</th></tr></thead>
 				<tbody>
-					<tr><td>Basic data cache<img src="images/modern/tech/crate-1.png" class="helpSampleButton" alt="Basic data cache"></td><td><strong>Relics:</strong> Alien data prism, Nanite command crown, Encrypted credit archive, Swarm replication codex<br><strong>Power-ups:</strong> Credit overclock, Nanobot surge, Nano-machine uplink, Processor boost</td></tr>
-					<tr><td>Advanced quantum vault<img src="images/modern/tech/crate-2.png" class="helpSampleButton" alt="Advanced quantum vault"></td><td><strong>Relics:</strong> Cybernetic servo core, Plasma access key, Nano-machine matrix, Quantum reactor relic<br><strong>Power-ups:</strong> Nano-machine uplink, Processor boost, Neural network charge</td></tr>
+					<tr><td>Basic data cache<img src="images/modern/tech/crate-1.png" class="helpSampleButton" alt="Basic data cache"></td><td><strong>Relics:</strong> Alien data prism, Nanite command crown, Encrypted credit archive, Swarm replication codex<br><strong>Power-ups:</strong> Credit overclock, Bot surge, Factory uplink, Processor boost</td></tr>
+					<tr><td>Advanced quantum vault<img src="images/modern/tech/crate-2.png" class="helpSampleButton" alt="Advanced quantum vault"></td><td><strong>Relics:</strong> Cybernetic servo core, Plasma access key, Factory matrix, Quantum reactor relic<br><strong>Power-ups:</strong> Factory uplink, Processor boost, Neural network charge</td></tr>
 				</tbody>
 			</table>
 
@@ -445,13 +473,13 @@
 				<thead><tr><th>Relic</th><th>Permanent effect per copy</th></tr></thead>
 				<tbody>
 					<tr><td>Alien data prism<img src="images/modern/tech/relic-1.png" class="helpSampleButton" alt="Alien data prism"></td><td>Affects Credits: +20% Credit gain</td></tr>
-					<tr><td>Nanite command crown<img src="images/modern/tech/relic-2.png" class="helpSampleButton" alt="Nanite command crown"></td><td>Affects Nano-bots: +30% Nano-bot gain</td></tr>
+					<tr><td>Nanite command crown<img src="images/modern/tech/relic-2.png" class="helpSampleButton" alt="Nanite command crown"></td><td>Affects Bots: +30% Bot gain</td></tr>
 					<tr><td>Encrypted credit archive<img src="images/modern/tech/relic-3.png" class="helpSampleButton" alt="Encrypted credit archive"></td><td>Affects Credits: +75% Credit gain</td></tr>
-					<tr><td>Swarm replication codex<img src="images/modern/tech/relic-4.png" class="helpSampleButton" alt="Swarm replication codex"></td><td>Affects Nano-bots: +75% Nano-bot gain</td></tr>
-					<tr><td>Cybernetic servo core<img src="images/modern/tech/relic-5.png" class="helpSampleButton" alt="Cybernetic servo core"></td><td>Affects Nano-bots: +60% Nano-bot gain</td></tr>
+					<tr><td>Swarm replication codex<img src="images/modern/tech/relic-4.png" class="helpSampleButton" alt="Swarm replication codex"></td><td>Affects Bots: +75% Bot gain</td></tr>
+					<tr><td>Cybernetic servo core<img src="images/modern/tech/relic-5.png" class="helpSampleButton" alt="Cybernetic servo core"></td><td>Affects Bots: +60% Bot gain</td></tr>
 					<tr><td>Plasma access key<img src="images/modern/tech/relic-6.png" class="helpSampleButton" alt="Plasma access key"></td><td>Affects Credits: +100% Credit gain</td></tr>
-					<tr><td>Nano-machine matrix<img src="images/modern/tech/relic-7.png" class="helpSampleButton" alt="Nano-machine matrix"></td><td>Affects Nano-machines: +75% Nano-machine gain</td></tr>
-					<tr><td>Quantum reactor relic<img src="images/modern/tech/relic-8.png" class="helpSampleButton" alt="Quantum reactor relic"></td><td>Affects Quantum processors: +75% Quantum processor gain</td></tr>
+					<tr><td>Factory matrix<img src="images/modern/tech/relic-7.png" class="helpSampleButton" alt="Factory matrix"></td><td>Affects Factories: +75% Factory gain</td></tr>
+					<tr><td>Quantum reactor relic<img src="images/modern/tech/relic-8.png" class="helpSampleButton" alt="Quantum reactor relic"></td><td>Affects Processors: +75% Processor gain</td></tr>
 				</tbody>
 			</table>
 
@@ -461,9 +489,9 @@
 				<thead><tr><th>Power-up</th><th>Effect for 5 minutes</th></tr></thead>
 				<tbody>
 					<tr><td>Credit overclock<img src="images/modern/tech/potion-1.png" class="helpSampleButton" alt="Credit overclock"></td><td>Affects Credits: 2x Credit gain</td></tr>
-					<tr><td>Nanobot surge<img src="images/modern/tech/potion-2.png" class="helpSampleButton" alt="Nanobot surge"></td><td>Affects Nano-bots: 2x Nano-bot gain</td></tr>
-					<tr><td>Nano-machine uplink<img src="images/modern/tech/potion-3.png" class="helpSampleButton" alt="Nano-machine uplink"></td><td>Affects Nano-machines: 2x Nano-machine gain</td></tr>
-					<tr><td>Processor boost<img src="images/modern/tech/potion-4.png" class="helpSampleButton" alt="Processor boost"></td><td>Affects Quantum processors: 2x Quantum processor gain</td></tr>
+					<tr><td>Bot surge<img src="images/modern/tech/potion-2.png" class="helpSampleButton" alt="Bot surge"></td><td>Affects Bots: 2x Bot gain</td></tr>
+					<tr><td>Factory uplink<img src="images/modern/tech/potion-3.png" class="helpSampleButton" alt="Factory uplink"></td><td>Affects Factories: 2x Factory gain</td></tr>
+					<tr><td>Processor boost<img src="images/modern/tech/potion-4.png" class="helpSampleButton" alt="Processor boost"></td><td>Affects Processors: 2x Processor gain</td></tr>
 					<tr><td>Neural network charge<img src="images/modern/tech/potion-5.png" class="helpSampleButton" alt="Neural network charge"></td><td>Affects Neural uplinks: 2x Neural uplink gain</td></tr>
 				</tbody>
 			</table>

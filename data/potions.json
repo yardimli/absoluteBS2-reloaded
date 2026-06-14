@@ -13,7 +13,7 @@
     {
       "id": 1,
       "name": "Multi potion",
-      "techName": "Nanobot surge",
+      "techName": "Bot surge",
       "modernImage": "images/modern/fantasy/potion-2.png",
       "techImage": "images/modern/tech/potion-2.png",
       "resource": "multi"
@@ -21,7 +21,7 @@
     {
       "id": 2,
       "name": "Prestige potion",
-      "techName": "Nano-machine uplink",
+      "techName": "Factory uplink",
       "modernImage": "images/modern/fantasy/potion-3.png",
       "techImage": "images/modern/tech/potion-3.png",
       "resource": "prestige"

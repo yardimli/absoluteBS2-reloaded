@@ -1,7 +1,7 @@
 import {game} from "./state.js";
 import {format} from "./format.js";
 import {showConfirmation, showMessage} from "./ui.js";
-import {themedCollectionTitle, themedHeadingIcon, themedImage, themedName} from "./themes.js";
+import {getModernTheme, themedCollectionTitle, themedHeadingIcon, themedImage, themedName} from "./themes.js";
 
 function weightedChoice(entries) {
 	let remaining = entries.reduce((total, entry) => total + entry.weight, 0);
@@ -176,6 +176,48 @@ function itemCard(config, type, entry, index) {
 	return fragment;
 }
 
+function emptyCollectionText(type) {
+	const tech = getModernTheme() === "tech";
+	const copy = tech
+		? {
+			crates: {
+				title: "No data caches yet.",
+				body: "Level up through reset purchases or unlock new worlds to receive caches full of relics and power-ups."
+			},
+			relics: {
+				title: "No relics recovered.",
+				body: "Open data caches to recover permanent machine relics that boost specific systems."
+			},
+			potions: {
+				title: "No power-ups loaded.",
+				body: "Open data caches to find temporary power-ups, then activate them for five-minute boosts."
+			},
+			patterns: {
+				title: "No world files available.",
+				body: "World wallpapers are tied to unlocked worlds. Reach new worlds to expand this archive."
+			}
+		}
+		: {
+			crates: {
+				title: "Nothing is here yet.",
+				body: "Gain levels or unlock new worlds to earn crates filled with relics and potions."
+			},
+			relics: {
+				title: "No relics in the vault.",
+				body: "Open crates to discover permanent relics that strengthen one part of your kingdom."
+			},
+			potions: {
+				title: "No potions on the shelf.",
+				body: "Open crates to find potions, then drink them for five-minute gain boosts."
+			},
+			patterns: {
+				title: "No wallpapers unlocked.",
+				body: "Unlock more worlds to add their fantasy wallpapers to this collection."
+			}
+		};
+	return copy[type] || copy.crates;
+}
+
 export function showItems(config, type) {
 	document.getElementById("miningScreen").style.display = "none";
 	if (game.currentItemScreen === type) {
@@ -205,11 +247,21 @@ export function renderItems(config, type = game.currentItemScreen) {
 	const collection = game[type];
 	if (type === "crates") game.cratesNotChecked = 0;
 	const root = document.getElementById("itemScreenInner");
+	const empty = document.getElementById("itemScreenEmpty");
+	const layout = document.querySelector("#itemScreen .itemModalLayout");
+	const detail = document.getElementById("itemScreenInfo");
 	root.replaceChildren();
-	collection
+	const visibleItems = collection
 		.map((entry, index) => ({entry, index}))
-		.filter(({entry}) => type !== "patterns" || !isModern() || config.patternById[entry[0]].world <= game.worldsUnlocked)
-		.forEach(({entry, index}) => root.append(itemCard(config, type, entry, index)));
+		.filter(({entry}) => type !== "patterns" || !isModern() || config.patternById[entry[0]].world <= game.worldsUnlocked);
+	visibleItems.forEach(({entry, index}) => root.append(itemCard(config, type, entry, index)));
+	if (layout) layout.classList.toggle("isEmpty", visibleItems.length === 0);
+	if (detail) detail.style.display = visibleItems.length ? "" : "none";
+	if (empty) {
+		const message = emptyCollectionText(type);
+		empty.innerHTML = `<h2>${message.title}</h2><p>${message.body}</p>`;
+		empty.style.display = visibleItems.length ? "none" : "flex";
+	}
 }
 
 export function activateItem(config, card) {

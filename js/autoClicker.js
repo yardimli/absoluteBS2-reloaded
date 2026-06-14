@@ -1,11 +1,13 @@
 import {currentWorld, game, setCurrentWorld} from "./state.js";
 import {calculateButtonGain, canBuyButton} from "./progression.js";
 import {format, formatTime} from "./format.js";
-import {getModernTheme} from "./themes.js";
+import {getModernTheme, themedName} from "./themes.js";
 import {activateWorldButton, renderWorld, updateWorldButtons} from "./worlds.js";
 
 const E = value => new Decimal(value);
 const SLEEP_DURATION_MS = 6 * 60 * 60 * 1000;
+let autoClickerViewKey = "";
+let autoClickerStatusText = "";
 
 function themeConfig(config) {
 	return config.autoClicker.themes[getModernTheme()] || config.autoClicker.themes.tech;
@@ -121,6 +123,10 @@ function collectCandidates(config, worldId) {
 }
 
 function allowedWorldIds(config) {
+	const manualWorldId = game.autoClicker.manualWorldId;
+	if (manualWorldId > 0 && manualWorldId <= game.worldsUnlocked && config.worldById[manualWorldId]) {
+		return [manualWorldId];
+	}
 	const intelligence = game.autoClicker.intelligenceLevel;
 	const canNavigate = intelligence >= config.autoClicker.intelligence.worldNavigationLevel;
 	if (!canNavigate) return [currentWorld];
@@ -242,56 +248,105 @@ function upgradeText(config, type) {
 	};
 }
 
+function setText(id, value) {
+	const element = document.getElementById(id);
+	if (element && element.textContent !== value) element.textContent = value;
+}
+
+function setImage(element, src, alt) {
+	if (!element) return;
+	if (element.getAttribute("src") !== src) element.src = src;
+	if (element.alt !== alt) element.alt = alt;
+}
+
+function setButtonTextAndDisabled(id, text, disabled) {
+	const button = document.getElementById(id);
+	if (!button) return;
+	if (button.textContent !== text) button.textContent = text;
+	if (button.disabled !== disabled) button.disabled = disabled;
+}
+
+function autoClickerStateKey(config, themed, image, sleeping) {
+	const manualWorld = game.autoClicker.manualWorldId > 0 ? config.worldById[game.autoClicker.manualWorldId] : null;
+	const speedCost = autoClickerUpgradeCost(config, "speed").toString();
+	const intelligenceCost = autoClickerUpgradeCost(config, "intelligence").toString();
+	return [
+		getModernTheme(),
+		themed.name,
+		themed.title,
+		themed.navTooltip,
+		themed.description,
+		themed.speedName,
+		themed.intelligenceName,
+		image,
+		game.autoClicker.speedLevel,
+		game.autoClicker.intelligenceLevel,
+		game.autoClicker.manualWorldId,
+		manualWorld ? themedName(manualWorld) : "",
+		sleeping,
+		game.autoClicker.sleepUntil,
+		speedCost,
+		intelligenceCost,
+		game.money.gte(autoClickerUpgradeCost(config, "speed")),
+		game.money.gte(autoClickerUpgradeCost(config, "intelligence"))
+	].join("|");
+}
+
 export function updateAutoClickerView(config) {
 	const themed = themeConfig(config);
 	const image = autoClickerImage(config);
 	const sleeping = isAutoClickerSleeping();
 	const remaining = autoClickerSleepRemaining();
+	const viewKey = autoClickerStateKey(config, themed, image, sleeping);
+	const staticChanged = viewKey !== autoClickerViewKey;
 	const nav = document.getElementById("autoClickerNavButton");
-	if (nav) {
-		nav.style.backgroundImage = `url("${image}")`;
+	if (nav && staticChanged) {
+		const backgroundImage = `url("${image}")`;
+		if (nav.style.backgroundImage !== backgroundImage) nav.style.backgroundImage = backgroundImage;
 		nav.dataset.tooltip = themed.navTooltip;
 		nav.setAttribute("aria-label", themed.navTooltip);
 		nav.classList.toggle("isSleeping", sleeping);
 		nav.dataset.sleepLabel = getModernTheme() === "tech" ? "RECHARGE" : "SLEEP";
 	}
 	const avatar = document.getElementById("autoClickerAvatar");
-	if (avatar) {
-		avatar.src = image;
-		avatar.alt = themed.name;
+	if (staticChanged) {
+		setImage(avatar, image, themed.name);
+		setImage(document.getElementById("autoClickerModalIcon"), image, themed.name);
+		setText("autoClickerTitle", `${themed.name} upgrades`);
+		setText("autoClickerEyebrow", themed.title);
+		setText("autoClickerDescription", themed.description);
 	}
-	const modalIcon = document.getElementById("autoClickerModalIcon");
-	if (modalIcon) {
-		modalIcon.src = image;
-		modalIcon.alt = themed.name;
-	}
-	const title = document.getElementById("autoClickerTitle");
-	if (title) title.textContent = `${themed.name} upgrades`;
-	const eyebrow = document.getElementById("autoClickerEyebrow");
-	if (eyebrow) eyebrow.textContent = themed.title;
-	const description = document.getElementById("autoClickerDescription");
-	if (description) description.textContent = themed.description;
 	const status = document.getElementById("autoClickerStatus");
 	if (status) {
-		status.textContent = sleeping
-			? `${themed.name} is ${getModernTheme() === "tech" ? "recharging" : "sleeping"} for ${formatTime(remaining)}.`
-			: `${themed.name} acts every ${formatTime(autoClickerInterval(config))}. Intelligence ${game.autoClicker.intelligenceLevel} controls planning depth.`;
+		const manualWorld = game.autoClicker.manualWorldId > 0 ? config.worldById[game.autoClicker.manualWorldId] : null;
+		const navigationText = manualWorld
+			? ` Staying on ${themedName(manualWorld)} until the next reset purchase.`
+			: "";
+		const sleepSeconds = Math.ceil(remaining);
+		const nextStatusText = sleeping
+			? `${themed.name} is ${getModernTheme() === "tech" ? "recharging" : "sleeping"} for ${formatTime(sleepSeconds)}.`
+			: `${themed.name} acts every ${formatTime(autoClickerInterval(config))}. Intelligence ${game.autoClicker.intelligenceLevel} controls planning depth.${navigationText}`;
+		if (nextStatusText !== autoClickerStatusText || status.textContent !== nextStatusText) {
+			status.textContent = nextStatusText;
+			autoClickerStatusText = nextStatusText;
+		}
 	}
-	const sleepButton = document.getElementById("autoClickerSleepButton");
-	if (sleepButton) {
-		sleepButton.textContent = sleeping
+	if (staticChanged) {
+		setText(
+			"autoClickerSleepButton",
+			sleeping
 			? (getModernTheme() === "tech" ? `Power on ${themed.name}` : `Wake up ${themed.name}`)
-			: (getModernTheme() === "tech" ? `Make ${themed.name} recharge for 6 hours` : `Make ${themed.name} sleep for 6 hours`);
-	}
-	for (const type of ["speed", "intelligence"]) {
-		const text = upgradeText(config, type);
-		const prefix = type === "speed" ? "autoClickerSpeed" : "autoClickerIntelligence";
-		document.getElementById(`${prefix}Name`).textContent = text.label;
-		document.getElementById(`${prefix}Level`).textContent = text.level;
-		document.getElementById(`${prefix}Effect`).textContent = text.effect;
-		const button = document.getElementById(`${prefix}Button`);
-		button.textContent = text.cost;
-		button.disabled = !canUpgradeAutoClicker(config, type);
+			: (getModernTheme() === "tech" ? `Make ${themed.name} recharge for 6 hours` : `Make ${themed.name} sleep for 6 hours`)
+		);
+		for (const type of ["speed", "intelligence"]) {
+			const text = upgradeText(config, type);
+			const prefix = type === "speed" ? "autoClickerSpeed" : "autoClickerIntelligence";
+			setText(`${prefix}Name`, text.label);
+			setText(`${prefix}Level`, text.level);
+			setText(`${prefix}Effect`, text.effect);
+			setButtonTextAndDisabled(`${prefix}Button`, text.cost, !canUpgradeAutoClicker(config, type));
+		}
+		autoClickerViewKey = viewKey;
 	}
 }
 

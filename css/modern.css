@@ -122,7 +122,9 @@ button,
 	top: 14px;
 	z-index: 20;
 	width: calc(100% - 16px);
-	min-height: 74px;
+	height: 90px;
+	min-height: 90px;
+	max-height: 90px;
 	margin: 8px auto 0;
 	padding: 10px 12px;
 	border-radius: 28px;
@@ -130,6 +132,7 @@ button,
 	grid-template-columns: minmax(220px, 0.6fr) minmax(150px, 0.4fr) minmax(390px, 1fr);
 	align-items: center;
 	gap: 18px;
+	overflow: visible;
 }
 
 .brandBlock,
@@ -173,10 +176,18 @@ button,
 .worldSwitcher {
 	gap: 10px;
 	justify-content: center;
+	min-width: 0;
+	height: 64px;
+	overflow: hidden;
 }
 
 .headerProgress {
 	min-width: 150px;
+	height: 48px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	overflow: hidden;
 }
 
 .headerLevel {
@@ -200,7 +211,9 @@ button,
 
 #topBarWorld {
 	min-width: 150px;
+	height: 48px;
 	text-align: center;
+	overflow: hidden;
 }
 
 #topBarWorld span,
@@ -213,6 +226,12 @@ button,
 	font-size: 0.72rem;
 	text-transform: uppercase;
 	letter-spacing: 0.12em;
+}
+
+#topBarWorld strong {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .circleButton {
@@ -237,6 +256,16 @@ button,
 	background-size: contain;
 	font-size: 0;
 	filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.28));
+}
+
+.topShell .circleButton[data-action="previous-world"]:disabled {
+	cursor: not-allowed;
+	opacity: 0.42;
+	filter: grayscale(0.4) brightness(0.72) drop-shadow(0 10px 14px rgba(0, 0, 0, 0.18));
+}
+
+.topShell .circleButton[data-action="previous-world"]:disabled:hover {
+	transform: none;
 }
 
 .topShell .circleButton[data-action="previous-world"] {
@@ -286,6 +315,9 @@ body[data-modern-theme="tech"] .messageDialogClose {
 	display: flex;
 	justify-content: flex-end;
 	gap: 7px;
+	height: 64px;
+	align-items: center;
+	overflow: hidden;
 }
 
 .railActions button,
@@ -465,7 +497,7 @@ body[data-modern-theme="tech"] .navMining {
 	display: none;
 	position: absolute;
 	right: -5px;
-	top: -5px;
+	top: 8px;
 	min-width: 24px;
 	padding: 4px 7px;
 	border-radius: 999px;
@@ -884,26 +916,45 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 
 .modalHeading {
 	flex: 0 0 auto;
+	gap: 12px;
+	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 20px;
+	margin-bottom: 18px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .modalTitleGroup {
 	display: flex;
 	align-items: center;
 	gap: 12px;
+	min-width: 0;
+	text-align: left;
+}
+
+.modalTitleGroup > div {
+	min-width: 0;
 }
 
 .modalHeadingIcon {
-	width: 64px;
-	height: 64px;
+	width: 48px;
+	height: 48px;
+	border-radius: 15px;
 	object-fit: contain;
-	filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.3));
+	filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.22));
 }
 
+.modalTitleGroup strong,
 .modalHeading h1,
 .centeredModal h1 {
+	display: block;
 	margin: 0;
+	overflow: hidden;
+	color: var(--text);
+	font-size: 1.05rem;
+	line-height: 1.2;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .modalContent,
@@ -918,13 +969,51 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) 280px;
 	gap: 18px;
+	height: min(560px, calc(100vh - 180px));
+	min-height: 360px;
+	overflow: hidden;
+}
+
+.itemModalLayout.isEmpty {
+	grid-template-columns: 1fr;
 }
 
 .itemGrid {
+	grid-column: 1;
+	grid-row: 1;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
 	gap: 12px;
 	align-content: start;
+	overflow: auto;
+	min-height: 0;
+}
+
+.itemEmptyState {
+	grid-column: 1;
+	grid-row: 1;
+	display: none;
+	min-height: 0;
+	padding: 28px;
+	border: 1px dashed rgba(255, 255, 255, 0.22);
+	border-radius: 24px;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background: rgba(255, 255, 255, 0.06);
+	color: var(--muted);
+	text-align: center;
+	line-height: 1.55;
+}
+
+.itemEmptyState h2 {
+	margin: 0 0 8px;
+	color: var(--text);
+}
+
+.itemEmptyState p {
+	max-width: 420px;
+	margin: 0;
 }
 
 .itemBox {
@@ -962,11 +1051,15 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 }
 
 .itemDetail {
-	min-height: 350px;
+	grid-column: 2;
+	grid-row: 1;
+	height: 100%;
+	min-height: 0;
 	padding: 18px;
 	border-radius: 24px;
 	background: rgba(255, 255, 255, 0.08);
 	text-align: center;
+	overflow: auto;
 }
 
 #itemScreenIcon {
@@ -986,13 +1079,14 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 #itemScreenInfoText {
 	color: var(--muted);
 	line-height: 1.5;
+	overflow-wrap: anywhere;
 }
 
 .centeredModal {
 	max-width: 600px;
 	margin-top: 10vh;
 	text-align: center;
-	overflow: auto;
+	overflow: hidden;
 }
 
 .worldPurchaseModal {
@@ -1017,12 +1111,13 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 }
 
 .worldPurchaseModal .modalClose {
+	position: static;
 	z-index: 3;
 }
 
 .worldPurchaseModal h1,
 .worldPurchaseModal .eyebrow {
-	padding-inline: 48px;
+	padding-inline: 0;
 }
 
 .resourceBreakdownPanel {
@@ -1135,6 +1230,12 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	top: 18px;
 }
 
+.modalHeading .modalClose {
+	position: static;
+	right: auto;
+	top: auto;
+}
+
 .primaryAction {
 	width: 100%;
 	margin-top: 16px;
@@ -1240,13 +1341,21 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	margin: 8vh auto 0;
 	padding: 30px;
 	border-radius: 30px;
+	display: flex;
+	flex-direction: column;
+	max-height: calc(100vh - 48px);
+	overflow: hidden;
 	text-align: center;
 }
 
 .messageDialogClose {
-	position: absolute;
-	top: 16px;
-	right: 16px;
+	flex: 0 0 auto;
+}
+
+.messageDialogContent {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: auto;
 }
 
 .messageDialogImage {
@@ -1257,11 +1366,6 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	border-radius: 24px;
 	object-fit: contain;
 	filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.35));
-}
-
-.messageDialogPanel h2 {
-	margin: 8px 0;
-	font-size: 2rem;
 }
 
 .messageDialogPanel p {
@@ -1320,11 +1424,11 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 .helpHeader {
 	flex: 0 0 auto;
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: space-between;
-	gap: 18px;
+	gap: 12px;
 	padding-bottom: 16px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .helpBody {
@@ -1335,8 +1439,16 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	overflow: auto;
 }
 
-.helpPanel h1 {
+.helpPanel h1,
+.helpHeader strong {
+	display: block;
 	margin: 0;
+	overflow: hidden;
+	color: var(--text);
+	font-size: 1.05rem;
+	line-height: 1.2;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .helpPanel p {
@@ -1419,6 +1531,9 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 
 @media (max-width: 1050px) {
 	.topShell {
+		height: 208px;
+		min-height: 208px;
+		max-height: 208px;
 		grid-template-columns: 1fr auto minmax(140px, 0.6fr);
 	}
 
@@ -1426,6 +1541,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 		grid-column: 1 / -1;
 		justify-content: center;
 		flex-wrap: wrap;
+		height: 64px;
 	}
 
 	.navResources {
@@ -1482,10 +1598,17 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	.topShell {
 		top: 8px;
 		width: calc(100% - 16px);
+		height: 208px;
+		min-height: 208px;
+		max-height: 208px;
 		margin-top: 8px;
 		border-radius: 23px;
 		grid-template-columns: 1fr;
 		gap: 4px;
+	}
+
+	.headerProgress {
+		height: 46px;
 	}
 
 	.topShell .brandBlock {
@@ -1498,6 +1621,7 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 		overflow-y: hidden;
 		flex-wrap: nowrap;
 		padding-bottom: 2px;
+		height: 68px;
 	}
 
 	.primaryNav button {
@@ -1548,14 +1672,44 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 		padding: 8px;
 	}
 
-	.modalPanel {
+	.messageDialogShell {
+		padding: 8px;
+	}
+
+	.modalPanel,
+	.helpPanel,
+	.messageDialogPanel {
+		width: 100%;
+		height: calc(100vh - 16px);
+		min-height: calc(100vh - 16px);
 		max-height: calc(100vh - 16px);
+		margin: 0;
 		padding: 18px;
 		border-radius: 25px;
 	}
 
+	.centeredModal {
+		margin: 0;
+	}
+
+	.modalHeading,
+	.helpHeader {
+		margin-bottom: 14px;
+		padding-bottom: 14px;
+	}
+
+	.modalHeadingIcon {
+		width: 48px;
+		height: 48px;
+	}
+
 	.itemModalLayout {
 		grid-template-columns: 1fr;
+		flex: 1 1 auto;
+		height: auto;
+		min-height: 0;
+		grid-auto-rows: max-content;
+		overflow: auto;
 	}
 
 	.autoClickerUpgradeGrid {
@@ -1563,11 +1717,24 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	}
 
 	.itemDetail {
-		min-height: auto;
+		grid-column: 1;
+		grid-row: 2;
+		height: auto;
+		min-height: 190px;
+		max-height: none;
 	}
 
 	.itemGrid {
+		grid-column: 1;
+		grid-row: 1;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+		overflow: visible;
+	}
+
+	.itemEmptyState {
+		grid-column: 1;
+		grid-row: 1;
+		min-height: 260px;
 	}
 
 	.miningMetrics {
@@ -1575,12 +1742,9 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	}
 
 	.helpPanel {
-		inset: 8px 8px auto 8px;
+		inset: 8px;
 		transform: none;
 		width: auto;
-		max-height: calc(100vh - 16px);
-		padding: 22px;
-		border-radius: 25px;
 	}
 }
 

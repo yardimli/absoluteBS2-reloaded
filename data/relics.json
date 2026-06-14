@@ -57,7 +57,7 @@
     {
       "id": 6,
       "name": "Tome of prestige",
-      "techName": "Nano-machine matrix",
+      "techName": "Factory matrix",
       "modernImage": "images/modern/fantasy/relic-7.png",
       "techImage": "images/modern/tech/relic-7.png",
       "resource": "prestige",

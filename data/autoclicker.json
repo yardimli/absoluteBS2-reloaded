@@ -1,16 +1,16 @@
 {
   "baseIntervalSeconds": 10,
-  "minimumIntervalSeconds": 1.25,
+  "minimumIntervalSeconds": 0.2,
   "speed": {
     "maxLevel": 30,
     "baseCost": "500",
-    "growth": "2.45",
-    "intervalMultiplier": 0.9
+    "growth": "20.27697207205688",
+    "intervalMultiplier": 0.8777435898906345
   },
   "intelligence": {
     "maxLevel": 30,
     "baseCost": "2500",
-    "growth": "2.85",
+    "growth": "93.87627780108316",
     "worldNavigationLevel": 8,
     "waitPlanningLevel": 4,
     "waitWindowPerLevelSeconds": 1.6
