@@ -1595,6 +1595,10 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 }
 
 @media (max-width: 720px) {
+	body {
+		line-height: 1.25;
+	}
+
 	.topShell {
 		top: 8px;
 		width: calc(100% - 16px);
@@ -1630,30 +1634,118 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 
 	.gameLayout {
 		width: 100%;
-		margin-top: 10px;
+		margin-top: 6px;
+		padding: 0 4px;
+		gap: 4px;
+	}
+
+	.contentColumn {
+		padding-bottom: 6px;
+	}
+
+	.worldSections {
+		gap: 4px;
 	}
 
 	.resourceRail {
 		inset: 8px;
-		padding: 16px;
-		border-radius: 24px;
+		padding: 10px;
+		border-radius: 20px;
+	}
+
+	.brandBlock {
+		gap: 8px;
+		margin-bottom: 10px;
+		padding-bottom: 8px;
+	}
+
+	.brandIcon,
+	.modalHeadingIcon {
+		width: 40px;
+		height: 40px;
+		border-radius: 12px;
+	}
+
+	.eyebrow {
+		margin-bottom: 2px;
+		font-size: 0.62rem;
+		letter-spacing: 0.1em;
+	}
+
+	.brandBlock strong,
+	.modalTitleGroup strong,
+	.helpHeader strong {
+		font-size: 0.95rem;
+		line-height: 1.1;
+	}
+
+	.railHeading {
+		align-items: center;
+	}
+
+	.railHeading h2 {
+		font-size: 1.15rem;
+		line-height: 1.1;
 	}
 
 	.resourceList {
 		grid-template-columns: 1fr;
+		margin-top: 8px;
+		gap: 5px;
+	}
+
+	.resourceText {
+		grid-template-columns: 8px 1fr auto;
+		gap: 6px;
+		padding: 7px 9px;
+		border-radius: 12px;
+		line-height: 1.15;
+	}
+
+	.resourceDot {
+		width: 6px;
+		height: 6px;
+	}
+
+	.activePotionIcons {
+		margin-top: 8px;
+		gap: 5px;
+	}
+
+	.potionIcon {
+		width: 36px;
+		height: 36px;
+	}
+
+	.potionTooltip {
+		margin-top: 5px;
+		font-size: 0.72rem;
 	}
 
 	.railActions {
 		grid-template-columns: 1fr 1fr;
+		gap: 5px;
+		margin-top: 10px;
+	}
+
+	.railActions button,
+	.debugPanel button {
+		padding: 7px 9px;
+		line-height: 1.1;
+	}
+
+	.debugPanel {
+		margin-top: 8px;
+		font-size: 0.82rem;
 	}
 
 	.worldSection {
-		padding: 4px;
-		border-radius: 24px;
+		padding: 3px;
+		border-radius: 18px;
 	}
 
 	.buttonGrid {
-		--button-grid-gap: 3px;
+		--button-grid-gap: 2px;
 	}
 
 	.button {
@@ -1663,8 +1755,40 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	}
 
 	.sectionHeading {
-		gap: 4px;
-		margin-bottom: 4px;
+		gap: 3px;
+		margin-bottom: 2px;
+	}
+
+	.sectionTitle {
+		gap: 6px;
+		padding: 2px 6px 2px 2px;
+		border-radius: 14px;
+	}
+
+	.sectionIcon {
+		width: 38px;
+		height: 38px;
+	}
+
+	.sectionHeading h2 {
+		font-size: clamp(1.05rem, 6vw, 1.45rem);
+		line-height: 1;
+	}
+
+	.sectionHeading > strong {
+		padding: 5px 8px;
+		font-size: 0.7rem;
+		line-height: 1.05;
+	}
+
+	.gainValue {
+		font-size: clamp(0.86rem, 4vw, 1rem);
+		line-height: 1.05;
+	}
+
+	.costLine {
+		font-size: clamp(0.62rem, 3.2vw, 0.72rem);
+		line-height: 1.05;
 	}
 
 
@@ -1684,8 +1808,8 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 		min-height: calc(100vh - 16px);
 		max-height: calc(100vh - 16px);
 		margin: 0;
-		padding: 18px;
-		border-radius: 25px;
+		padding: 10px;
+		border-radius: 18px;
 	}
 
 	.centeredModal {
@@ -1694,13 +1818,14 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 
 	.modalHeading,
 	.helpHeader {
-		margin-bottom: 14px;
-		padding-bottom: 14px;
+		margin-bottom: 8px;
+		padding-bottom: 8px;
+		gap: 8px;
 	}
 
 	.modalHeadingIcon {
-		width: 48px;
-		height: 48px;
+		width: 40px;
+		height: 40px;
 	}
 
 	.itemModalLayout {
@@ -1714,31 +1839,195 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 
 	.autoClickerUpgradeGrid {
 		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.autoClickerContent,
+	.miningModalContent,
+	.resourceBreakdownContent,
+	.sectionLoreContent,
+	.messageDialogContent,
+	.helpBody {
+		line-height: 1.3;
 	}
 
 	.itemDetail {
 		grid-column: 1;
 		grid-row: 2;
 		height: auto;
-		min-height: 190px;
+		min-height: 150px;
 		max-height: none;
+		padding: 10px;
+		border-radius: 16px;
 	}
 
 	.itemGrid {
 		grid-column: 1;
 		grid-row: 1;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 7px;
 		overflow: visible;
+	}
+
+	.itemBox {
+		min-height: 118px;
+		padding: 7px;
+		border-radius: 16px;
+	}
+
+	.item {
+		height: 86px;
+	}
+
+	.itemText {
+		right: 6px;
+		bottom: 6px;
+		padding: 3px 6px;
+		font-size: 0.78rem;
+	}
+
+	#itemScreenIcon {
+		width: 128px;
+		height: 128px;
+	}
+
+	#itemScreenName {
+		margin: 6px 0;
+		font-size: 1.1rem;
+		line-height: 1.15;
+	}
+
+	#itemScreenInfoText {
+		line-height: 1.3;
 	}
 
 	.itemEmptyState {
 		grid-column: 1;
 		grid-row: 1;
-		min-height: 260px;
+		min-height: 190px;
+		padding: 16px;
+		border-radius: 16px;
 	}
 
 	.miningMetrics {
 		grid-template-columns: 1fr;
+		gap: 6px;
+	}
+
+	.miningMetrics > div,
+	.oreCard,
+	.autoClickerStatus,
+	.autoClickerUpgradeCard {
+		padding: 9px;
+		border-radius: 15px;
+	}
+
+	.autoClickerStatus {
+		margin: 8px 0;
+	}
+
+	.autoClickerUpgradeCard h2 {
+		margin-bottom: 4px;
+		font-size: 1rem;
+		line-height: 1.1;
+	}
+
+	.autoClickerHint {
+		margin: 8px 0;
+		font-size: 0.82rem;
+	}
+
+	.primaryAction,
+	.secondaryAction {
+		margin-top: 8px;
+		padding: 10px 12px;
+		border-radius: 14px;
+		line-height: 1.15;
+	}
+
+	.oreGrid {
+		margin-top: 8px;
+		gap: 6px;
+		grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+	}
+
+	.oreIcon {
+		width: 52px;
+		height: 52px;
+		margin-bottom: 4px;
+	}
+
+	.messageDialogImage {
+		width: min(170px, 62vw);
+		height: 140px;
+		margin-bottom: 8px;
+	}
+
+	.messageDialogPanel p {
+		line-height: 1.35;
+	}
+
+	.messageDialogInput {
+		margin-top: 8px;
+		padding: 9px;
+		border-radius: 12px;
+	}
+
+	.messageDialogActions {
+		gap: 6px;
+		margin-top: 10px;
+	}
+
+	.messageDialogActions button {
+		min-width: 96px;
+		padding: 9px 12px;
+		border-radius: 12px;
+	}
+
+	.helpBody {
+		margin-top: 8px;
+		padding-right: 6px;
+	}
+
+	.helpPanel p,
+	.helpPanel ul {
+		line-height: 1.35;
+	}
+
+	.helpPanel h2 {
+		margin-top: 16px;
+		margin-bottom: 6px;
+		font-size: 1.08rem;
+		line-height: 1.15;
+	}
+
+	.helpIcon {
+		width: 30px;
+		height: 30px;
+	}
+
+	.helpSampleButton {
+		width: 50px;
+		height: 50px;
+		margin-top: 4px;
+	}
+
+	.helpTable {
+		margin: 8px 0 12px;
+		font-size: 0.78rem;
+	}
+
+	.helpTable th,
+	.helpTable td {
+		padding: 6px;
+	}
+
+	.helpChain {
+		gap: 4px;
+	}
+
+	.helpChain span {
+		padding: 5px 7px;
 	}
 
 	.helpPanel {
