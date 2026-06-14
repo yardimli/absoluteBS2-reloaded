@@ -564,7 +564,7 @@ body[data-modern-theme="tech"] .navMining {
 
 .worldSection {
 	position: relative;
-	padding: 16px;
+	padding: 8px;
 	border-radius: 24px;
 	overflow: hidden;
 	isolation: isolate;
@@ -614,8 +614,8 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 
 .sectionHeading {
 	justify-content: space-between;
-	gap: 16px;
-	margin-bottom: 16px;
+	gap: 8px;
+	margin-bottom: 8px;
 }
 
 .sectionTitle {
@@ -1914,6 +1914,25 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 		gap: 6px;
 	}
 
+	.miningMetrics > div {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		white-space: nowrap;
+	}
+
+	.miningMetrics span,
+	.miningMetrics strong {
+		display: inline;
+		margin-top: 0;
+		line-height: 1;
+	}
+
+	.miningMetrics strong {
+		font-size: 0.98rem;
+	}
+
 	.miningMetrics > div,
 	.oreCard,
 	.autoClickerStatus,
@@ -1948,13 +1967,37 @@ body[data-modern-theme="tech"] .worldSection[data-tier="infernal"] { --section-a
 	.oreGrid {
 		margin-top: 8px;
 		gap: 6px;
-		grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+		grid-template-columns: 1fr;
+	}
+
+	.oreCard {
+		display: grid;
+		grid-template-columns: 38px minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 8px;
+		white-space: nowrap;
+	}
+
+	.oreCard span,
+	.oreCard strong {
+		display: inline;
+		margin-top: 0;
+		line-height: 1;
+	}
+
+	.oreCard span {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.oreCard strong {
+		font-size: 0.98rem;
 	}
 
 	.oreIcon {
-		width: 52px;
-		height: 52px;
-		margin-bottom: 4px;
+		width: 38px;
+		height: 38px;
+		margin: 0;
 	}
 
 	.messageDialogImage {
