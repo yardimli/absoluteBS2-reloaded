@@ -140,7 +140,10 @@ function activateButton(element) {
 	else if (action === "next-world") nextWorld(config, {manual: true});
 	else if (action === "purchase-world") purchaseWorld(config, (type, id) => addItem(config, type, id));
 	else if (action === "close-world-purchase") closeWorldPurchase();
-	else if (action === "show-resource-breakdown") showResourceBreakdown(config, element.dataset.resourceId);
+	else if (action === "show-resource-breakdown") {
+		document.body.classList.remove("resourcesOpen");
+		showResourceBreakdown(config, element.dataset.resourceId);
+	}
 	else if (action === "close-resource-breakdown") closeResourceBreakdown();
 	else if (action === "show-section-lore") showSectionLore(config, element.dataset.resourceId);
 	else if (action === "close-section-lore") closeSectionLore();
