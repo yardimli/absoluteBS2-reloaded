@@ -7,6 +7,7 @@ const BEST_VALUE_LEVEL = 2;
 const WAIT_PLANNING_LEVEL = 4;
 const WORLD_TRAVEL_LEVEL = 8;
 const ROW_UNLOCK_LEVELS = [0, 2, 5, 8, 11, 14];
+const DEFAULT_AUTO_CLICKER_HIBERNATION_MS = 100 * 365 * 24 * 60 * 60 * 1000;
 
 function decimalArray(length) {
 	return Array.from({length}, () => new Decimal(0));
@@ -41,7 +42,7 @@ export function resetState(config) {
 			speedLevel: 0,
 			intelligenceLevel: 0,
 			lastActionAt: Date.now(),
-			sleepUntil: 0,
+			sleepUntil: Date.now() + DEFAULT_AUTO_CLICKER_HIBERNATION_MS,
 			manualWorldId: 0,
 			hasSeenDescription: false,
 			hasSeenBehaviorText: false,
